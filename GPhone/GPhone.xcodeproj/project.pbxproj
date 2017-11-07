@@ -1,0 +1,551 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 48;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		B8A466F61FB186BD007EFB09 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = B8A466F51FB186BD007EFB09 /* AppDelegate.m */; };
+		B8A466F91FB186BD007EFB09 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B8A466F81FB186BD007EFB09 /* ViewController.m */; };
+		B8A466FC1FB186BD007EFB09 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B8A466FA1FB186BD007EFB09 /* Main.storyboard */; };
+		B8A466FE1FB186BD007EFB09 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B8A466FD1FB186BD007EFB09 /* Assets.xcassets */; };
+		B8A467011FB186BD007EFB09 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B8A466FF1FB186BD007EFB09 /* LaunchScreen.storyboard */; };
+		B8A467041FB186BD007EFB09 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = B8A467031FB186BD007EFB09 /* main.m */; };
+		B8A4670E1FB186BD007EFB09 /* GPhoneTests.m in Sources */ = {isa = PBXBuildFile; fileRef = B8A4670D1FB186BD007EFB09 /* GPhoneTests.m */; };
+		B8A467191FB186BD007EFB09 /* GPhoneUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = B8A467181FB186BD007EFB09 /* GPhoneUITests.m */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		B8A4670A1FB186BD007EFB09 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = B8A466E91FB186BD007EFB09 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = B8A466F01FB186BD007EFB09;
+			remoteInfo = GPhone;
+		};
+		B8A467151FB186BD007EFB09 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = B8A466E91FB186BD007EFB09 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = B8A466F01FB186BD007EFB09;
+			remoteInfo = GPhone;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		B8A466F11FB186BD007EFB09 /* GPhone.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GPhone.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		B8A466F41FB186BD007EFB09 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
+		B8A466F51FB186BD007EFB09 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
+		B8A466F71FB186BD007EFB09 /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
+		B8A466F81FB186BD007EFB09 /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
+		B8A466FB1FB186BD007EFB09 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		B8A466FD1FB186BD007EFB09 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		B8A467001FB186BD007EFB09 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		B8A467021FB186BD007EFB09 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		B8A467031FB186BD007EFB09 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		B8A467091FB186BD007EFB09 /* GPhoneTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = GPhoneTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		B8A4670D1FB186BD007EFB09 /* GPhoneTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GPhoneTests.m; sourceTree = "<group>"; };
+		B8A4670F1FB186BD007EFB09 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		B8A467141FB186BD007EFB09 /* GPhoneUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = GPhoneUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		B8A467181FB186BD007EFB09 /* GPhoneUITests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GPhoneUITests.m; sourceTree = "<group>"; };
+		B8A4671A1FB186BD007EFB09 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		B8A466EE1FB186BD007EFB09 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		B8A467061FB186BD007EFB09 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		B8A467111FB186BD007EFB09 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		B8A466E81FB186BD007EFB09 = {
+			isa = PBXGroup;
+			children = (
+				B8A466F31FB186BD007EFB09 /* GPhone */,
+				B8A4670C1FB186BD007EFB09 /* GPhoneTests */,
+				B8A467171FB186BD007EFB09 /* GPhoneUITests */,
+				B8A466F21FB186BD007EFB09 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		B8A466F21FB186BD007EFB09 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				B8A466F11FB186BD007EFB09 /* GPhone.app */,
+				B8A467091FB186BD007EFB09 /* GPhoneTests.xctest */,
+				B8A467141FB186BD007EFB09 /* GPhoneUITests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		B8A466F31FB186BD007EFB09 /* GPhone */ = {
+			isa = PBXGroup;
+			children = (
+				B8A466F41FB186BD007EFB09 /* AppDelegate.h */,
+				B8A466F51FB186BD007EFB09 /* AppDelegate.m */,
+				B8A466F71FB186BD007EFB09 /* ViewController.h */,
+				B8A466F81FB186BD007EFB09 /* ViewController.m */,
+				B8A466FA1FB186BD007EFB09 /* Main.storyboard */,
+				B8A466FD1FB186BD007EFB09 /* Assets.xcassets */,
+				B8A466FF1FB186BD007EFB09 /* LaunchScreen.storyboard */,
+				B8A467021FB186BD007EFB09 /* Info.plist */,
+				B8A467031FB186BD007EFB09 /* main.m */,
+			);
+			path = GPhone;
+			sourceTree = "<group>";
+		};
+		B8A4670C1FB186BD007EFB09 /* GPhoneTests */ = {
+			isa = PBXGroup;
+			children = (
+				B8A4670D1FB186BD007EFB09 /* GPhoneTests.m */,
+				B8A4670F1FB186BD007EFB09 /* Info.plist */,
+			);
+			path = GPhoneTests;
+			sourceTree = "<group>";
+		};
+		B8A467171FB186BD007EFB09 /* GPhoneUITests */ = {
+			isa = PBXGroup;
+			children = (
+				B8A467181FB186BD007EFB09 /* GPhoneUITests.m */,
+				B8A4671A1FB186BD007EFB09 /* Info.plist */,
+			);
+			path = GPhoneUITests;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		B8A466F01FB186BD007EFB09 /* GPhone */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = B8A4671D1FB186BD007EFB09 /* Build configuration list for PBXNativeTarget "GPhone" */;
+			buildPhases = (
+				B8A466ED1FB186BD007EFB09 /* Sources */,
+				B8A466EE1FB186BD007EFB09 /* Frameworks */,
+				B8A466EF1FB186BD007EFB09 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = GPhone;
+			productName = GPhone;
+			productReference = B8A466F11FB186BD007EFB09 /* GPhone.app */;
+			productType = "com.apple.product-type.application";
+		};
+		B8A467081FB186BD007EFB09 /* GPhoneTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = B8A467201FB186BD007EFB09 /* Build configuration list for PBXNativeTarget "GPhoneTests" */;
+			buildPhases = (
+				B8A467051FB186BD007EFB09 /* Sources */,
+				B8A467061FB186BD007EFB09 /* Frameworks */,
+				B8A467071FB186BD007EFB09 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				B8A4670B1FB186BD007EFB09 /* PBXTargetDependency */,
+			);
+			name = GPhoneTests;
+			productName = GPhoneTests;
+			productReference = B8A467091FB186BD007EFB09 /* GPhoneTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		B8A467131FB186BD007EFB09 /* GPhoneUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = B8A467231FB186BD007EFB09 /* Build configuration list for PBXNativeTarget "GPhoneUITests" */;
+			buildPhases = (
+				B8A467101FB186BD007EFB09 /* Sources */,
+				B8A467111FB186BD007EFB09 /* Frameworks */,
+				B8A467121FB186BD007EFB09 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				B8A467161FB186BD007EFB09 /* PBXTargetDependency */,
+			);
+			name = GPhoneUITests;
+			productName = GPhoneUITests;
+			productReference = B8A467141FB186BD007EFB09 /* GPhoneUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		B8A466E91FB186BD007EFB09 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0910;
+				ORGANIZATIONNAME = "郁兵生";
+				TargetAttributes = {
+					B8A466F01FB186BD007EFB09 = {
+						CreatedOnToolsVersion = 9.1;
+						ProvisioningStyle = Automatic;
+					};
+					B8A467081FB186BD007EFB09 = {
+						CreatedOnToolsVersion = 9.1;
+						ProvisioningStyle = Automatic;
+						TestTargetID = B8A466F01FB186BD007EFB09;
+					};
+					B8A467131FB186BD007EFB09 = {
+						CreatedOnToolsVersion = 9.1;
+						ProvisioningStyle = Automatic;
+						TestTargetID = B8A466F01FB186BD007EFB09;
+					};
+				};
+			};
+			buildConfigurationList = B8A466EC1FB186BD007EFB09 /* Build configuration list for PBXProject "GPhone" */;
+			compatibilityVersion = "Xcode 8.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = B8A466E81FB186BD007EFB09;
+			productRefGroup = B8A466F21FB186BD007EFB09 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				B8A466F01FB186BD007EFB09 /* GPhone */,
+				B8A467081FB186BD007EFB09 /* GPhoneTests */,
+				B8A467131FB186BD007EFB09 /* GPhoneUITests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		B8A466EF1FB186BD007EFB09 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B8A467011FB186BD007EFB09 /* LaunchScreen.storyboard in Resources */,
+				B8A466FE1FB186BD007EFB09 /* Assets.xcassets in Resources */,
+				B8A466FC1FB186BD007EFB09 /* Main.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		B8A467071FB186BD007EFB09 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		B8A467121FB186BD007EFB09 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		B8A466ED1FB186BD007EFB09 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B8A466F91FB186BD007EFB09 /* ViewController.m in Sources */,
+				B8A467041FB186BD007EFB09 /* main.m in Sources */,
+				B8A466F61FB186BD007EFB09 /* AppDelegate.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		B8A467051FB186BD007EFB09 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B8A4670E1FB186BD007EFB09 /* GPhoneTests.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		B8A467101FB186BD007EFB09 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B8A467191FB186BD007EFB09 /* GPhoneUITests.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		B8A4670B1FB186BD007EFB09 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = B8A466F01FB186BD007EFB09 /* GPhone */;
+			targetProxy = B8A4670A1FB186BD007EFB09 /* PBXContainerItemProxy */;
+		};
+		B8A467161FB186BD007EFB09 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = B8A466F01FB186BD007EFB09 /* GPhone */;
+			targetProxy = B8A467151FB186BD007EFB09 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		B8A466FA1FB186BD007EFB09 /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				B8A466FB1FB186BD007EFB09 /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+		B8A466FF1FB186BD007EFB09 /* LaunchScreen.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				B8A467001FB186BD007EFB09 /* Base */,
+			);
+			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		B8A4671B1FB186BD007EFB09 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.1;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+			};
+			name = Debug;
+		};
+		B8A4671C1FB186BD007EFB09 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.1;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = iphoneos;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		B8A4671E1FB186BD007EFB09 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_STYLE = Automatic;
+				INFOPLIST_FILE = GPhone/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.launchhill.GPhone;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		B8A4671F1FB186BD007EFB09 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_STYLE = Automatic;
+				INFOPLIST_FILE = GPhone/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.launchhill.GPhone;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		B8A467211FB186BD007EFB09 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				INFOPLIST_FILE = GPhoneTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.launchhill.GPhoneTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/GPhone.app/GPhone";
+			};
+			name = Debug;
+		};
+		B8A467221FB186BD007EFB09 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				INFOPLIST_FILE = GPhoneTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.launchhill.GPhoneTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/GPhone.app/GPhone";
+			};
+			name = Release;
+		};
+		B8A467241FB186BD007EFB09 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				INFOPLIST_FILE = GPhoneUITests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.launchhill.GPhoneUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = GPhone;
+			};
+			name = Debug;
+		};
+		B8A467251FB186BD007EFB09 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				INFOPLIST_FILE = GPhoneUITests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.launchhill.GPhoneUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = GPhone;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		B8A466EC1FB186BD007EFB09 /* Build configuration list for PBXProject "GPhone" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				B8A4671B1FB186BD007EFB09 /* Debug */,
+				B8A4671C1FB186BD007EFB09 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		B8A4671D1FB186BD007EFB09 /* Build configuration list for PBXNativeTarget "GPhone" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				B8A4671E1FB186BD007EFB09 /* Debug */,
+				B8A4671F1FB186BD007EFB09 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		B8A467201FB186BD007EFB09 /* Build configuration list for PBXNativeTarget "GPhoneTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				B8A467211FB186BD007EFB09 /* Debug */,
+				B8A467221FB186BD007EFB09 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		B8A467231FB186BD007EFB09 /* Build configuration list for PBXNativeTarget "GPhoneUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				B8A467241FB186BD007EFB09 /* Debug */,
+				B8A467251FB186BD007EFB09 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = B8A466E91FB186BD007EFB09 /* Project object */;
+}
