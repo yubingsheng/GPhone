@@ -15,6 +15,7 @@
 		B8A467041FB186BD007EFB09 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = B8A467031FB186BD007EFB09 /* main.m */; };
 		B8A4670E1FB186BD007EFB09 /* GPhoneTests.m in Sources */ = {isa = PBXBuildFile; fileRef = B8A4670D1FB186BD007EFB09 /* GPhoneTests.m */; };
 		B8A467191FB186BD007EFB09 /* GPhoneUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = B8A467181FB186BD007EFB09 /* GPhoneUITests.m */; };
+		BE56D3BBC35B400211E2EB8D /* libPods-GPhone.a in Frameworks */ = {isa = PBXBuildFile; fileRef = EBECBFF2C0BB39B002F661E3 /* libPods-GPhone.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -35,6 +36,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		3A1E102A4EBCB0663EB476DD /* Pods-GPhone.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GPhone.debug.xcconfig"; path = "Pods/Target Support Files/Pods-GPhone/Pods-GPhone.debug.xcconfig"; sourceTree = "<group>"; };
 		B8A466F11FB186BD007EFB09 /* GPhone.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GPhone.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B8A466F41FB186BD007EFB09 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		B8A466F51FB186BD007EFB09 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -51,6 +53,8 @@
 		B8A467141FB186BD007EFB09 /* GPhoneUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = GPhoneUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		B8A467181FB186BD007EFB09 /* GPhoneUITests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GPhoneUITests.m; sourceTree = "<group>"; };
 		B8A4671A1FB186BD007EFB09 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		EBECBFF2C0BB39B002F661E3 /* libPods-GPhone.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-GPhone.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		F1864404B9FEFAD2B7D977ED /* Pods-GPhone.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GPhone.release.xcconfig"; path = "Pods/Target Support Files/Pods-GPhone/Pods-GPhone.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -58,6 +62,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BE56D3BBC35B400211E2EB8D /* libPods-GPhone.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -78,6 +83,23 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		5C19F0F0629CCBBE9AA70ADF /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				3A1E102A4EBCB0663EB476DD /* Pods-GPhone.debug.xcconfig */,
+				F1864404B9FEFAD2B7D977ED /* Pods-GPhone.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
+		87808D8B717C92343929AA91 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				EBECBFF2C0BB39B002F661E3 /* libPods-GPhone.a */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		B8A466E81FB186BD007EFB09 = {
 			isa = PBXGroup;
 			children = (
@@ -85,6 +107,8 @@
 				B8A4670C1FB186BD007EFB09 /* GPhoneTests */,
 				B8A467171FB186BD007EFB09 /* GPhoneUITests */,
 				B8A466F21FB186BD007EFB09 /* Products */,
+				5C19F0F0629CCBBE9AA70ADF /* Pods */,
+				87808D8B717C92343929AA91 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -139,9 +163,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = B8A4671D1FB186BD007EFB09 /* Build configuration list for PBXNativeTarget "GPhone" */;
 			buildPhases = (
+				5C166FEFAFD690BAD19C5DE2 /* [CP] Check Pods Manifest.lock */,
 				B8A466ED1FB186BD007EFB09 /* Sources */,
 				B8A466EE1FB186BD007EFB09 /* Frameworks */,
 				B8A466EF1FB186BD007EFB09 /* Resources */,
+				9AD5BF13B1165C8197DEBA7F /* [CP] Embed Pods Frameworks */,
+				869680F230BECDFF1517A02B /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -259,6 +286,57 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		5C166FEFAFD690BAD19C5DE2 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-GPhone-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		869680F230BECDFF1517A02B /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-GPhone/Pods-GPhone-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		9AD5BF13B1165C8197DEBA7F /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-GPhone/Pods-GPhone-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		B8A466ED1FB186BD007EFB09 /* Sources */ = {
@@ -428,6 +506,7 @@
 		};
 		B8A4671E1FB186BD007EFB09 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 3A1E102A4EBCB0663EB476DD /* Pods-GPhone.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
@@ -441,6 +520,7 @@
 		};
 		B8A4671F1FB186BD007EFB09 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = F1864404B9FEFAD2B7D977ED /* Pods-GPhone.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
