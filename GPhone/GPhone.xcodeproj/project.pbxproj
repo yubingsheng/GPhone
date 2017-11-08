@@ -7,8 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		B8A130FF1FB2BA32004DD6F1 /* BaseNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = B8A130FE1FB2BA32004DD6F1 /* BaseNavigationController.m */; };
 		B8A466F61FB186BD007EFB09 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = B8A466F51FB186BD007EFB09 /* AppDelegate.m */; };
-		B8A466F91FB186BD007EFB09 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B8A466F81FB186BD007EFB09 /* ViewController.m */; };
+		B8A466F91FB186BD007EFB09 /* BaseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B8A466F81FB186BD007EFB09 /* BaseViewController.m */; };
 		B8A466FC1FB186BD007EFB09 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B8A466FA1FB186BD007EFB09 /* Main.storyboard */; };
 		B8A466FE1FB186BD007EFB09 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B8A466FD1FB186BD007EFB09 /* Assets.xcassets */; };
 		B8A467011FB186BD007EFB09 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B8A466FF1FB186BD007EFB09 /* LaunchScreen.storyboard */; };
@@ -37,11 +38,13 @@
 
 /* Begin PBXFileReference section */
 		3A1E102A4EBCB0663EB476DD /* Pods-GPhone.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GPhone.debug.xcconfig"; path = "Pods/Target Support Files/Pods-GPhone/Pods-GPhone.debug.xcconfig"; sourceTree = "<group>"; };
+		B8A130FD1FB2BA32004DD6F1 /* BaseNavigationController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BaseNavigationController.h; sourceTree = "<group>"; };
+		B8A130FE1FB2BA32004DD6F1 /* BaseNavigationController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BaseNavigationController.m; sourceTree = "<group>"; };
 		B8A466F11FB186BD007EFB09 /* GPhone.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GPhone.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B8A466F41FB186BD007EFB09 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		B8A466F51FB186BD007EFB09 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
-		B8A466F71FB186BD007EFB09 /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
-		B8A466F81FB186BD007EFB09 /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
+		B8A466F71FB186BD007EFB09 /* BaseViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BaseViewController.h; sourceTree = "<group>"; };
+		B8A466F81FB186BD007EFB09 /* BaseViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BaseViewController.m; sourceTree = "<group>"; };
 		B8A466FB1FB186BD007EFB09 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		B8A466FD1FB186BD007EFB09 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		B8A467001FB186BD007EFB09 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -100,6 +103,89 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		B8A130F21FB2B859004DD6F1 /* Server */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Server;
+			sourceTree = "<group>";
+		};
+		B8A130F31FB2B86B004DD6F1 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Extensions;
+			sourceTree = "<group>";
+		};
+		B8A130F41FB2B88C004DD6F1 /* Utilities */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Utilities;
+			sourceTree = "<group>";
+		};
+		B8A130F51FB2B8B9004DD6F1 /* APP */ = {
+			isa = PBXGroup;
+			children = (
+				B8A130F81FB2B909004DD6F1 /* Model */,
+				B8A130F71FB2B8F8004DD6F1 /* View */,
+				B8A130F61FB2B8E1004DD6F1 /* ViewController */,
+				B8A130FA1FB2B979004DD6F1 /* Config */,
+				B8A130FC1FB2B9DE004DD6F1 /* Storyboard */,
+			);
+			path = APP;
+			sourceTree = "<group>";
+		};
+		B8A130F61FB2B8E1004DD6F1 /* ViewController */ = {
+			isa = PBXGroup;
+			children = (
+				B8A130F91FB2B948004DD6F1 /* Base */,
+			);
+			path = ViewController;
+			sourceTree = "<group>";
+		};
+		B8A130F71FB2B8F8004DD6F1 /* View */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		B8A130F81FB2B909004DD6F1 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		B8A130F91FB2B948004DD6F1 /* Base */ = {
+			isa = PBXGroup;
+			children = (
+				B8A466F71FB186BD007EFB09 /* BaseViewController.h */,
+				B8A466F81FB186BD007EFB09 /* BaseViewController.m */,
+				B8A130FD1FB2BA32004DD6F1 /* BaseNavigationController.h */,
+				B8A130FE1FB2BA32004DD6F1 /* BaseNavigationController.m */,
+			);
+			path = Base;
+			sourceTree = "<group>";
+		};
+		B8A130FA1FB2B979004DD6F1 /* Config */ = {
+			isa = PBXGroup;
+			children = (
+				B8A467021FB186BD007EFB09 /* Info.plist */,
+			);
+			path = Config;
+			sourceTree = "<group>";
+		};
+		B8A130FC1FB2B9DE004DD6F1 /* Storyboard */ = {
+			isa = PBXGroup;
+			children = (
+				B8A466FA1FB186BD007EFB09 /* Main.storyboard */,
+				B8A466FF1FB186BD007EFB09 /* LaunchScreen.storyboard */,
+			);
+			path = Storyboard;
+			sourceTree = "<group>";
+		};
 		B8A466E81FB186BD007EFB09 = {
 			isa = PBXGroup;
 			children = (
@@ -125,14 +211,13 @@
 		B8A466F31FB186BD007EFB09 /* GPhone */ = {
 			isa = PBXGroup;
 			children = (
+				B8A130F21FB2B859004DD6F1 /* Server */,
+				B8A130F31FB2B86B004DD6F1 /* Extensions */,
+				B8A130F41FB2B88C004DD6F1 /* Utilities */,
+				B8A130F51FB2B8B9004DD6F1 /* APP */,
 				B8A466F41FB186BD007EFB09 /* AppDelegate.h */,
 				B8A466F51FB186BD007EFB09 /* AppDelegate.m */,
-				B8A466F71FB186BD007EFB09 /* ViewController.h */,
-				B8A466F81FB186BD007EFB09 /* ViewController.m */,
-				B8A466FA1FB186BD007EFB09 /* Main.storyboard */,
 				B8A466FD1FB186BD007EFB09 /* Assets.xcassets */,
-				B8A466FF1FB186BD007EFB09 /* LaunchScreen.storyboard */,
-				B8A467021FB186BD007EFB09 /* Info.plist */,
 				B8A467031FB186BD007EFB09 /* main.m */,
 			);
 			path = GPhone;
@@ -226,7 +311,7 @@
 				TargetAttributes = {
 					B8A466F01FB186BD007EFB09 = {
 						CreatedOnToolsVersion = 9.1;
-						ProvisioningStyle = Automatic;
+						ProvisioningStyle = Manual;
 					};
 					B8A467081FB186BD007EFB09 = {
 						CreatedOnToolsVersion = 9.1;
@@ -343,7 +428,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				B8A466F91FB186BD007EFB09 /* ViewController.m in Sources */,
+				B8A130FF1FB2BA32004DD6F1 /* BaseNavigationController.m in Sources */,
+				B8A466F91FB186BD007EFB09 /* BaseViewController.m in Sources */,
 				B8A467041FB186BD007EFB09 /* main.m in Sources */,
 				B8A466F61FB186BD007EFB09 /* AppDelegate.m in Sources */,
 			);
@@ -509,11 +595,14 @@
 			baseConfigurationReference = 3A1E102A4EBCB0663EB476DD /* Pods-GPhone.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_STYLE = Automatic;
+				CODE_SIGN_STYLE = Manual;
+				DEVELOPMENT_TEAM = "";
 				INFOPLIST_FILE = GPhone/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.launchhill.GPhone;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
@@ -523,11 +612,14 @@
 			baseConfigurationReference = F1864404B9FEFAD2B7D977ED /* Pods-GPhone.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_STYLE = Automatic;
+				CODE_SIGN_STYLE = Manual;
+				DEVELOPMENT_TEAM = "";
 				INFOPLIST_FILE = GPhone/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.launchhill.GPhone;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;
