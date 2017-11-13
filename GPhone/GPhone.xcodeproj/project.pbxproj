@@ -172,7 +172,6 @@
 		B8A130FA1FB2B979004DD6F1 /* Config */ = {
 			isa = PBXGroup;
 			children = (
-				B8A467021FB186BD007EFB09 /* Info.plist */,
 			);
 			path = Config;
 			sourceTree = "<group>";
@@ -219,6 +218,7 @@
 				B8A466F51FB186BD007EFB09 /* AppDelegate.m */,
 				B8A466FD1FB186BD007EFB09 /* Assets.xcassets */,
 				B8A467031FB186BD007EFB09 /* main.m */,
+				B8A467021FB186BD007EFB09 /* Info.plist */,
 			);
 			path = GPhone;
 			sourceTree = "<group>";
