@@ -145,6 +145,7 @@
 		B8A467141FB186BD007EFB09 /* GPhoneUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = GPhoneUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		B8A467181FB186BD007EFB09 /* GPhoneUITests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GPhoneUITests.m; sourceTree = "<group>"; };
 		B8A4671A1FB186BD007EFB09 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		B8B5EB6F1FC80EF6006C3A05 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		B8F17EFA1FC7ED780015B376 /* GPhoneCallService.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GPhoneCallService.h; sourceTree = "<group>"; };
 		B8F17EFB1FC7ED780015B376 /* GPhoneCallService.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GPhoneCallService.m; sourceTree = "<group>"; };
 		B8F17F011FC8015D0015B376 /* JSBubbleMessageCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JSBubbleMessageCell.h; sourceTree = "<group>"; };
@@ -223,7 +224,6 @@
 		B8F17F881FC802210015B376 /* MessageViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MessageViewController.m; sourceTree = "<group>"; };
 		B8F17F8A1FC802630015B376 /* MessageModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MessageModel.m; sourceTree = "<group>"; };
 		B8F17F8B1FC802630015B376 /* MessageModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MessageModel.h; sourceTree = "<group>"; };
-		B8F17F8F1FC808E90015B376 /* MediaPlayer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MediaPlayer.framework; path = System/Library/Frameworks/MediaPlayer.framework; sourceTree = SDKROOT; };
 		B8F17F901FC809A00015B376 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		B8F17F911FC809C00015B376 /* libgalaxy25.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libgalaxy25.a; sourceTree = "<group>"; };
 		B8F17F931FC80A9A0015B376 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
@@ -282,9 +282,9 @@
 		87808D8B717C92343929AA91 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				B8B5EB6F1FC80EF6006C3A05 /* AVFoundation.framework */,
 				B8F17F931FC80A9A0015B376 /* AudioToolbox.framework */,
 				B8F17F901FC809A00015B376 /* Foundation.framework */,
-				B8F17F8F1FC808E90015B376 /* MediaPlayer.framework */,
 				B845C92B1FC69C1F0022E6E5 /* libgalaxy1.a */,
 				B845C92F1FC69C200022E6E5 /* libgalaxy3.a */,
 				B845C9331FC69C200022E6E5 /* libgalaxy4.a */,
@@ -980,7 +980,7 @@
 				CODE_SIGN_STYLE = Manual;
 				DEVELOPMENT_TEAM = "";
 				INFOPLIST_FILE = GPhone/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1001,7 +1001,7 @@
 				CODE_SIGN_STYLE = Manual;
 				DEVELOPMENT_TEAM = "";
 				INFOPLIST_FILE = GPhone/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
