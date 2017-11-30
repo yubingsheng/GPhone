@@ -92,9 +92,6 @@
 		B8F17F8C1FC802630015B376 /* MessageModel.m in Sources */ = {isa = PBXBuildFile; fileRef = B8F17F8A1FC802630015B376 /* MessageModel.m */; };
 		B8F17F921FC809C00015B376 /* libgalaxy25.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B8F17F911FC809C00015B376 /* libgalaxy25.a */; };
 		BE56D3BBC35B400211E2EB8D /* libPods-GPhone.a in Frameworks */ = {isa = PBXBuildFile; fileRef = EBECBFF2C0BB39B002F661E3 /* libPods-GPhone.a */; };
-		D6E839EE1FC923E300D7E6C7 /* GContactListVC.m in Sources */ = {isa = PBXBuildFile; fileRef = D6E839EC1FC923E200D7E6C7 /* GContactListVC.m */; };
-		D6E839F41FC923F100D7E6C7 /* GContact.m in Sources */ = {isa = PBXBuildFile; fileRef = D6E839F11FC923F100D7E6C7 /* GContact.m */; };
-		D6E839F51FC923F100D7E6C7 /* GContactsManager.m in Sources */ = {isa = PBXBuildFile; fileRef = D6E839F31FC923F100D7E6C7 /* GContactsManager.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -230,12 +227,6 @@
 		B8F17F901FC809A00015B376 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		B8F17F911FC809C00015B376 /* libgalaxy25.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libgalaxy25.a; sourceTree = "<group>"; };
 		B8F17F931FC80A9A0015B376 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
-		D6E839EC1FC923E200D7E6C7 /* GContactListVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GContactListVC.m; sourceTree = "<group>"; };
-		D6E839ED1FC923E300D7E6C7 /* GContactListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GContactListViewController.h; sourceTree = "<group>"; };
-		D6E839F01FC923F100D7E6C7 /* GContact.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GContact.h; sourceTree = "<group>"; };
-		D6E839F11FC923F100D7E6C7 /* GContact.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GContact.m; sourceTree = "<group>"; };
-		D6E839F21FC923F100D7E6C7 /* GContactsManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GContactsManager.h; sourceTree = "<group>"; };
-		D6E839F31FC923F100D7E6C7 /* GContactsManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GContactsManager.m; sourceTree = "<group>"; };
 		EBECBFF2C0BB39B002F661E3 /* libPods-GPhone.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-GPhone.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		F1864404B9FEFAD2B7D977ED /* Pods-GPhone.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GPhone.release.xcconfig"; path = "Pods/Target Support Files/Pods-GPhone/Pods-GPhone.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -354,9 +345,6 @@
 				B8F17F851FC801E20015B376 /* MessageListViewController.m */,
 				B8F17F871FC802210015B376 /* MessageViewController.h */,
 				B8F17F881FC802210015B376 /* MessageViewController.m */,
-				D6E839ED1FC923E300D7E6C7 /* GContactListViewController.h */,
-				D6E839EC1FC923E200D7E6C7 /* GContactListVC.m */,
-				D6E839EF1FC923F100D7E6C7 /* ContactsManager */,
 				B8A130FA1FB2B979004DD6F1 /* Config */,
 				B8A130FC1FB2B9DE004DD6F1 /* Storyboard */,
 			);
@@ -571,17 +559,6 @@
 				B8F17F411FC8015D0015B376 /* messageSent.aiff */,
 			);
 			path = Sounds;
-			sourceTree = "<group>";
-		};
-		D6E839EF1FC923F100D7E6C7 /* ContactsManager */ = {
-			isa = PBXGroup;
-			children = (
-				D6E839F01FC923F100D7E6C7 /* GContact.h */,
-				D6E839F11FC923F100D7E6C7 /* GContact.m */,
-				D6E839F21FC923F100D7E6C7 /* GContactsManager.h */,
-				D6E839F31FC923F100D7E6C7 /* GContactsManager.m */,
-			);
-			path = ContactsManager;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -823,7 +800,6 @@
 				B8F17F8C1FC802630015B376 /* MessageModel.m in Sources */,
 				B8A466F91FB186BD007EFB09 /* BaseViewController.m in Sources */,
 				B8A467041FB186BD007EFB09 /* main.m in Sources */,
-				D6E839EE1FC923E300D7E6C7 /* GContactListVC.m in Sources */,
 				B8F17F511FC8015D0015B376 /* NSString+JSMessagesView.m in Sources */,
 				B8F17F831FC8015D0015B376 /* UIView+AnimationOptionsForCurve.m in Sources */,
 				B8F17F4A1FC8015D0015B376 /* JSBubbleMessageCell.m in Sources */,
@@ -837,8 +813,6 @@
 				B8F17F4D1FC8015D0015B376 /* JSMessageInputView.m in Sources */,
 				B8F17F501FC8015D0015B376 /* JSMessageTextView.m in Sources */,
 				B8F17F821FC8015D0015B376 /* UIImage+JSMessagesView.m in Sources */,
-				D6E839F51FC923F100D7E6C7 /* GContactsManager.m in Sources */,
-				D6E839F41FC923F100D7E6C7 /* GContact.m in Sources */,
 				B8A466F61FB186BD007EFB09 /* AppDelegate.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
