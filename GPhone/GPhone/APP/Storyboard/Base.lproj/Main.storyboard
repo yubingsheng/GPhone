@@ -62,10 +62,21 @@
         <!--短信-->
         <scene sceneID="JpU-7d-KpF">
             <objects>
-                <viewController id="uMn-GM-Tog" customClass="MessageViewController" sceneMemberID="viewController">
+                <viewController id="uMn-GM-Tog" customClass="MessageListViewController" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="BnZ-y5-CpU">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fc7-HX-AFa">
+                                <rect key="frame" x="156" y="204" width="62" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" red="0.1019607843" green="0.1019607843" blue="0.10980392160000001" alpha="1" colorSpace="calibratedRGB"/>
+                                <state key="normal" title="message"/>
+                                <connections>
+                                    <segue destination="x6E-ew-mFb" kind="show" id="3eB-2w-vM1"/>
+                                </connections>
+                            </button>
+                        </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <viewLayoutGuide key="safeArea" id="NjG-FO-uqE"/>
                     </view>
@@ -74,6 +85,21 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Yxp-R8-8A3" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="417" y="397"/>
+        </scene>
+        <!--Message View Controller-->
+        <scene sceneID="Iiu-lJ-zTk">
+            <objects>
+                <viewController id="x6E-ew-mFb" customClass="MessageViewController" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="lhK-98-Tac">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <viewLayoutGuide key="safeArea" id="pEn-mw-edZ"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="x4s-sL-7Hd" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1282" y="396"/>
         </scene>
         <!--Tab Bar Controller-->
         <scene sceneID="DnW-zI-9uV">

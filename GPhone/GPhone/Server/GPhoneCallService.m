@@ -6,10 +6,23 @@
 //  Copyright © 2017年 郁兵生. All rights reserved.
 //
 
-#import "GPhoneCallService.h"
-#import "galaxy_controller.h"
+#define STRONGSELF (__bridge GPhoneCallService *)inUserData
 
-@implementation GPhoneCallService
+#import "CommonCrypto/CommonDigest.h"
+#import "GPhoneCallService.h"
+#import "galaxy.h"
+
+@implementation GPhoneCallService {
+    NSTimer *timerSessionInvite;
+    NSTimer *timerCallSetup;
+    
+    int loginSeqId;
+    unsigned int relaySN;
+    NSString *pushToken;
+    NSString *authCode;
+    NSString *gnonce;
+    unsigned char callMD5[16];
+}
 
 +(GPhoneCallService *)sharedManager{
     static dispatch_once_t predicate;
@@ -23,11 +36,10 @@
 - (void) initGalaxy {
     if(!galaxy_init(SessionConfirm_Callback, (__bridge void *)(self),
                     0, 0,
-                    0,0, CallAlerting_Callback, CallAnswer_Callback, CallReleased_Callback,(__bridge void *)(self),
+                    CallTrying_Callback,0, CallAlerting_Callback, CallAnswer_Callback, CallReleased_Callback,(__bridge void *)(self),
                     0,0,0,0,0,
                     0,0,0,0,
-                    0,0,0,0)) {
-        
+                    RelayLoginRsp_Callback,0,(__bridge void *)(self))) {
     }
 }
 #pragma mark - API
@@ -37,12 +49,32 @@
 
 #pragma mark - Delegate
 
+static void RelayLoginRsp_Callback(void *inUserData, unsigned int relaySN, int seqId, int errorCode)
+{
+    [STRONGSELF handleRelayLoginRspWithRelaySN:relaySN SeqId:seqId ErrorCode:errorCode];
+}
+
+- (void) handleRelayLoginRspWithRelaySN: (unsigned int)relaySN SeqId: (int)seqId ErrorCode: (int)errorCode
+{
+    NSString *result;
+    if(errorCode == 0) {
+        //实际应用中，登录成功后，需要将relay、pushToken和authCode写入flash保存，APP启动时，首先读取已经保存的这些数据
+        result = @"relay login success";
+    }
+    else if(errorCode == 3) result = @"gmobile登录失败，请先弹出SIM卡再重新尝试登陆";
+    else if(errorCode == 4) result = @"gmobile登录失败，gmobile不在线";
+    else result = [NSString stringWithFormat: @"relay login failed with error code %d", errorCode];
+    
+    
+    [self performSelectorOnMainThread:@selector(displayText:) withObject:result waitUntilDone:NO];
+}
+
 static void SessionConfirm_Callback(void *inUserData, unsigned int relaySN, int menuSupport, int chatSupport, int callSupport, const char *nonce, int errorCode) {
-    GPhoneCallService *GPService = (__bridge GPhoneCallService *)inUserData;
-    [GPService handleSessionConfirmCallBackWithRelaySN:relaySN MenuSupport:menuSupport ChatSupport:chatSupport CallSupport:callSupport Nonce:nonce ErrorCode:errorCode];
+    [STRONGSELF handleSessionConfirmCallBackWithRelaySN:relaySN MenuSupport:menuSupport ChatSupport:chatSupport CallSupport:callSupport Nonce:nonce ErrorCode:errorCode];
 }
 
 - (void) handleSessionConfirmCallBackWithRelaySN: (unsigned int)relaySN MenuSupport: (int)menuSupport ChatSupport: (int)chatSupport CallSupport: (int)callSupport Nonce: (const char*)nonce ErrorCode: (int)errorCode {
+    [timerSessionInvite invalidate];
     if(errorCode) {
         NSLog(@"SessionConfirm got with error code %d", errorCode);
         return;
@@ -51,14 +83,35 @@ static void SessionConfirm_Callback(void *inUserData, unsigned int relaySN, int 
         NSLog(@"SessionConfirm got without call support");
         return;
     }
-    //TODO 如果返回nonce，则需要计算auth并填入galaxy_callSetup的参数中。
-    galaxy_callSetup(0, 0);
+    
+    if(nonce) {
+        gnonce = [[NSString alloc] initWithCString:nonce encoding: NSASCIIStringEncoding];
+    }
+    
+    if(authCode && gnonce) {
+        NSString *datas = [authCode stringByAppendingString:gnonce];
+        const char *data = [datas UTF8String];
+        CC_MD5(data, strlen(data), callMD5);
+        galaxy_callSetup(0, callMD5, 0);
+    }
+    else galaxy_callSetup(0, 0, 0);
+    
+    [self performSelectorOnMainThread:@selector(startCallSetupTimer) withObject:nil waitUntilDone:NO];
     
 }
 
+static void CallTrying_Callback(void *inUserData)
+{
+    [STRONGSELF handleCallTryingCallBack];
+}
+
+- (void) handleCallTryingCallBack
+{
+    [timerCallSetup invalidate];
+}
+
 static void CallAlerting_Callback(void *inUserData) {
-    GPhoneCallService *GPService = (__bridge GPhoneCallService *)inUserData;
-    [GPService handleCallAlertingCallBack];
+    [STRONGSELF handleCallAlertingCallBack];
 }
 
 - (void) handleCallAlertingCallBack {
@@ -70,8 +123,7 @@ static void CallAlerting_Callback(void *inUserData) {
 }
 
 static void CallAnswer_Callback(void *inUserData) {
-    GPhoneCallService *GPService = (__bridge GPhoneCallService *)inUserData;
-    [GPService handleCallAnswerCallBack];
+    [STRONGSELF handleCallAnswerCallBack];
 }
 
 - (void) handleCallAnswerCallBack {
@@ -83,8 +135,7 @@ static void CallAnswer_Callback(void *inUserData) {
 }
 
 static void CallReleased_Callback(void *inUserData, int errorCode) {
-    GPhoneCallService *GPService = (__bridge GPhoneCallService *)inUserData;
-    [GPService handleCallReleasedCallBackWithErrorCode:errorCode];
+    [STRONGSELF handleCallReleasedCallBackWithErrorCode:errorCode];
 }
 
 - (void) handleCallReleasedCallBackWithErrorCode: (int)errorCode {

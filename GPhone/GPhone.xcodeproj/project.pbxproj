@@ -7,21 +7,20 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		B845C9361FC69C200022E6E5 /* libgalaxy24.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B845C9291FC69C1F0022E6E5 /* libgalaxy24.a */; };
-		B845C9371FC69C200022E6E5 /* libgalaxy22.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B845C92A1FC69C1F0022E6E5 /* libgalaxy22.a */; };
-		B845C9381FC69C200022E6E5 /* libgalaxy1.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B845C92B1FC69C1F0022E6E5 /* libgalaxy1.a */; };
-		B845C9391FC69C200022E6E5 /* libgalaxy26.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B845C92C1FC69C1F0022E6E5 /* libgalaxy26.a */; };
-		B845C93B1FC69C200022E6E5 /* libgalaxy51.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B845C92E1FC69C200022E6E5 /* libgalaxy51.a */; };
-		B845C93C1FC69C200022E6E5 /* libgalaxy3.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B845C92F1FC69C200022E6E5 /* libgalaxy3.a */; };
-		B845C93D1FC69C200022E6E5 /* libgalaxy55.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B845C9301FC69C200022E6E5 /* libgalaxy55.a */; };
-		B845C93E1FC69C200022E6E5 /* libgalaxy21.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B845C9311FC69C200022E6E5 /* libgalaxy21.a */; };
-		B845C93F1FC69C200022E6E5 /* libgalaxy23.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B845C9321FC69C200022E6E5 /* libgalaxy23.a */; };
-		B845C9401FC69C200022E6E5 /* libgalaxy4.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B845C9331FC69C200022E6E5 /* libgalaxy4.a */; };
-		B845C9411FC69C200022E6E5 /* libgalaxy27.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B845C9341FC69C200022E6E5 /* libgalaxy27.a */; };
-		B845C9421FC69C200022E6E5 /* libgalaxy6.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B845C9351FC69C200022E6E5 /* libgalaxy6.a */; };
 		B89A77DE1FD5259E000A079A /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B8B5EB6F1FC80EF6006C3A05 /* AVFoundation.framework */; };
 		B89A77DF1FD525A0000A079A /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B8F17F931FC80A9A0015B376 /* AudioToolbox.framework */; };
 		B89A77E11FD525A9000A079A /* PushKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B89A77E01FD525A7000A079A /* PushKit.framework */; };
+		B89A77F11FD52692000A079A /* libgalaxy1.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B89A77E61FD52692000A079A /* libgalaxy1.a */; };
+		B89A77F21FD52692000A079A /* libgalaxy21.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B89A77E71FD52692000A079A /* libgalaxy21.a */; };
+		B89A77F31FD52692000A079A /* libgalaxy22.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B89A77E81FD52692000A079A /* libgalaxy22.a */; };
+		B89A77F41FD52692000A079A /* libgalaxy23.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B89A77E91FD52692000A079A /* libgalaxy23.a */; };
+		B89A77F51FD52692000A079A /* libgalaxy24.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B89A77EA1FD52692000A079A /* libgalaxy24.a */; };
+		B89A77F61FD52692000A079A /* libgalaxy25.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B89A77EB1FD52692000A079A /* libgalaxy25.a */; };
+		B89A77F71FD52692000A079A /* libgalaxy3.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B89A77EC1FD52692000A079A /* libgalaxy3.a */; };
+		B89A77F81FD52692000A079A /* libgalaxy4.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B89A77ED1FD52692000A079A /* libgalaxy4.a */; };
+		B89A77F91FD52692000A079A /* libgalaxy51.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B89A77EE1FD52692000A079A /* libgalaxy51.a */; };
+		B89A77FA1FD52692000A079A /* libgalaxy55.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B89A77EF1FD52692000A079A /* libgalaxy55.a */; };
+		B89A77FB1FD52692000A079A /* libgalaxy6.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B89A77F01FD52692000A079A /* libgalaxy6.a */; };
 		B8A130FF1FB2BA32004DD6F1 /* BaseNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = B8A130FE1FB2BA32004DD6F1 /* BaseNavigationController.m */; };
 		B8A466F61FB186BD007EFB09 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = B8A466F51FB186BD007EFB09 /* AppDelegate.m */; };
 		B8A466F91FB186BD007EFB09 /* BaseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B8A466F81FB186BD007EFB09 /* BaseViewController.m */; };
@@ -93,7 +92,6 @@
 		B8F17F861FC801E20015B376 /* MessageListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B8F17F851FC801E20015B376 /* MessageListViewController.m */; };
 		B8F17F891FC802210015B376 /* MessageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B8F17F881FC802210015B376 /* MessageViewController.m */; };
 		B8F17F8C1FC802630015B376 /* MessageModel.m in Sources */ = {isa = PBXBuildFile; fileRef = B8F17F8A1FC802630015B376 /* MessageModel.m */; };
-		B8F17F921FC809C00015B376 /* libgalaxy25.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B8F17F911FC809C00015B376 /* libgalaxy25.a */; };
 		BE56D3BBC35B400211E2EB8D /* libPods-GPhone.a in Frameworks */ = {isa = PBXBuildFile; fileRef = EBECBFF2C0BB39B002F661E3 /* libPods-GPhone.a */; };
 /* End PBXBuildFile section */
 
@@ -116,21 +114,20 @@
 
 /* Begin PBXFileReference section */
 		3A1E102A4EBCB0663EB476DD /* Pods-GPhone.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GPhone.debug.xcconfig"; path = "Pods/Target Support Files/Pods-GPhone/Pods-GPhone.debug.xcconfig"; sourceTree = "<group>"; };
-		B845C9291FC69C1F0022E6E5 /* libgalaxy24.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libgalaxy24.a; sourceTree = "<group>"; };
-		B845C92A1FC69C1F0022E6E5 /* libgalaxy22.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libgalaxy22.a; sourceTree = "<group>"; };
-		B845C92B1FC69C1F0022E6E5 /* libgalaxy1.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libgalaxy1.a; sourceTree = "<group>"; };
-		B845C92C1FC69C1F0022E6E5 /* libgalaxy26.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libgalaxy26.a; sourceTree = "<group>"; };
-		B845C92E1FC69C200022E6E5 /* libgalaxy51.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libgalaxy51.a; sourceTree = "<group>"; };
-		B845C92F1FC69C200022E6E5 /* libgalaxy3.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libgalaxy3.a; sourceTree = "<group>"; };
-		B845C9301FC69C200022E6E5 /* libgalaxy55.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libgalaxy55.a; sourceTree = "<group>"; };
-		B845C9311FC69C200022E6E5 /* libgalaxy21.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libgalaxy21.a; sourceTree = "<group>"; };
-		B845C9321FC69C200022E6E5 /* libgalaxy23.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libgalaxy23.a; sourceTree = "<group>"; };
-		B845C9331FC69C200022E6E5 /* libgalaxy4.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libgalaxy4.a; sourceTree = "<group>"; };
-		B845C9341FC69C200022E6E5 /* libgalaxy27.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libgalaxy27.a; sourceTree = "<group>"; };
-		B845C9351FC69C200022E6E5 /* libgalaxy6.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libgalaxy6.a; sourceTree = "<group>"; };
-		B845C9441FC69C340022E6E5 /* brook.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = brook.h; sourceTree = "<group>"; };
-		B845C9451FC69C340022E6E5 /* galaxy_controller.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = galaxy_controller.h; sourceTree = "<group>"; };
 		B89A77E01FD525A7000A079A /* PushKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = PushKit.framework; path = System/Library/Frameworks/PushKit.framework; sourceTree = SDKROOT; };
+		B89A77E31FD52650000A079A /* brook.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = brook.h; sourceTree = "<group>"; };
+		B89A77E41FD52650000A079A /* galaxy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = galaxy.h; sourceTree = "<group>"; };
+		B89A77E61FD52692000A079A /* libgalaxy1.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libgalaxy1.a; sourceTree = "<group>"; };
+		B89A77E71FD52692000A079A /* libgalaxy21.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libgalaxy21.a; sourceTree = "<group>"; };
+		B89A77E81FD52692000A079A /* libgalaxy22.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libgalaxy22.a; sourceTree = "<group>"; };
+		B89A77E91FD52692000A079A /* libgalaxy23.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libgalaxy23.a; sourceTree = "<group>"; };
+		B89A77EA1FD52692000A079A /* libgalaxy24.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libgalaxy24.a; sourceTree = "<group>"; };
+		B89A77EB1FD52692000A079A /* libgalaxy25.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libgalaxy25.a; sourceTree = "<group>"; };
+		B89A77EC1FD52692000A079A /* libgalaxy3.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libgalaxy3.a; sourceTree = "<group>"; };
+		B89A77ED1FD52692000A079A /* libgalaxy4.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libgalaxy4.a; sourceTree = "<group>"; };
+		B89A77EE1FD52692000A079A /* libgalaxy51.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libgalaxy51.a; sourceTree = "<group>"; };
+		B89A77EF1FD52692000A079A /* libgalaxy55.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libgalaxy55.a; sourceTree = "<group>"; };
+		B89A77F01FD52692000A079A /* libgalaxy6.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libgalaxy6.a; sourceTree = "<group>"; };
 		B8A130FD1FB2BA32004DD6F1 /* BaseNavigationController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BaseNavigationController.h; sourceTree = "<group>"; };
 		B8A130FE1FB2BA32004DD6F1 /* BaseNavigationController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BaseNavigationController.m; sourceTree = "<group>"; };
 		B8A466F11FB186BD007EFB09 /* GPhone.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GPhone.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -229,7 +226,6 @@
 		B8F17F8A1FC802630015B376 /* MessageModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MessageModel.m; sourceTree = "<group>"; };
 		B8F17F8B1FC802630015B376 /* MessageModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MessageModel.h; sourceTree = "<group>"; };
 		B8F17F901FC809A00015B376 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
-		B8F17F911FC809C00015B376 /* libgalaxy25.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libgalaxy25.a; sourceTree = "<group>"; };
 		B8F17F931FC80A9A0015B376 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
 		EBECBFF2C0BB39B002F661E3 /* libPods-GPhone.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-GPhone.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		F1864404B9FEFAD2B7D977ED /* Pods-GPhone.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GPhone.release.xcconfig"; path = "Pods/Target Support Files/Pods-GPhone/Pods-GPhone.release.xcconfig"; sourceTree = "<group>"; };
@@ -240,23 +236,21 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				B845C93E1FC69C200022E6E5 /* libgalaxy21.a in Frameworks */,
-				B845C9391FC69C200022E6E5 /* libgalaxy26.a in Frameworks */,
-				B845C93D1FC69C200022E6E5 /* libgalaxy55.a in Frameworks */,
+				B89A77FA1FD52692000A079A /* libgalaxy55.a in Frameworks */,
+				B89A77F91FD52692000A079A /* libgalaxy51.a in Frameworks */,
+				B89A77F71FD52692000A079A /* libgalaxy3.a in Frameworks */,
 				BE56D3BBC35B400211E2EB8D /* libPods-GPhone.a in Frameworks */,
-				B845C9381FC69C200022E6E5 /* libgalaxy1.a in Frameworks */,
-				B845C9411FC69C200022E6E5 /* libgalaxy27.a in Frameworks */,
-				B8F17F921FC809C00015B376 /* libgalaxy25.a in Frameworks */,
-				B845C93C1FC69C200022E6E5 /* libgalaxy3.a in Frameworks */,
-				B845C9371FC69C200022E6E5 /* libgalaxy22.a in Frameworks */,
-				B845C9421FC69C200022E6E5 /* libgalaxy6.a in Frameworks */,
+				B89A77F81FD52692000A079A /* libgalaxy4.a in Frameworks */,
+				B89A77F41FD52692000A079A /* libgalaxy23.a in Frameworks */,
+				B89A77F51FD52692000A079A /* libgalaxy24.a in Frameworks */,
 				B89A77DF1FD525A0000A079A /* AudioToolbox.framework in Frameworks */,
 				B89A77E11FD525A9000A079A /* PushKit.framework in Frameworks */,
 				B89A77DE1FD5259E000A079A /* AVFoundation.framework in Frameworks */,
-				B845C9401FC69C200022E6E5 /* libgalaxy4.a in Frameworks */,
-				B845C93B1FC69C200022E6E5 /* libgalaxy51.a in Frameworks */,
-				B845C9361FC69C200022E6E5 /* libgalaxy24.a in Frameworks */,
-				B845C93F1FC69C200022E6E5 /* libgalaxy23.a in Frameworks */,
+				B89A77F21FD52692000A079A /* libgalaxy21.a in Frameworks */,
+				B89A77FB1FD52692000A079A /* libgalaxy6.a in Frameworks */,
+				B89A77F31FD52692000A079A /* libgalaxy22.a in Frameworks */,
+				B89A77F61FD52692000A079A /* libgalaxy25.a in Frameworks */,
+				B89A77F11FD52692000A079A /* libgalaxy1.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -293,31 +287,36 @@
 				B8B5EB6F1FC80EF6006C3A05 /* AVFoundation.framework */,
 				B8F17F931FC80A9A0015B376 /* AudioToolbox.framework */,
 				B8F17F901FC809A00015B376 /* Foundation.framework */,
-				B845C92B1FC69C1F0022E6E5 /* libgalaxy1.a */,
-				B845C92F1FC69C200022E6E5 /* libgalaxy3.a */,
-				B845C9331FC69C200022E6E5 /* libgalaxy4.a */,
-				B845C9351FC69C200022E6E5 /* libgalaxy6.a */,
-				B8F17F911FC809C00015B376 /* libgalaxy25.a */,
-				B845C9311FC69C200022E6E5 /* libgalaxy21.a */,
-				B845C92A1FC69C1F0022E6E5 /* libgalaxy22.a */,
-				B845C9321FC69C200022E6E5 /* libgalaxy23.a */,
-				B845C9291FC69C1F0022E6E5 /* libgalaxy24.a */,
-				B845C92C1FC69C1F0022E6E5 /* libgalaxy26.a */,
-				B845C9341FC69C200022E6E5 /* libgalaxy27.a */,
-				B845C92E1FC69C200022E6E5 /* libgalaxy51.a */,
-				B845C9301FC69C200022E6E5 /* libgalaxy55.a */,
 				EBECBFF2C0BB39B002F661E3 /* libPods-GPhone.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
-		B845C9431FC69C340022E6E5 /* include */ = {
+		B89A77E21FD52650000A079A /* include */ = {
 			isa = PBXGroup;
 			children = (
-				B845C9441FC69C340022E6E5 /* brook.h */,
-				B845C9451FC69C340022E6E5 /* galaxy_controller.h */,
+				B89A77E31FD52650000A079A /* brook.h */,
+				B89A77E41FD52650000A079A /* galaxy.h */,
 			);
 			path = include;
+			sourceTree = "<group>";
+		};
+		B89A77E51FD52692000A079A /* lib */ = {
+			isa = PBXGroup;
+			children = (
+				B89A77E61FD52692000A079A /* libgalaxy1.a */,
+				B89A77E71FD52692000A079A /* libgalaxy21.a */,
+				B89A77E81FD52692000A079A /* libgalaxy22.a */,
+				B89A77E91FD52692000A079A /* libgalaxy23.a */,
+				B89A77EA1FD52692000A079A /* libgalaxy24.a */,
+				B89A77EB1FD52692000A079A /* libgalaxy25.a */,
+				B89A77EC1FD52692000A079A /* libgalaxy3.a */,
+				B89A77ED1FD52692000A079A /* libgalaxy4.a */,
+				B89A77EE1FD52692000A079A /* libgalaxy51.a */,
+				B89A77EF1FD52692000A079A /* libgalaxy55.a */,
+				B89A77F01FD52692000A079A /* libgalaxy6.a */,
+			);
+			path = lib;
 			sourceTree = "<group>";
 		};
 		B8A130F21FB2B859004DD6F1 /* Server */ = {
@@ -436,7 +435,8 @@
 		B8A466F31FB186BD007EFB09 /* GPhone */ = {
 			isa = PBXGroup;
 			children = (
-				B845C9431FC69C340022E6E5 /* include */,
+				B89A77E51FD52692000A079A /* lib */,
+				B89A77E21FD52650000A079A /* include */,
 				B8A130F21FB2B859004DD6F1 /* Server */,
 				B8A130F31FB2B86B004DD6F1 /* Extensions */,
 				B8A130F41FB2B88C004DD6F1 /* Utilities */,
@@ -993,6 +993,7 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)",
+					"$(PROJECT_DIR)/GPhone/lib",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.launchhill.GPhone;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -1014,6 +1015,7 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)",
+					"$(PROJECT_DIR)/GPhone/lib",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.launchhill.GPhone;
 				PRODUCT_NAME = "$(TARGET_NAME)";

@@ -5,6 +5,7 @@
 extern "C" {
 #endif
 
+//本结构目前不用
 typedef struct GMenu {
 	char *menuLevel;
 	char *contentType;
@@ -23,7 +24,7 @@ typedef struct GMenu {
    relaySN：被选中的relay的序列号。后续的galaxy_callSetup()函数调用时，auth参数应当根据此relaySN对应的值来产生，具体参考galaxy_callSetup()的说明。
    menuSupport：目前忽略此参数。
    chatSupport：目前忽略此参数。
-   callSupport：如果此参数值为0，APP应当提示用户“被叫号码不支持语音呼叫”。errorCode不为0时，此参数值无意义。
+   callSupport：如果此参数值为0，APP应当提示用户“被叫号码不支持语音呼叫”并结束本次呼叫。errorCode不为0时，此参数值无意义。
    nonce：如果此指针值不为NULL，APP在后续调用的galaxy_callSetup()函数中，必须设置auth值。errorCode不为0时，此参数值无意义。
    errorCode：errorCode不等于0时，表示sessionInvite失败，APP应当提示用户“暂时无法发起呼叫”并结束后续流程。errorCode的取值参看MCC01协议的Mcc01SessionErrorCode。
 */
@@ -32,7 +33,7 @@ typedef void (*MenuRsp)(void *inUserData, const GMenu *gmenu, int gmenuCount, in
 typedef void (*CallNotify)(void *inUserData);
 /*
    参数解释：
-   errorCode：参看MCC01协议的Mcc01CallErrorCode
+   errorCode：参看MCC01协议的Mcc01CallErrorCode。当返回的errorCode为authFailed时，APP要提示用户删除对应的gmobile重新添加（即重新执行galaxy_relayLoginReq()）
 */
 typedef void (*CallReleased)(void *inUserData, int errorCode);
 
@@ -65,7 +66,7 @@ typedef void (*MessageNonceRsp)(void *inUserData, unsigned int relaySN, int mess
    参数解释：
    relaySN：等于galaxy_messageSubmit()调用时填入的relaySN。
    messageId：等于galaxy_messageSubmit()调用时填入的messageId。
-   errorCode：参看MCC01协议的Mcc01MessageSubmitErrorCode。
+   errorCode：参看MCC01协议的Mcc01MessageSubmitErrorCode。当返回的errorCode为authFailed时，APP要提示用户删除对应的gmobile重新添加（即重新执行galaxy_relayLoginReq()
 */
 typedef void (*MessageSubmitAck)(void *inUserData, unsigned int relaySN, int messageId, int errorCode);
 /*
@@ -79,19 +80,22 @@ typedef void (*MessageDeliver)(void *inUserData, unsigned int relaySN, int messa
    relaySN：等于galaxy_relayLoginReq()调用时填入的relaySN。
    errorCode：参看MCC01协议的Mcc01RelayLoginErrorCode。
 */
-typedef void (*RelayLoginRsp)(void *inUserData, unsigned int relaySN, int errorCode);
+typedef void (*RelayLoginRsp)(void *inUserData, unsigned int relaySN, int seqId, int errorCode);
 /*
    参数解释：
    relaySN：等于galaxy_relayStatusReq()调用时填入的relaySN。
-   status：参看MCC01协议的Mcc01RelayStatus。
+   networkOK: 此relay的网络连接是否正常。
+   signalStrength: 对于gmobile，指无线信号强度，0~5,0指无信号，5指最强信号。
+   //relayFirmwareUpdateStatus：参看MCC01协议的Mcc01RelayFirmwareUpdateStatus
 */
-typedef void (*RelayStatusRsp)(void *inUserData, unsigned int relaySN, int status);
+//typedef void (*RelayStatusRsp)(void *inUserData, unsigned int relaySN, int networkOK, int signalStrength, int relayFirmwareUpdateStatus);
+typedef void (*RelayStatusRsp)(void *inUserData, unsigned int relaySN, int networkOK, int signalStrength);
 /*
    参数解释：
    relaySN：等于galaxy_relayFirmwareUpdateReq()调用时填入的relaySN。
    result：参看MCC01协议的Mcc01RelayFirmwareUpdateResult。
 */
-typedef void (*RelayFirmwareUpdateRsp)(void *inUserData, unsigned int relaySN, int result);
+//typedef void (*RelayFirmwareUpdateRsp)(void *inUserData, unsigned int relaySN, int result);
 
 //set myRelaySN to 0 when no my relay
 int send_mcc01_sessionInvite(const char *calledNumber, const char *callingNumber, const char *callingName, int callingNameSize, const char *userInfo, int userInfoSize, unsigned int myRelaySN);
@@ -108,9 +112,9 @@ int send_mcc01_messageNonceReq(unsigned int relaySN, int messageId);
 //auth fixed to 16byte
 int send_mcc01_messageSubmit(unsigned int relaySN, int messageId, const unsigned char *auth, const char *calledNumber, const char *callingNumber, const char *content, int contentSize);
 
-int send_mcc01_relayLoginReq(unsigned int relaySN, int phoneType, const char *pushToken, const char *authCode);
+int send_mcc01_relayLoginReq(unsigned int relaySN, int seqId, int phoneType, const char *pushToken, const char *authCode);
 int send_mcc01_relayStatusReq(unsigned int relaySN);
-int send_mcc01_relayFirmwareUpdateReq(unsigned int relaySN);
+//int send_mcc01_relayFirmwareUpdateReq(unsigned int relaySN);
 #ifdef __cplusplus
 }
 #endif
