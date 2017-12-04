@@ -19,6 +19,9 @@
 		B845C9401FC69C200022E6E5 /* libgalaxy4.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B845C9331FC69C200022E6E5 /* libgalaxy4.a */; };
 		B845C9411FC69C200022E6E5 /* libgalaxy27.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B845C9341FC69C200022E6E5 /* libgalaxy27.a */; };
 		B845C9421FC69C200022E6E5 /* libgalaxy6.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B845C9351FC69C200022E6E5 /* libgalaxy6.a */; };
+		B89A77DE1FD5259E000A079A /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B8B5EB6F1FC80EF6006C3A05 /* AVFoundation.framework */; };
+		B89A77DF1FD525A0000A079A /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B8F17F931FC80A9A0015B376 /* AudioToolbox.framework */; };
+		B89A77E11FD525A9000A079A /* PushKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B89A77E01FD525A7000A079A /* PushKit.framework */; };
 		B8A130FF1FB2BA32004DD6F1 /* BaseNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = B8A130FE1FB2BA32004DD6F1 /* BaseNavigationController.m */; };
 		B8A466F61FB186BD007EFB09 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = B8A466F51FB186BD007EFB09 /* AppDelegate.m */; };
 		B8A466F91FB186BD007EFB09 /* BaseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B8A466F81FB186BD007EFB09 /* BaseViewController.m */; };
@@ -127,6 +130,7 @@
 		B845C9351FC69C200022E6E5 /* libgalaxy6.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libgalaxy6.a; sourceTree = "<group>"; };
 		B845C9441FC69C340022E6E5 /* brook.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = brook.h; sourceTree = "<group>"; };
 		B845C9451FC69C340022E6E5 /* galaxy_controller.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = galaxy_controller.h; sourceTree = "<group>"; };
+		B89A77E01FD525A7000A079A /* PushKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = PushKit.framework; path = System/Library/Frameworks/PushKit.framework; sourceTree = SDKROOT; };
 		B8A130FD1FB2BA32004DD6F1 /* BaseNavigationController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BaseNavigationController.h; sourceTree = "<group>"; };
 		B8A130FE1FB2BA32004DD6F1 /* BaseNavigationController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BaseNavigationController.m; sourceTree = "<group>"; };
 		B8A466F11FB186BD007EFB09 /* GPhone.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GPhone.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -246,6 +250,9 @@
 				B845C93C1FC69C200022E6E5 /* libgalaxy3.a in Frameworks */,
 				B845C9371FC69C200022E6E5 /* libgalaxy22.a in Frameworks */,
 				B845C9421FC69C200022E6E5 /* libgalaxy6.a in Frameworks */,
+				B89A77DF1FD525A0000A079A /* AudioToolbox.framework in Frameworks */,
+				B89A77E11FD525A9000A079A /* PushKit.framework in Frameworks */,
+				B89A77DE1FD5259E000A079A /* AVFoundation.framework in Frameworks */,
 				B845C9401FC69C200022E6E5 /* libgalaxy4.a in Frameworks */,
 				B845C93B1FC69C200022E6E5 /* libgalaxy51.a in Frameworks */,
 				B845C9361FC69C200022E6E5 /* libgalaxy24.a in Frameworks */,
@@ -282,6 +289,7 @@
 		87808D8B717C92343929AA91 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				B89A77E01FD525A7000A079A /* PushKit.framework */,
 				B8B5EB6F1FC80EF6006C3A05 /* AVFoundation.framework */,
 				B8F17F931FC80A9A0015B376 /* AudioToolbox.framework */,
 				B8F17F901FC809A00015B376 /* Foundation.framework */,
