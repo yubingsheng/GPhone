@@ -370,12 +370,6 @@
 				B8A130F81FB2B909004DD6F1 /* Model */,
 				B8A130F71FB2B8F8004DD6F1 /* View */,
 				B8A130F61FB2B8E1004DD6F1 /* ViewController */,
-				B8ABB5481FDA5FE200F4E68E /* CallHistoryViewController.h */,
-				B8ABB5491FDA5FE200F4E68E /* CallHistoryViewController.m */,
-				B8F17F841FC801E20015B376 /* MessageListViewController.h */,
-				B8F17F851FC801E20015B376 /* MessageListViewController.m */,
-				B8F17F871FC802210015B376 /* MessageViewController.h */,
-				B8F17F881FC802210015B376 /* MessageViewController.m */,
 				B8A130FA1FB2B979004DD6F1 /* Config */,
 				B8A130FC1FB2B9DE004DD6F1 /* Storyboard */,
 			);
@@ -385,6 +379,12 @@
 		B8A130F61FB2B8E1004DD6F1 /* ViewController */ = {
 			isa = PBXGroup;
 			children = (
+				B8ABB5481FDA5FE200F4E68E /* CallHistoryViewController.h */,
+				B8ABB5491FDA5FE200F4E68E /* CallHistoryViewController.m */,
+				B8F17F841FC801E20015B376 /* MessageListViewController.h */,
+				B8F17F851FC801E20015B376 /* MessageListViewController.m */,
+				B8F17F871FC802210015B376 /* MessageViewController.h */,
+				B8F17F881FC802210015B376 /* MessageViewController.m */,
 				B8F17F001FC8015D0015B376 /* MessagesTableViewController */,
 				B8A130F91FB2B948004DD6F1 /* Base */,
 			);
