@@ -17,30 +17,19 @@
 
 @implementation MessageViewController
 
-- (void)viewWillAppear:(BOOL)animated{
-    [super viewWillAppear:animated];
-    self.tabBarController.tabBar.hidden = YES;
-}
-- (void)viewWillDisappear:(BOOL)animated{
-    [super viewWillDisappear:animated];
-    self.tabBarController.tabBar.hidden = NO;
-}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
-
+    self.view.backgroundColor = [UIColor redColor];
     self.title = @"ChatMessage";
     self.delegate = self;
     self.dataSource = self;
     self.messageArray = [NSMutableArray array];
-    MessageModel *message1 = [[MessageModel alloc] initWithMsgId:@"0001" text:@"This is a Chat Demo like iMessage.app" date:[NSDate date] msgType:JSBubbleMessageTypeIncoming mediaType:JSBubbleMediaTypeText img:nil];
+    MessageModel *message1 = [[MessageModel alloc] initWithMsgId:@"0001" text:@"第一条" date:[NSDate date] msgType:JSBubbleMessageTypeIncoming mediaType:JSBubbleMediaTypeText img:nil];
     
     [self.messageArray addObject:message1];
     
-    MessageModel *message2 = [[MessageModel alloc] initWithMsgId:@"0002" text:nil date:[NSDate date] msgType:JSBubbleMessageTypeOutgoing mediaType:JSBubbleMediaTypeImage img:@"demo1.jpg"];
-    
-    [self.messageArray addObject:message2];
-    
-    MessageModel *message3 = [[MessageModel alloc] initWithMsgId:@"0003" text:@"Up-to-date for iOS 6.0 and ARC (iOS 5.0+ required) Universal for iPhone Allows arbitrary message (and bubble) sizes Copy & paste text message && Save image message " date:[NSDate date] msgType:JSBubbleMessageTypeOutgoing mediaType:JSBubbleMediaTypeText img:nil];
+    MessageModel *message3 = [[MessageModel alloc] initWithMsgId:@"0002" text:@"第二条" date:[NSDate date] msgType:JSBubbleMessageTypeOutgoing mediaType:JSBubbleMediaTypeText img:nil];
     
     [self.messageArray addObject:message3];
 }

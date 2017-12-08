@@ -30,6 +30,8 @@
 		B8A467041FB186BD007EFB09 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = B8A467031FB186BD007EFB09 /* main.m */; };
 		B8A4670E1FB186BD007EFB09 /* GPhoneTests.m in Sources */ = {isa = PBXBuildFile; fileRef = B8A4670D1FB186BD007EFB09 /* GPhoneTests.m */; };
 		B8A467191FB186BD007EFB09 /* GPhoneUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = B8A467181FB186BD007EFB09 /* GPhoneUITests.m */; };
+		B8ABB54A1FDA5FE200F4E68E /* CallHistoryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B8ABB5491FDA5FE200F4E68E /* CallHistoryViewController.m */; };
+		B8ABB54C1FDA699500F4E68E /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B8ABB54B1FDA699500F4E68E /* MobileCoreServices.framework */; };
 		B8F17EFC1FC7ED780015B376 /* GPhoneCallService.m in Sources */ = {isa = PBXBuildFile; fileRef = B8F17EFB1FC7ED780015B376 /* GPhoneCallService.m */; };
 		B8F17F4A1FC8015D0015B376 /* JSBubbleMessageCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B8F17F021FC8015D0015B376 /* JSBubbleMessageCell.m */; };
 		B8F17F4B1FC8015D0015B376 /* JSBubbleView.m in Sources */ = {isa = PBXBuildFile; fileRef = B8F17F041FC8015D0015B376 /* JSBubbleView.m */; };
@@ -146,6 +148,9 @@
 		B8A467141FB186BD007EFB09 /* GPhoneUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = GPhoneUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		B8A467181FB186BD007EFB09 /* GPhoneUITests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GPhoneUITests.m; sourceTree = "<group>"; };
 		B8A4671A1FB186BD007EFB09 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		B8ABB5481FDA5FE200F4E68E /* CallHistoryViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CallHistoryViewController.h; sourceTree = "<group>"; };
+		B8ABB5491FDA5FE200F4E68E /* CallHistoryViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CallHistoryViewController.m; sourceTree = "<group>"; };
+		B8ABB54B1FDA699500F4E68E /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
 		B8B5EB6F1FC80EF6006C3A05 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		B8F17EFA1FC7ED780015B376 /* GPhoneCallService.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GPhoneCallService.h; sourceTree = "<group>"; };
 		B8F17EFB1FC7ED780015B376 /* GPhoneCallService.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GPhoneCallService.m; sourceTree = "<group>"; };
@@ -236,6 +241,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B8ABB54C1FDA699500F4E68E /* MobileCoreServices.framework in Frameworks */,
 				B89A77FA1FD52692000A079A /* libgalaxy55.a in Frameworks */,
 				B89A77F91FD52692000A079A /* libgalaxy51.a in Frameworks */,
 				B89A77F71FD52692000A079A /* libgalaxy3.a in Frameworks */,
@@ -283,6 +289,7 @@
 		87808D8B717C92343929AA91 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				B8ABB54B1FDA699500F4E68E /* MobileCoreServices.framework */,
 				B89A77E01FD525A7000A079A /* PushKit.framework */,
 				B8B5EB6F1FC80EF6006C3A05 /* AVFoundation.framework */,
 				B8F17F931FC80A9A0015B376 /* AudioToolbox.framework */,
@@ -348,6 +355,8 @@
 				B8A130F81FB2B909004DD6F1 /* Model */,
 				B8A130F71FB2B8F8004DD6F1 /* View */,
 				B8A130F61FB2B8E1004DD6F1 /* ViewController */,
+				B8ABB5481FDA5FE200F4E68E /* CallHistoryViewController.h */,
+				B8ABB5491FDA5FE200F4E68E /* CallHistoryViewController.m */,
 				B8F17F841FC801E20015B376 /* MessageListViewController.h */,
 				B8F17F851FC801E20015B376 /* MessageListViewController.m */,
 				B8F17F871FC802210015B376 /* MessageViewController.h */,
@@ -639,7 +648,7 @@
 				TargetAttributes = {
 					B8A466F01FB186BD007EFB09 = {
 						CreatedOnToolsVersion = 9.1;
-						ProvisioningStyle = Manual;
+						ProvisioningStyle = Automatic;
 					};
 					B8A467081FB186BD007EFB09 = {
 						CreatedOnToolsVersion = 9.1;
@@ -819,6 +828,7 @@
 				B8F17F811FC8015D0015B376 /* UIColor+JSMessagesView.m in Sources */,
 				B8F17EFC1FC7ED780015B376 /* GPhoneCallService.m in Sources */,
 				B8F17F4D1FC8015D0015B376 /* JSMessageInputView.m in Sources */,
+				B8ABB54A1FDA5FE200F4E68E /* CallHistoryViewController.m in Sources */,
 				B8F17F501FC8015D0015B376 /* JSMessageTextView.m in Sources */,
 				B8F17F821FC8015D0015B376 /* UIImage+JSMessagesView.m in Sources */,
 				B8A466F61FB186BD007EFB09 /* AppDelegate.m in Sources */,
@@ -985,8 +995,9 @@
 			baseConfigurationReference = 3A1E102A4EBCB0663EB476DD /* Pods-GPhone.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_STYLE = Manual;
-				DEVELOPMENT_TEAM = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 4TPTQHW8P8;
 				INFOPLIST_FILE = GPhone/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -1007,8 +1018,9 @@
 			baseConfigurationReference = F1864404B9FEFAD2B7D977ED /* Pods-GPhone.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_STYLE = Manual;
-				DEVELOPMENT_TEAM = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 4TPTQHW8P8;
 				INFOPLIST_FILE = GPhone/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
