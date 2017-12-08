@@ -1,26 +1,26 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="org-ss-1bf">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13196" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="org-ss-1bf">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13174"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--View Controller-->
+        <!--拨号键盘-->
         <scene sceneID="DGQ-g2-3Ot">
             <objects>
-                <viewController id="1pQ-sB-A5k" sceneMemberID="viewController">
+                <viewController id="1pQ-sB-A5k" customClass="GPKeypadViewController" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="1BT-t1-TN8">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <viewLayoutGuide key="safeArea" id="CKF-06-a0J"/>
                     </view>
-                    <navigationItem key="navigationItem" id="Ty3-Hk-CTi"/>
+                    <navigationItem key="navigationItem" title="拨号键盘" id="Ty3-Hk-CTi"/>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="7Vv-J4-dIa" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -179,11 +179,11 @@
             </objects>
             <point key="canvasLocation" x="-490" y="398"/>
         </scene>
-        <!--通讯录-->
+        <!--拨号键盘-->
         <scene sceneID="Vu5-di-LWW">
             <objects>
                 <navigationController id="oGC-6i-AVs" customClass="BaseNavigationController" customModule="GPhone" customModuleProvider="target" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="通讯录" id="O7V-Af-g2r"/>
+                    <tabBarItem key="tabBarItem" title="拨号键盘" id="O7V-Af-g2r"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="dD7-At-5eA">
                         <rect key="frame" x="0.0" y="20" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>

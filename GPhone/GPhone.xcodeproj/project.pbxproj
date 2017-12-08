@@ -95,6 +95,11 @@
 		B8F17F891FC802210015B376 /* MessageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B8F17F881FC802210015B376 /* MessageViewController.m */; };
 		B8F17F8C1FC802630015B376 /* MessageModel.m in Sources */ = {isa = PBXBuildFile; fileRef = B8F17F8A1FC802630015B376 /* MessageModel.m */; };
 		BE56D3BBC35B400211E2EB8D /* libPods-GPhone.a in Frameworks */ = {isa = PBXBuildFile; fileRef = EBECBFF2C0BB39B002F661E3 /* libPods-GPhone.a */; };
+		FCBB172F1FDA89A100639D3E /* GPKeypadViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FCBB17271FDA89A000639D3E /* GPKeypadViewController.m */; };
+		FCBB17301FDA89A100639D3E /* JCDialPad.m in Sources */ = {isa = PBXBuildFile; fileRef = FCBB172A1FDA89A000639D3E /* JCDialPad.m */; };
+		FCBB17311FDA89A100639D3E /* JCPadButton.m in Sources */ = {isa = PBXBuildFile; fileRef = FCBB172C1FDA89A000639D3E /* JCPadButton.m */; };
+		FCBB17321FDA89A100639D3E /* UIView+FrameAccessor.m in Sources */ = {isa = PBXBuildFile; fileRef = FCBB172E1FDA89A000639D3E /* UIView+FrameAccessor.m */; };
+		FCBB17351FDA89AC00639D3E /* answer@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = FCBB17341FDA89AC00639D3E /* answer@2x.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -234,6 +239,15 @@
 		B8F17F931FC80A9A0015B376 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
 		EBECBFF2C0BB39B002F661E3 /* libPods-GPhone.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-GPhone.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		F1864404B9FEFAD2B7D977ED /* Pods-GPhone.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GPhone.release.xcconfig"; path = "Pods/Target Support Files/Pods-GPhone/Pods-GPhone.release.xcconfig"; sourceTree = "<group>"; };
+		FCBB17261FDA89A000639D3E /* GPKeypadViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GPKeypadViewController.h; sourceTree = "<group>"; };
+		FCBB17271FDA89A000639D3E /* GPKeypadViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GPKeypadViewController.m; sourceTree = "<group>"; };
+		FCBB17291FDA89A000639D3E /* JCDialPad.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JCDialPad.h; sourceTree = "<group>"; };
+		FCBB172A1FDA89A000639D3E /* JCDialPad.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JCDialPad.m; sourceTree = "<group>"; };
+		FCBB172B1FDA89A000639D3E /* JCPadButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JCPadButton.h; sourceTree = "<group>"; };
+		FCBB172C1FDA89A000639D3E /* JCPadButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JCPadButton.m; sourceTree = "<group>"; };
+		FCBB172D1FDA89A000639D3E /* UIView+FrameAccessor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+FrameAccessor.h"; sourceTree = "<group>"; };
+		FCBB172E1FDA89A000639D3E /* UIView+FrameAccessor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+FrameAccessor.m"; sourceTree = "<group>"; };
+		FCBB17341FDA89AC00639D3E /* answer@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "answer@2x.png"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -352,6 +366,7 @@
 		B8A130F51FB2B8B9004DD6F1 /* APP */ = {
 			isa = PBXGroup;
 			children = (
+				FCBB17251FDA89A000639D3E /* Keypad */,
 				B8A130F81FB2B909004DD6F1 /* Model */,
 				B8A130F71FB2B8F8004DD6F1 /* View */,
 				B8A130F61FB2B8E1004DD6F1 /* ViewController */,
@@ -444,6 +459,7 @@
 		B8A466F31FB186BD007EFB09 /* GPhone */ = {
 			isa = PBXGroup;
 			children = (
+				FCBB17331FDA89AC00639D3E /* images */,
 				B89A77E51FD52692000A079A /* lib */,
 				B89A77E21FD52650000A079A /* include */,
 				B8A130F21FB2B859004DD6F1 /* Server */,
@@ -576,6 +592,37 @@
 				B8F17F411FC8015D0015B376 /* messageSent.aiff */,
 			);
 			path = Sounds;
+			sourceTree = "<group>";
+		};
+		FCBB17251FDA89A000639D3E /* Keypad */ = {
+			isa = PBXGroup;
+			children = (
+				FCBB17261FDA89A000639D3E /* GPKeypadViewController.h */,
+				FCBB17271FDA89A000639D3E /* GPKeypadViewController.m */,
+				FCBB17281FDA89A000639D3E /* JCDialPad */,
+			);
+			path = Keypad;
+			sourceTree = "<group>";
+		};
+		FCBB17281FDA89A000639D3E /* JCDialPad */ = {
+			isa = PBXGroup;
+			children = (
+				FCBB17291FDA89A000639D3E /* JCDialPad.h */,
+				FCBB172A1FDA89A000639D3E /* JCDialPad.m */,
+				FCBB172B1FDA89A000639D3E /* JCPadButton.h */,
+				FCBB172C1FDA89A000639D3E /* JCPadButton.m */,
+				FCBB172D1FDA89A000639D3E /* UIView+FrameAccessor.h */,
+				FCBB172E1FDA89A000639D3E /* UIView+FrameAccessor.m */,
+			);
+			path = JCDialPad;
+			sourceTree = "<group>";
+		};
+		FCBB17331FDA89AC00639D3E /* images */ = {
+			isa = PBXGroup;
+			children = (
+				FCBB17341FDA89AC00639D3E /* answer@2x.png */,
+			);
+			path = images;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -717,6 +764,7 @@
 				B8A466FE1FB186BD007EFB09 /* Assets.xcassets in Resources */,
 				B8F17F701FC8015D0015B376 /* bubble-typing.png in Resources */,
 				B8F17F641FC8015D0015B376 /* bubble-flat-outgoing-selected.png in Resources */,
+				FCBB17351FDA89AC00639D3E /* answer@2x.png in Resources */,
 				B8F17F5C1FC8015D0015B376 /* bubble-default-outgoing.png in Resources */,
 				B8F17F591FC8015D0015B376 /* bubble-default-outgoing-green@2x.png in Resources */,
 				B8A466FC1FB186BD007EFB09 /* Main.storyboard in Resources */,
@@ -816,6 +864,7 @@
 				B8A130FF1FB2BA32004DD6F1 /* BaseNavigationController.m in Sources */,
 				B8F17F8C1FC802630015B376 /* MessageModel.m in Sources */,
 				B8A466F91FB186BD007EFB09 /* BaseViewController.m in Sources */,
+				FCBB17321FDA89A100639D3E /* UIView+FrameAccessor.m in Sources */,
 				B8A467041FB186BD007EFB09 /* main.m in Sources */,
 				B8F17F511FC8015D0015B376 /* NSString+JSMessagesView.m in Sources */,
 				B8F17F831FC8015D0015B376 /* UIView+AnimationOptionsForCurve.m in Sources */,
@@ -825,12 +874,15 @@
 				B8F17F891FC802210015B376 /* MessageViewController.m in Sources */,
 				B8F17F801FC8015D0015B376 /* UIButton+JSMessagesView.m in Sources */,
 				B8F17F4B1FC8015D0015B376 /* JSBubbleView.m in Sources */,
+				FCBB17301FDA89A100639D3E /* JCDialPad.m in Sources */,
 				B8F17F811FC8015D0015B376 /* UIColor+JSMessagesView.m in Sources */,
 				B8F17EFC1FC7ED780015B376 /* GPhoneCallService.m in Sources */,
 				B8F17F4D1FC8015D0015B376 /* JSMessageInputView.m in Sources */,
+				FCBB172F1FDA89A100639D3E /* GPKeypadViewController.m in Sources */,
 				B8ABB54A1FDA5FE200F4E68E /* CallHistoryViewController.m in Sources */,
 				B8F17F501FC8015D0015B376 /* JSMessageTextView.m in Sources */,
 				B8F17F821FC8015D0015B376 /* UIImage+JSMessagesView.m in Sources */,
+				FCBB17311FDA89A100639D3E /* JCPadButton.m in Sources */,
 				B8A466F61FB186BD007EFB09 /* AppDelegate.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
