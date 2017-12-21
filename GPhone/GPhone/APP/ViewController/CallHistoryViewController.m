@@ -20,6 +20,7 @@
     [super viewDidLoad];
     [_segmentedControl addTarget:self action:@selector(indexDidChangeForSegmentedControl:) forControlEvents:UIControlEventValueChanged];
     [self requestAuthorizationForAddressBook];
+    [GPhoneCallService.sharedManager relayLogin];
 }
 
 - (void)requestAuthorizationForAddressBook {
@@ -35,7 +36,10 @@
         }];
     }
 }
-
+#pragma mark - Galaxy
+- (void)dialWith:(NSString *)phone {
+    [GPhoneCallService.sharedManager dialWith:phone];
+}
 #pragma mark - Segment
 -(void)indexDidChangeForSegmentedControl:(UISegmentedControl *)sender {
     if (sender.selectedSegmentIndex == 1) {
@@ -59,6 +63,17 @@
     CNPhoneNumber *phoneValue= contactProperty.value;
     NSString *phoneNumber = phoneValue.stringValue;
     NSLog(@"%@--%@",name, phoneNumber);
+    [GPhoneCallService.sharedManager dialWith:phoneNumber];
+    return;
+    UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"拨号" message:[NSString stringWithFormat:@"呼叫：%@ \n %@",name,phoneNumber] preferredStyle:UIAlertControllerStyleAlert];
+    [alert addAction:[UIAlertAction actionWithTitle:@"拨打" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        [self dismissViewControllerAnimated:YES completion:nil];
+    }]];
+    [alert addAction:[UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+        [self dismissViewControllerAnimated:YES completion:nil];
+    }]];
+     [self.navigationController presentViewController:alert animated:YES completion:nil];
+    
 }
 
 - (void)contactPickerDidCancel:(CNContactPickerViewController *)picker {

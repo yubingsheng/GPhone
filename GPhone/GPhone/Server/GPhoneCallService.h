@@ -11,7 +11,7 @@
 @interface GPhoneCallService : NSObject
 
 +(GPhoneCallService *)sharedManager;
-
-static void SessionConfirm_Callback(void *inUserData, unsigned int relaySN, int menuSupport, int chatSupport, int callSupport, const char *nonce, int errorCode);
+- (void) relayLogin ;
+- (void)dialWith:(NSString *)phone;
 
 @end

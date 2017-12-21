@@ -18,9 +18,8 @@
     
     int loginSeqId;
     unsigned int relaySN;
-    NSString *pushToken;
-    NSString *authCode;
-    NSString *gnonce;
+    char pushToken[65];  //puthToken(64) + 0
+    char authCode_nonce[17];  //authCode(8) + nonce(8) + 0
     unsigned char callMD5[16];
 }
 
@@ -43,8 +42,17 @@
     }
 }
 #pragma mark - API
-- (void)dial {
-     galaxy_sessionInvite("10101234111", "13621918174", 0, 0, 0, 0, 0);
+- (void) relayLogin {
+    relaySN = 0x11223344;
+    static int seqId;
+    strcpy(authCode_nonce, "3F2504E0");
+    galaxy_relayLoginReq(relaySN, seqId++, 1, "02a2fca6e3ec1ea62aa4b6a344fb9ad7f31f491b7099c0ddf7761cea6c563980", authCode_nonce);
+}
+- (void)dialWith:(NSString *)phone {
+    phone = [phone stringByReplacingOccurrencesOfString:@"-" withString:@""];
+    char *asciiCode = [phone UTF8String]; //65
+    galaxy_sessionInvite(asciiCode, 0, 0, 0, 0, 0, relaySN);
+//    [self performSelectorOnMainThread:@selector(startSessionInviteTimer) withObject:nil waitUntilDone:NO];
 }
 
 #pragma mark - Delegate
@@ -64,9 +72,7 @@ static void RelayLoginRsp_Callback(void *inUserData, unsigned int relaySN, int s
     else if(errorCode == 3) result = @"gmobile登录失败，请先弹出SIM卡再重新尝试登陆";
     else if(errorCode == 4) result = @"gmobile登录失败，gmobile不在线";
     else result = [NSString stringWithFormat: @"relay login failed with error code %d", errorCode];
-    
-    
-    [self performSelectorOnMainThread:@selector(displayText:) withObject:result waitUntilDone:NO];
+    NSLog(@"%@",result);
 }
 
 static void SessionConfirm_Callback(void *inUserData, unsigned int relaySN, int menuSupport, int chatSupport, int callSupport, const char *nonce, int errorCode) {
@@ -76,28 +82,32 @@ static void SessionConfirm_Callback(void *inUserData, unsigned int relaySN, int 
 - (void) handleSessionConfirmCallBackWithRelaySN: (unsigned int)relaySN MenuSupport: (int)menuSupport ChatSupport: (int)chatSupport CallSupport: (int)callSupport Nonce: (const char*)nonce ErrorCode: (int)errorCode {
     [timerSessionInvite invalidate];
     if(errorCode) {
-        NSLog(@"SessionConfirm got with error code %d", errorCode);
+        NSString *result = [NSString stringWithFormat: @"Session Confirm got with error code %d", errorCode];
+
         return;
     }
     if(!callSupport) {
-        NSLog(@"SessionConfirm got without call support");
         return;
     }
     
     if(nonce) {
-        gnonce = [[NSString alloc] initWithCString:nonce encoding: NSASCIIStringEncoding];
-    }
-    
-    if(authCode && gnonce) {
-        NSString *datas = [authCode stringByAppendingString:gnonce];
-        const char *data = [datas UTF8String];
-        CC_MD5(data, strlen(data), callMD5);
+        if(strlen(nonce) != 8) {
+            return;
+        }
+        NSLog(@"authCode_nonce before=%s", authCode_nonce);
+        strcpy(authCode_nonce + 8, nonce);
+        NSLog(@"authCode_nonce=%s", authCode_nonce);
+        CC_MD5(authCode_nonce, 16, callMD5);
         galaxy_callSetup(0, callMD5, 0);
     }
     else galaxy_callSetup(0, 0, 0);
     
     [self performSelectorOnMainThread:@selector(startCallSetupTimer) withObject:nil waitUntilDone:NO];
     
+}
+- (void) startCallSetupTimer
+{
+    timerCallSetup = [NSTimer scheduledTimerWithTimeInterval:3.0 target:self selector:@selector(repeatCallSetup) userInfo:nil repeats:YES];
 }
 
 static void CallTrying_Callback(void *inUserData)
@@ -139,11 +149,13 @@ static void CallReleased_Callback(void *inUserData, int errorCode) {
 }
 
 - (void) handleCallReleasedCallBackWithErrorCode: (int)errorCode {
-    [self performSelectorOnMainThread:@selector(displayCallReleased) withObject:nil waitUntilDone:NO];
-}
-
-- (void) displayCallReleased {
-    
+    [timerCallSetup invalidate];
+    NSString *result;
+    if(errorCode == 0) result = @"Call released normally";
+    else if(errorCode == 8) result = @"呼叫鉴权失败，请删除gmobile重新添加";
+    else if(errorCode == 10) result = @"呼叫失败，请确认运营商服务是否正常，比如SIM卡是否欠费停机";
+    else result = [NSString stringWithFormat: @"Call released with error code %d", errorCode];
+    NSLog(@"%@",result);
 }
 
 @end
