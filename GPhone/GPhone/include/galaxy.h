@@ -7,12 +7,33 @@ extern "C" {
 /*this is the API for galaxy mcc01 client developing*/
 /*
 release notes:
+20171214:
+1，authCode字符串长度增加到16字节，原来为8个字节。在galaxy_relayLoginReq()的注释中，对authCode的产生和保存机制做了详细的说明。请注意authCode是全局性的，并不是每个gmobile都有自己的authCode。需要特别注意galaxy_relayLoginReq()注释中的这句话：
+用户添加gmobile时，APP应当首先检查对应relaySN的gmobile是否已经添加过，如果已经添加过，则要提示用户"您要添加的gmobile已经存在，是否需要重新添加？"，并提供是和否的选项。
+
+相应的，demo程序的以下变量定义和函数做了修改：
+char authCode_nonce[41];  //authCode(16) + nonce(8) + 0
+
+- (void) handleSessionConfirmCallBackWithRelaySN: (unsigned int)relaySN MenuSupport: (int)menuSupport ChatSupport: (int)chatSupport CallSupport: (int)callSupport Nonce: (const char*)nonce ErrorCode: (int)errorCode
+- (void) repeatCallSetup
+- (IBAction)login:(id)sender 
+
+2，lib库增加一个libgalaxy7.a。
+3，修改了底层传输规则，所以此版本库不兼容以前的版本。
+4，用户每次启动APP，都应当重新获取deviceToken，如果和APP当前保存的deviceToken不一致(即deviceToken发生变化)，要提醒用户重新添加所有的gmobile，否则将无法接收到呼叫和短信。
+
+
+20171206:
+1，改进了demo程序的MD5的使用效率。
+2, demo程序增加了galaxy_relayStatusReq的用法示例。
+
 20171204:
 1，galaxy_relayLoginReq()增加了seqId参数，用于匹配Req和Rsp。具体参见galaxy_relayLoginReq()函数的说明。
 2，galaxy_sessonInvite()函数增加了超时重发要求。要求在调用galaxy_sessionInvite()时，启动定时器以重发galaxy_sessionInvite()。具体参见galaxy_sessionInvite()函数的说明。并在demo程序里写了相应的示例。
 3，relay firmware update机制被取消。相应的，取消galaxy_relayFirmwareUpdateReq()，相应的回调函数也被取消。
 4，galaxy_controller.h头文件重新命名为galaxy.h
 5，demo程序增加了galaxy_relayLoginReq()的用法。
+
 
 20171128:
 1，galaxy_callSetup()函数增加了repeated参数。并增加了galaxy_callSetup()的注释说明，要求在调用galaxy_callSetup()时，启动定时器以重发galaxy_callSetup()。并在demo程序里写了相应的示例。特别的，APP需要为此增加call_trying回调函数。
@@ -125,6 +146,7 @@ int galaxy_init(
    galaxy_relayLoginReq()用于添加gmobile。 relay是指VoIP呼叫的中继设备，gmobile是其中一种relay。
    APP调用galaxy_relayLoginReq()向对端发送MCC01 relayLoginReq消息后，galaxy收到对端的回应消息MCC01 relayLoginRsp后，调用回调函数relay_login_rsp。
    APP安装后首次启动时，应当提示用户添加gmobile。用户可以选择“以后再添加”，APP正常进入首页。
+   用户添加gmobile时，APP应当首先检查对应relaySN的gmobile是否已经添加过，如果已经添加过，则要提示用户"您要添加的gmobile已经存在，是否需要重新添加？"，并提供是和否的选项。
 
    返回值：
    函数执行成功返回1，失败返回0。
@@ -134,7 +156,7 @@ int galaxy_init(
    seqId: APP自定义的序列号，用于匹配Req和Rsp。seqId必须是大于0的整数。seqId应该在APP运行期间不重复。
    phoneType：参看MCC01协议里的Mcc01PhoneType。
    pushToken：in IOS, pushToken is the device token return by Apple Server to APP。必须转换为ASCII字符串的形式，长度为64字节。比如 02a2fca6e3ec1ea62aa4b6a344fb9ad7f31f491b7099c0ddf7761cea6c563980
-   authCode：这是用于后续出呼叫和发送短信时鉴权的鉴权码。APP在用户首次使用时产生一个随机数作为此鉴权码，并将此码存储于APP供后续使用。authCode是32bit随机数的十六进制ASCII字符串的形式，长度为8字节，比如"3F2504E0"。
+   authCode：这是用于后续出呼叫和发送短信时鉴权的鉴权码。如果用户在添加gmobile时，APP当中没有已经注册成功的gmobile，则无论APP是否已经保存了authCode，APP都应当新产生一个随机数作为authCode并保存(如果原来已经保存了authCode，则替换它)，特别的，如果用户在添加gmobile时，虽然APP当中已经有一个注册过的gmobile，但此gmobile的relaySN和要添加的gmobile相同，则当做APP当中没有已经注册成功的gmobile；如果用户在添加gmobile时，APP当中已经有注册成功的gmobile，则使用当前保存的authCode。authCode是64bit随机数的十六进制ASCII字符串的形式，长度为16字节，比如"3F2504E08D64C20A"。
    
 */
 #define galaxy_relayLoginReq(relaySN, seqId, phoneType, pushToken, authCode) send_mcc01_relayLoginReq(relaySN, seqId, phoneType, pushToken, authCode)

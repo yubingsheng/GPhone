@@ -19,7 +19,7 @@
     int loginSeqId;
     unsigned int relaySN;
     char pushToken[65];  //puthToken(64) + 0
-    char authCode_nonce[17];  //authCode(8) + nonce(8) + 0
+    char authCode_nonce[41];  //authCode(8) + nonce(8) + 0
     unsigned char callMD5[16];
 }
 
@@ -45,12 +45,12 @@
 - (void) relayLogin {
     relaySN = 0x11223344;
     static int seqId;
-    strcpy(authCode_nonce, "3F2504E0");
+    strcpy(authCode_nonce, "3F2504E08D64C20A");
     galaxy_relayLoginReq(relaySN, seqId++, 1, "02a2fca6e3ec1ea62aa4b6a344fb9ad7f31f491b7099c0ddf7761cea6c563980", authCode_nonce);
 }
 - (void)dialWith:(NSString *)phone {
     phone = [phone stringByReplacingOccurrencesOfString:@"-" withString:@""];
-    char *asciiCode = [phone UTF8String]; //65
+    const char *asciiCode = [phone UTF8String]; //65
     galaxy_sessionInvite(asciiCode, 0, 0, 0, 0, 0, relaySN);
 //    [self performSelectorOnMainThread:@selector(startSessionInviteTimer) withObject:nil waitUntilDone:NO];
 }
@@ -83,7 +83,7 @@ static void SessionConfirm_Callback(void *inUserData, unsigned int relaySN, int 
     [timerSessionInvite invalidate];
     if(errorCode) {
         NSString *result = [NSString stringWithFormat: @"Session Confirm got with error code %d", errorCode];
-
+        NSLog(@"%@",result);
         return;
     }
     if(!callSupport) {

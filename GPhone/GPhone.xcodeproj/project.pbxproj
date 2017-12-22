@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		B880E4731FEB8808002625CF /* libgalaxy7.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B880E4721FEB8808002625CF /* libgalaxy7.a */; };
+		B880E4761FEB887C002625CF /* GPhoneBaseModel.m in Sources */ = {isa = PBXBuildFile; fileRef = B880E4751FEB887C002625CF /* GPhoneBaseModel.m */; };
+		B880E4791FEB8E09002625CF /* GPhoneCacheManager.m in Sources */ = {isa = PBXBuildFile; fileRef = B880E4781FEB8E09002625CF /* GPhoneCacheManager.m */; };
 		B89A77DE1FD5259E000A079A /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B8B5EB6F1FC80EF6006C3A05 /* AVFoundation.framework */; };
 		B89A77DF1FD525A0000A079A /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B8F17F931FC80A9A0015B376 /* AudioToolbox.framework */; };
 		B89A77E11FD525A9000A079A /* PushKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B89A77E01FD525A7000A079A /* PushKit.framework */; };
@@ -121,6 +124,11 @@
 
 /* Begin PBXFileReference section */
 		3A1E102A4EBCB0663EB476DD /* Pods-GPhone.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GPhone.debug.xcconfig"; path = "Pods/Target Support Files/Pods-GPhone/Pods-GPhone.debug.xcconfig"; sourceTree = "<group>"; };
+		B880E4721FEB8808002625CF /* libgalaxy7.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libgalaxy7.a; sourceTree = "<group>"; };
+		B880E4741FEB887C002625CF /* GPhoneBaseModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GPhoneBaseModel.h; sourceTree = "<group>"; };
+		B880E4751FEB887C002625CF /* GPhoneBaseModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GPhoneBaseModel.m; sourceTree = "<group>"; };
+		B880E4771FEB8E09002625CF /* GPhoneCacheManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GPhoneCacheManager.h; sourceTree = "<group>"; };
+		B880E4781FEB8E09002625CF /* GPhoneCacheManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GPhoneCacheManager.m; sourceTree = "<group>"; };
 		B89A77E01FD525A7000A079A /* PushKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = PushKit.framework; path = System/Library/Frameworks/PushKit.framework; sourceTree = SDKROOT; };
 		B89A77E31FD52650000A079A /* brook.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = brook.h; sourceTree = "<group>"; };
 		B89A77E41FD52650000A079A /* galaxy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = galaxy.h; sourceTree = "<group>"; };
@@ -268,6 +276,7 @@
 				B89A77DE1FD5259E000A079A /* AVFoundation.framework in Frameworks */,
 				B89A77F21FD52692000A079A /* libgalaxy21.a in Frameworks */,
 				B89A77FB1FD52692000A079A /* libgalaxy6.a in Frameworks */,
+				B880E4731FEB8808002625CF /* libgalaxy7.a in Frameworks */,
 				B89A77F31FD52692000A079A /* libgalaxy22.a in Frameworks */,
 				B89A77F61FD52692000A079A /* libgalaxy25.a in Frameworks */,
 				B89A77F11FD52692000A079A /* libgalaxy1.a in Frameworks */,
@@ -336,6 +345,7 @@
 				B89A77EE1FD52692000A079A /* libgalaxy51.a */,
 				B89A77EF1FD52692000A079A /* libgalaxy55.a */,
 				B89A77F01FD52692000A079A /* libgalaxy6.a */,
+				B880E4721FEB8808002625CF /* libgalaxy7.a */,
 			);
 			path = lib;
 			sourceTree = "<group>";
@@ -345,6 +355,8 @@
 			children = (
 				B8F17EFA1FC7ED780015B376 /* GPhoneCallService.h */,
 				B8F17EFB1FC7ED780015B376 /* GPhoneCallService.m */,
+				B880E4771FEB8E09002625CF /* GPhoneCacheManager.h */,
+				B880E4781FEB8E09002625CF /* GPhoneCacheManager.m */,
 			);
 			path = Server;
 			sourceTree = "<group>";
@@ -401,6 +413,8 @@
 		B8A130F81FB2B909004DD6F1 /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				B880E4741FEB887C002625CF /* GPhoneBaseModel.h */,
+				B880E4751FEB887C002625CF /* GPhoneBaseModel.m */,
 				B8F17F8B1FC802630015B376 /* MessageModel.h */,
 				B8F17F8A1FC802630015B376 /* MessageModel.m */,
 			);
@@ -868,10 +882,12 @@
 				B8A467041FB186BD007EFB09 /* main.m in Sources */,
 				B8F17F511FC8015D0015B376 /* NSString+JSMessagesView.m in Sources */,
 				B8F17F831FC8015D0015B376 /* UIView+AnimationOptionsForCurve.m in Sources */,
+				B880E4761FEB887C002625CF /* GPhoneBaseModel.m in Sources */,
 				B8F17F4A1FC8015D0015B376 /* JSBubbleMessageCell.m in Sources */,
 				B8F17F4E1FC8015D0015B376 /* JSMessageSoundEffect.m in Sources */,
 				B8F17F4C1FC8015D0015B376 /* JSDismissiveTextView.m in Sources */,
 				B8F17F891FC802210015B376 /* MessageViewController.m in Sources */,
+				B880E4791FEB8E09002625CF /* GPhoneCacheManager.m in Sources */,
 				B8F17F801FC8015D0015B376 /* UIButton+JSMessagesView.m in Sources */,
 				B8F17F4B1FC8015D0015B376 /* JSBubbleView.m in Sources */,
 				FCBB17301FDA89A100639D3E /* JCDialPad.m in Sources */,
