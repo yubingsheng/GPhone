@@ -12,7 +12,8 @@
 
 @optional
 - (BOOL)dialPad:(JCDialPad *)dialPad shouldInsertText:(NSString *)text forButtonPress:(JCPadButton *)button;
-
+- (void)dialingWith:(NSString*)phone;
+- (void)hangUp;
 @end
 
 @interface JCDialPad : UIView
@@ -32,7 +33,7 @@
 @property (nonatomic, strong) UITextField *digitsTextField;
 
 @property (weak, nonatomic) id<JCDialPadDelegate> delegate;
-
+@property (assign, nonatomic) BOOL isDialing;
 /**
  Standard cell phone buttons: 0-9, # and * buttons
  */

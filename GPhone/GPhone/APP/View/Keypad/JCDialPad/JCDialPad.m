@@ -93,6 +93,7 @@
     
     self.formatTextToPhoneNumber = YES;
     self.rawText = @"";
+    _isDialing = YES;
 }
 
 #pragma mark -
@@ -190,7 +191,16 @@
 
 #pragma mark - phoneButtonAction
 - (void)phoneButton:(UIButton *)sender {
-    NSLog(@"打电话");
+    if (_isDialing) {
+        if ([self.delegate respondsToSelector:@selector(dialingWith:)]){
+            [_delegate dialingWith:_rawText];
+        }
+    }else {
+        if ([self.delegate respondsToSelector:@selector(hangUp)]) {
+            [_delegate hangUp];
+        }
+    }
+    _isDialing = !_isDialing;
 }
 
 

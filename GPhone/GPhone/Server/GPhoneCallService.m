@@ -42,17 +42,24 @@
     }
 }
 #pragma mark - API
-- (void) relayLogin {
+- (void) relayLogin:(NSString*)relay {
     relaySN = 0x11223344;
     static int seqId;
     strcpy(authCode_nonce, "3F2504E08D64C20A");
     galaxy_relayLoginReq(relaySN, seqId++, 1, "02a2fca6e3ec1ea62aa4b6a344fb9ad7f31f491b7099c0ddf7761cea6c563980", authCode_nonce);
 }
+
 - (void)dialWith:(NSString *)phone {
     phone = [phone stringByReplacingOccurrencesOfString:@"-" withString:@""];
     const char *asciiCode = [phone UTF8String]; //65
     galaxy_sessionInvite(asciiCode, 0, 0, 0, 0, 0, relaySN);
 //    [self performSelectorOnMainThread:@selector(startSessionInviteTimer) withObject:nil waitUntilDone:NO];
+}
+
+-(void)hangup {
+    [timerSessionInvite invalidate];
+    [timerCallSetup invalidate];
+    galaxy_callRelease();
 }
 
 #pragma mark - Delegate

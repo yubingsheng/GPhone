@@ -9,55 +9,41 @@
 #import "GPhoneCacheManager.h"
 
 @implementation GPhoneCacheManager
+
 +(id)sharedManager{
     static GPhoneCacheManager *sharedInstance = nil;
     static dispatch_once_t onceToken;
-    
     dispatch_once(&onceToken, ^{
         sharedInstance = [[super allocWithZone:NULL] init];
     });
-    
     return sharedInstance;
 }
 
-
-+ (id)allocWithZone:(NSZone *)zone
-{
++ (id)allocWithZone:(NSZone *)zone{
     return [self sharedManager];
 }
 
-- (id)copyWithZone:(NSZone *)zone
-{
+- (id)copyWithZone:(NSZone *)zone{
     return self;
 }
 
-- (id)init
-{
+- (id)init{
     self = [super init];
     if (self) {
-        //[self restore];
     }
     return self;
 }
 
-- (id)restoreWithkey:(NSString *)key
-{
-    return [GPLDATA unarchiveObjectforKey:key];
+- (id)restoreWithkey:(NSString *)key{
+    return [[NSUserDefaults standardUserDefaults] valueForKey:key];
 }
 
-- (void)store:(id)object withKey:(NSString *)key
-{
-    [GPLDATA archiveObject:object forKey:key];
+- (void)store:(id)object withKey:(NSString *)key{
+    [[NSUserDefaults standardUserDefaults] setObject:object forKey:key];
 }
 
-- (void)cleanWithKey:(NSString *)key
-{
-    [GPLDATA clearArchiveForKey:key];
-}
-
-- (void)cleanAllKey
-{
-    [GPLDATA clearArchive];
+- (void)cleanWithKey:(NSString *)key{
+    [[NSUserDefaults standardUserDefaults] removeObjectForKey:key];
 }
 
 @end

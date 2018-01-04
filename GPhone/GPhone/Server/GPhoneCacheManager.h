@@ -13,5 +13,4 @@
 - (id)restoreWithkey:(NSString *)key;
 - (void)store:(id)object withKey:(NSString *)key;
 - (void)cleanWithKey:(NSString *)key;
-- (void)cleanAllKey;
 @end

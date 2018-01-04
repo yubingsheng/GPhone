@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13196" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="org-ss-1bf">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13529" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="org-ss-1bf">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13174"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13527"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -46,14 +46,29 @@
         <!--设置-->
         <scene sceneID="bth-rq-ITd">
             <objects>
-                <viewController id="pQA-bF-n4a" sceneMemberID="viewController">
+                <viewController id="pQA-bF-n4a" customClass="SettingViewController" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="3d8-UQ-w8W">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="WjD-mu-EC0">
+                                <rect key="frame" x="0.0" y="84" width="375" height="534"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            </tableView>
+                        </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="WjD-mu-EC0" firstAttribute="top" secondItem="cds-Sx-XJd" secondAttribute="top" constant="20" id="G2i-NE-J9j"/>
+                            <constraint firstItem="cds-Sx-XJd" firstAttribute="bottom" secondItem="WjD-mu-EC0" secondAttribute="bottom" id="Qaq-Ew-Gat"/>
+                            <constraint firstAttribute="trailing" secondItem="WjD-mu-EC0" secondAttribute="trailing" id="aoX-s6-Bqw"/>
+                            <constraint firstItem="WjD-mu-EC0" firstAttribute="leading" secondItem="cds-Sx-XJd" secondAttribute="leading" id="rXX-gI-cmT"/>
+                        </constraints>
                         <viewLayoutGuide key="safeArea" id="cds-Sx-XJd"/>
                     </view>
                     <navigationItem key="navigationItem" title="设置" id="gii-Vl-MXY"/>
+                    <connections>
+                        <outlet property="tableView" destination="WjD-mu-EC0" id="4yA-vP-X9f"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="2SV-ml-NCO" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -156,6 +171,7 @@
                     </navigationItem>
                     <connections>
                         <outlet property="segmentedControl" destination="IPt-N6-pqI" id="Rby-Fc-ZYI"/>
+                        <outlet property="tableView" destination="1WA-Mp-rCB" id="qHw-4C-nTk"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>

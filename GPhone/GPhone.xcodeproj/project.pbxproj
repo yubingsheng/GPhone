@@ -98,6 +98,10 @@
 		B8F17F891FC802210015B376 /* MessageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B8F17F881FC802210015B376 /* MessageViewController.m */; };
 		B8F17F8C1FC802630015B376 /* MessageModel.m in Sources */ = {isa = PBXBuildFile; fileRef = B8F17F8A1FC802630015B376 /* MessageModel.m */; };
 		BE56D3BBC35B400211E2EB8D /* libPods-GPhone.a in Frameworks */ = {isa = PBXBuildFile; fileRef = EBECBFF2C0BB39B002F661E3 /* libPods-GPhone.a */; };
+		D6EC681F1FEE751A006A07F0 /* SettingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D6EC681E1FEE751A006A07F0 /* SettingViewController.m */; };
+		D6EC68221FEF4E86006A07F0 /* GPhoneConfig.m in Sources */ = {isa = PBXBuildFile; fileRef = D6EC68211FEF4E86006A07F0 /* GPhoneConfig.m */; };
+		D6EC68261FEF5C6A006A07F0 /* CallHistoryCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D6EC68241FEF5C6A006A07F0 /* CallHistoryCell.m */; };
+		D6EC68271FEF5C6A006A07F0 /* CallHistoryCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = D6EC68251FEF5C6A006A07F0 /* CallHistoryCell.xib */; };
 		FCBB172F1FDA89A100639D3E /* GPKeypadViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FCBB17271FDA89A000639D3E /* GPKeypadViewController.m */; };
 		FCBB17301FDA89A100639D3E /* JCDialPad.m in Sources */ = {isa = PBXBuildFile; fileRef = FCBB172A1FDA89A000639D3E /* JCDialPad.m */; };
 		FCBB17311FDA89A100639D3E /* JCPadButton.m in Sources */ = {isa = PBXBuildFile; fileRef = FCBB172C1FDA89A000639D3E /* JCPadButton.m */; };
@@ -245,6 +249,13 @@
 		B8F17F8B1FC802630015B376 /* MessageModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MessageModel.h; sourceTree = "<group>"; };
 		B8F17F901FC809A00015B376 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		B8F17F931FC80A9A0015B376 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
+		D6EC681D1FEE751A006A07F0 /* SettingViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SettingViewController.h; sourceTree = "<group>"; };
+		D6EC681E1FEE751A006A07F0 /* SettingViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SettingViewController.m; sourceTree = "<group>"; };
+		D6EC68201FEF4E86006A07F0 /* GPhoneConfig.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = GPhoneConfig.h; path = GPhone/APP/Config/GPhoneConfig.h; sourceTree = SOURCE_ROOT; };
+		D6EC68211FEF4E86006A07F0 /* GPhoneConfig.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = GPhoneConfig.m; path = GPhone/APP/Config/GPhoneConfig.m; sourceTree = SOURCE_ROOT; };
+		D6EC68231FEF5C6A006A07F0 /* CallHistoryCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CallHistoryCell.h; sourceTree = "<group>"; };
+		D6EC68241FEF5C6A006A07F0 /* CallHistoryCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CallHistoryCell.m; sourceTree = "<group>"; };
+		D6EC68251FEF5C6A006A07F0 /* CallHistoryCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CallHistoryCell.xib; sourceTree = "<group>"; };
 		EBECBFF2C0BB39B002F661E3 /* libPods-GPhone.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-GPhone.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		F1864404B9FEFAD2B7D977ED /* Pods-GPhone.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GPhone.release.xcconfig"; path = "Pods/Target Support Files/Pods-GPhone/Pods-GPhone.release.xcconfig"; sourceTree = "<group>"; };
 		FCBB17261FDA89A000639D3E /* GPKeypadViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GPKeypadViewController.h; sourceTree = "<group>"; };
@@ -378,7 +389,6 @@
 		B8A130F51FB2B8B9004DD6F1 /* APP */ = {
 			isa = PBXGroup;
 			children = (
-				FCBB17251FDA89A000639D3E /* Keypad */,
 				B8A130F81FB2B909004DD6F1 /* Model */,
 				B8A130F71FB2B8F8004DD6F1 /* View */,
 				B8A130F61FB2B8E1004DD6F1 /* ViewController */,
@@ -397,7 +407,10 @@
 				B8F17F851FC801E20015B376 /* MessageListViewController.m */,
 				B8F17F871FC802210015B376 /* MessageViewController.h */,
 				B8F17F881FC802210015B376 /* MessageViewController.m */,
-				B8F17F001FC8015D0015B376 /* MessagesTableViewController */,
+				FCBB17261FDA89A000639D3E /* GPKeypadViewController.h */,
+				FCBB17271FDA89A000639D3E /* GPKeypadViewController.m */,
+				D6EC681D1FEE751A006A07F0 /* SettingViewController.h */,
+				D6EC681E1FEE751A006A07F0 /* SettingViewController.m */,
 				B8A130F91FB2B948004DD6F1 /* Base */,
 			);
 			path = ViewController;
@@ -406,6 +419,11 @@
 		B8A130F71FB2B8F8004DD6F1 /* View */ = {
 			isa = PBXGroup;
 			children = (
+				B8F17F001FC8015D0015B376 /* MessagesTableViewController */,
+				FCBB17251FDA89A000639D3E /* Keypad */,
+				D6EC68231FEF5C6A006A07F0 /* CallHistoryCell.h */,
+				D6EC68241FEF5C6A006A07F0 /* CallHistoryCell.m */,
+				D6EC68251FEF5C6A006A07F0 /* CallHistoryCell.xib */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -435,6 +453,8 @@
 		B8A130FA1FB2B979004DD6F1 /* Config */ = {
 			isa = PBXGroup;
 			children = (
+				D6EC68201FEF4E86006A07F0 /* GPhoneConfig.h */,
+				D6EC68211FEF4E86006A07F0 /* GPhoneConfig.m */,
 			);
 			path = Config;
 			sourceTree = "<group>";
@@ -611,8 +631,6 @@
 		FCBB17251FDA89A000639D3E /* Keypad */ = {
 			isa = PBXGroup;
 			children = (
-				FCBB17261FDA89A000639D3E /* GPKeypadViewController.h */,
-				FCBB17271FDA89A000639D3E /* GPKeypadViewController.m */,
 				FCBB17281FDA89A000639D3E /* JCDialPad */,
 			);
 			path = Keypad;
@@ -710,6 +728,11 @@
 					B8A466F01FB186BD007EFB09 = {
 						CreatedOnToolsVersion = 9.1;
 						ProvisioningStyle = Automatic;
+						SystemCapabilities = {
+							com.apple.BackgroundModes = {
+								enabled = 1;
+							};
+						};
 					};
 					B8A467081FB186BD007EFB09 = {
 						CreatedOnToolsVersion = 9.1;
@@ -768,6 +791,7 @@
 				B8F17F7C1FC8015D0015B376 /* send.png in Resources */,
 				B8F17F571FC8015D0015B376 /* bubble-default-incoming@2x.png in Resources */,
 				B8F17F531FC8015D0015B376 /* bubble-default-incoming-green@2x.png in Resources */,
+				D6EC68271FEF5C6A006A07F0 /* CallHistoryCell.xib in Resources */,
 				B8F17F631FC8015D0015B376 /* bubble-flat-outgoing-old@2x.png in Resources */,
 				B8A467011FB186BD007EFB09 /* LaunchScreen.storyboard in Resources */,
 				B8F17F581FC8015D0015B376 /* bubble-default-outgoing-green.png in Resources */,
@@ -873,9 +897,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D6EC68221FEF4E86006A07F0 /* GPhoneConfig.m in Sources */,
 				B8F17F861FC801E20015B376 /* MessageListViewController.m in Sources */,
 				B8F17F4F1FC8015D0015B376 /* JSMessagesViewController.m in Sources */,
 				B8A130FF1FB2BA32004DD6F1 /* BaseNavigationController.m in Sources */,
+				D6EC681F1FEE751A006A07F0 /* SettingViewController.m in Sources */,
 				B8F17F8C1FC802630015B376 /* MessageModel.m in Sources */,
 				B8A466F91FB186BD007EFB09 /* BaseViewController.m in Sources */,
 				FCBB17321FDA89A100639D3E /* UIView+FrameAccessor.m in Sources */,
@@ -883,6 +909,7 @@
 				B8F17F511FC8015D0015B376 /* NSString+JSMessagesView.m in Sources */,
 				B8F17F831FC8015D0015B376 /* UIView+AnimationOptionsForCurve.m in Sources */,
 				B880E4761FEB887C002625CF /* GPhoneBaseModel.m in Sources */,
+				D6EC68261FEF5C6A006A07F0 /* CallHistoryCell.m in Sources */,
 				B8F17F4A1FC8015D0015B376 /* JSBubbleMessageCell.m in Sources */,
 				B8F17F4E1FC8015D0015B376 /* JSMessageSoundEffect.m in Sources */,
 				B8F17F4C1FC8015D0015B376 /* JSDismissiveTextView.m in Sources */,

@@ -24,6 +24,8 @@
 	<string>通讯录</string>
 	<key>NSMicrophoneUsageDescription</key>
 	<string></string>
+	<key>UIBackgroundModes</key>
+	<array/>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
 	<key>UIMainStoryboardFile</key>

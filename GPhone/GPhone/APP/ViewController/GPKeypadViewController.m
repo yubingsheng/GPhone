@@ -29,12 +29,15 @@
     
 }
 
-- (BOOL)dialPad:(JCDialPad *)dialPad shouldInsertText:(NSString *)text forButtonPress:(JCPadButton *)button {
-    
-    NSLog(@"%@",text);
-    return YES;
+#pragma mark - JCDialPadDelegate
+-(void)dialingWith:(NSString *)phone {
+     NSLog(@"%@",phone);
+    [GPhoneCallService.sharedManager dialWith:phone];
 }
 
+-(void)hangUp {
+    [GPhoneCallService.sharedManager hangup];
+}
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];

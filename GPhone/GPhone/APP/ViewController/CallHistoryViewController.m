@@ -9,18 +9,25 @@
 #import "CallHistoryViewController.h"
 #import <Contacts/Contacts.h>
 #import <ContactsUI/ContactsUI.h>
+#import "CallHistoryCell.h"
 
-@interface CallHistoryViewController ()<CNContactPickerDelegate>
+@interface CallHistoryViewController ()<CNContactPickerDelegate,UITableViewDelegate,UITableViewDataSource>
 @property (weak, nonatomic) IBOutlet UISegmentedControl *segmentedControl;
+@property (weak, nonatomic) IBOutlet UITableView *tableView;
+@property (strong, nonatomic) NSMutableArray *callHistoryArray;
 @end
 
 @implementation CallHistoryViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    _tableView.delegate = self;
+    _tableView.dataSource = self;
+    _tableView.tableFooterView = [UIView new];
     [_segmentedControl addTarget:self action:@selector(indexDidChangeForSegmentedControl:) forControlEvents:UIControlEventValueChanged];
     [self requestAuthorizationForAddressBook];
-    [GPhoneCallService.sharedManager relayLogin];
+    [GPhoneCallService.sharedManager relayLogin:@"0x11223344"];
+    _callHistoryArray = [GPhoneConfig.sharedManager callHistoryArray];
 }
 
 - (void)requestAuthorizationForAddressBook {
@@ -62,21 +69,42 @@
     NSString *name = [CNContactFormatter stringFromContact:contact style:CNContactFormatterStyleFullName];
     CNPhoneNumber *phoneValue= contactProperty.value;
     NSString *phoneNumber = phoneValue.stringValue;
-    NSLog(@"%@--%@",name, phoneNumber);
-    [GPhoneCallService.sharedManager dialWith:phoneNumber];
-    return;
-    UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"拨号" message:[NSString stringWithFormat:@"呼叫：%@ \n %@",name,phoneNumber] preferredStyle:UIAlertControllerStyleAlert];
-    [alert addAction:[UIAlertAction actionWithTitle:@"拨打" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-        [self dismissViewControllerAnimated:YES completion:nil];
-    }]];
-    [alert addAction:[UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
-        [self dismissViewControllerAnimated:YES completion:nil];
-    }]];
-     [self.navigationController presentViewController:alert animated:YES completion:nil];
-    
+    [self dismissViewControllerAnimated:YES completion:^{
+        UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"拨号" message:[NSString stringWithFormat:@"呼叫：%@ \n %@",name,phoneNumber] preferredStyle:UIAlertControllerStyleAlert];
+        [alert addAction:[UIAlertAction actionWithTitle:@"拨打" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+            [GPhoneCallService.sharedManager dialWith:phoneNumber];
+            [self dismissViewControllerAnimated:YES completion:nil];
+        }]];
+        [alert addAction:[UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+            [self dismissViewControllerAnimated:YES completion:nil];
+        }]];
+        [self.navigationController presentViewController:alert animated:YES completion:nil];
+    }];
 }
 
 - (void)contactPickerDidCancel:(CNContactPickerViewController *)picker {
+    
+}
+#pragma mark - TableViewDataSource
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+    return 56;
+}
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+    return 10;
+}
+
+- (UITableViewCell*)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+    static NSString *idf = @"callhistory";
+    CallHistoryCell *cell = [tableView dequeueReusableCellWithIdentifier:idf];
+    if (!cell) {
+        cell = [CallHistoryCell loadNib];
+    }
+    return cell;
+}
+
+#pragma mark - TableViewDelegate
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     
 }
 - (void)didReceiveMemoryWarning {

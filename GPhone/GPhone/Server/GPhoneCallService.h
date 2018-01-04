@@ -11,7 +11,7 @@
 @interface GPhoneCallService : NSObject
 
 +(GPhoneCallService *)sharedManager;
-- (void) relayLogin ;
+- (void) relayLogin:(id) relaySN ;
 - (void)dialWith:(NSString *)phone;
-
+- (void)hangup;
 @end
