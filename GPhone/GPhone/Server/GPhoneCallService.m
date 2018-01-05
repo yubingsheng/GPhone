@@ -20,6 +20,7 @@
     unsigned int relaySN;
     char pushToken[65];  //puthToken(64) + 0
     char authCode_nonce[41];  //authCode(8) + nonce(8) + 0
+    char pushTokenVoIP[128];
     unsigned char callMD5[16];
 }
 
@@ -46,13 +47,15 @@
     relaySN = 0x11223344;
     static int seqId;
     strcpy(authCode_nonce, "3F2504E08D64C20A");
-    galaxy_relayLoginReq(relaySN, seqId++, 1, "02a2fca6e3ec1ea62aa4b6a344fb9ad7f31f491b7099c0ddf7761cea6c563980", authCode_nonce);
+    strcpy(pushTokenVoIP, "67b0dbf63d7823c900fdbfdda1179185aab1a32fce25daf06586b975711e7edc"); //实际应用中，由Apple分配，并保存在flash中。
+    
+    galaxy_relayLoginReq(seqId++, relaySN, [@"" UTF8String], 1, "02a2fca6e3ec1ea62aa4b6a344fb9ad7f31f491b7099c0ddf7761cea6c563980", pushTokenVoIP, authCode_nonce);
 }
 
 - (void)dialWith:(NSString *)phone {
     phone = [phone stringByReplacingOccurrencesOfString:@"-" withString:@""];
     const char *asciiCode = [phone UTF8String]; //65
-    galaxy_sessionInvite(asciiCode, 0, 0, 0, 0, 0, relaySN);
+    galaxy_sessionInvite(asciiCode, 0, 0, 0, relaySN);
 //    [self performSelectorOnMainThread:@selector(startSessionInviteTimer) withObject:nil waitUntilDone:NO];
 }
 
