@@ -11,6 +11,7 @@
 #import <ContactsUI/ContactsUI.h>
 #import "CallHistoryCell.h"
 
+
 @interface CallHistoryViewController ()<CNContactPickerDelegate,UITableViewDelegate,UITableViewDataSource>
 @property (weak, nonatomic) IBOutlet UISegmentedControl *segmentedControl;
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
@@ -43,11 +44,9 @@
         }];
     }
 }
-#pragma mark - Galaxy
-- (void)dialWith:(NSString *)phone {
-    [GPhoneCallService.sharedManager dialWith:phone];
-}
+
 #pragma mark - Segment
+
 -(void)indexDidChangeForSegmentedControl:(UISegmentedControl *)sender {
     if (sender.selectedSegmentIndex == 1) {
         CNContactPickerViewController *contactPicker = [[CNContactPickerViewController alloc] init];
@@ -72,8 +71,9 @@
     [self dismissViewControllerAnimated:YES completion:^{
         UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"拨号" message:[NSString stringWithFormat:@"呼叫：%@ \n %@",name,phoneNumber] preferredStyle:UIAlertControllerStyleAlert];
         [alert addAction:[UIAlertAction actionWithTitle:@"拨打" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-            [GPhoneCallService.sharedManager dialWith:phoneNumber];
+            [GPhoneCallService.sharedManager dialWithNumber:@"18016388248" nickName:name byRelay:@"Relay1"];
             [self dismissViewControllerAnimated:YES completion:nil];
+            
         }]];
         [alert addAction:[UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
             [self dismissViewControllerAnimated:YES completion:nil];

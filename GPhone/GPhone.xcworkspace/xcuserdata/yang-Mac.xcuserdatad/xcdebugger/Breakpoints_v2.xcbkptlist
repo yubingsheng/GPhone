@@ -10,13 +10,29 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "GPhone/Server/GPhoneCallService.m"
-            timestampString = "535786753.520937"
+            timestampString = "536912921.330601"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "90"
             endingLineNumber = "90"
-            landmarkName = "-handleSessionConfirmCallBackWithRelaySN:MenuSupport:ChatSupport:CallSupport:Nonce:ErrorCode:"
-            landmarkType = "7">
+            landmarkName = "RelayStatusRsp_Callback"
+            landmarkType = "9">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "GPhone/Server/GPhoneCallService.m"
+            timestampString = "536912921.330914"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "77"
+            endingLineNumber = "77"
+            landmarkName = "CallInAlertingAck_Callback"
+            landmarkType = "9">
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>

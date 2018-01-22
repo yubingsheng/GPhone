@@ -7,11 +7,12 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "RTCView.h"
 
-@interface GPhoneCallService : NSObject
-
+@interface GPhoneCallService : NSObject <RTCDelegate>
+@property (strong, nonatomic) RTCView *callingView;
 +(GPhoneCallService *)sharedManager;
 - (void) relayLogin:(id) relaySN ;
-- (void)dialWith:(NSString *)phone;
+- (void)dialWithNumber:(NSString *)number nickName:(NSString *)name byRelay:(NSString *)relay;
 - (void)hangup;
 @end

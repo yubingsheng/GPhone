@@ -32,7 +32,7 @@
 #pragma mark - JCDialPadDelegate
 -(void)dialingWith:(NSString *)phone {
      NSLog(@"%@",phone);
-    [GPhoneCallService.sharedManager dialWith:phone];
+//    [GPhoneCallService.sharedManager dialWith:phone];
 }
 
 -(void)hangUp {
