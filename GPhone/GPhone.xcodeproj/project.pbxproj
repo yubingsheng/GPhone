@@ -140,6 +140,7 @@
 		D6C3FACF1FFFBA6F00E2EDEB /* view_audio_reply_message_bg@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D6C3FAA71FFFBA6F00E2EDEB /* view_audio_reply_message_bg@2x.png */; };
 		D6C3FAD01FFFBA6F00E2EDEB /* RTCButton.m in Sources */ = {isa = PBXBuildFile; fileRef = D6C3FAA91FFFBA6F00E2EDEB /* RTCButton.m */; };
 		D6C3FAD11FFFBA6F00E2EDEB /* RTCView.m in Sources */ = {isa = PBXBuildFile; fileRef = D6C3FAAB1FFFBA6F00E2EDEB /* RTCView.m */; };
+		D6C3FAD42018C3DC00E2EDEB /* RelayStatusModel.m in Sources */ = {isa = PBXBuildFile; fileRef = D6C3FAD32018C3DC00E2EDEB /* RelayStatusModel.m */; };
 		D6EC681F1FEE751A006A07F0 /* SettingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D6EC681E1FEE751A006A07F0 /* SettingViewController.m */; };
 		D6EC68221FEF4E86006A07F0 /* GPhoneConfig.m in Sources */ = {isa = PBXBuildFile; fileRef = D6EC68211FEF4E86006A07F0 /* GPhoneConfig.m */; };
 		D6EC68261FEF5C6A006A07F0 /* CallHistoryCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D6EC68241FEF5C6A006A07F0 /* CallHistoryCell.m */; };
@@ -337,6 +338,8 @@
 		D6C3FAA91FFFBA6F00E2EDEB /* RTCButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RTCButton.m; sourceTree = "<group>"; };
 		D6C3FAAA1FFFBA6F00E2EDEB /* RTCView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RTCView.h; sourceTree = "<group>"; };
 		D6C3FAAB1FFFBA6F00E2EDEB /* RTCView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RTCView.m; sourceTree = "<group>"; };
+		D6C3FAD22018C3DC00E2EDEB /* RelayStatusModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RelayStatusModel.h; sourceTree = "<group>"; };
+		D6C3FAD32018C3DC00E2EDEB /* RelayStatusModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RelayStatusModel.m; sourceTree = "<group>"; };
 		D6EC681D1FEE751A006A07F0 /* SettingViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SettingViewController.h; sourceTree = "<group>"; };
 		D6EC681E1FEE751A006A07F0 /* SettingViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SettingViewController.m; sourceTree = "<group>"; };
 		D6EC68201FEF4E86006A07F0 /* GPhoneConfig.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = GPhoneConfig.h; path = GPhone/APP/Config/GPhoneConfig.h; sourceTree = SOURCE_ROOT; };
@@ -518,6 +521,8 @@
 				B880E4751FEB887C002625CF /* GPhoneBaseModel.m */,
 				B8F17F8B1FC802630015B376 /* MessageModel.h */,
 				B8F17F8A1FC802630015B376 /* MessageModel.m */,
+				D6C3FAD22018C3DC00E2EDEB /* RelayStatusModel.h */,
+				D6C3FAD32018C3DC00E2EDEB /* RelayStatusModel.m */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -1118,6 +1123,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				D6EC68221FEF4E86006A07F0 /* GPhoneConfig.m in Sources */,
+				D6C3FAD42018C3DC00E2EDEB /* RelayStatusModel.m in Sources */,
 				B8F17F861FC801E20015B376 /* MessageListViewController.m in Sources */,
 				B8F17F4F1FC8015D0015B376 /* JSMessagesViewController.m in Sources */,
 				B8A130FF1FB2BA32004DD6F1 /* BaseNavigationController.m in Sources */,

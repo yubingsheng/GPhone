@@ -9,12 +9,28 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "GPhone/Server/GPhoneCallService.m"
-            timestampString = "536912921.330601"
+            filePath = "GPhone/APP/ViewController/Setting/RelayListViewController.m"
+            timestampString = "538496786.298287"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "90"
-            endingLineNumber = "90"
+            startingLineNumber = "36"
+            endingLineNumber = "36"
+            landmarkName = "-relayStatusWith:"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "GPhone/Server/GPhoneCallService.m"
+            timestampString = "538496786.298362"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "97"
+            endingLineNumber = "97"
             landmarkName = "RelayStatusRsp_Callback"
             landmarkType = "9">
          </BreakpointContent>
@@ -26,13 +42,13 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "GPhone/Server/GPhoneCallService.m"
-            timestampString = "536912921.330914"
+            timestampString = "538496786.298849"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "77"
-            endingLineNumber = "77"
-            landmarkName = "CallInAlertingAck_Callback"
-            landmarkType = "9">
+            startingLineNumber = "101"
+            endingLineNumber = "101"
+            landmarkName = "-handleRelayStatusRspWithRelaySN:networkOK:signalStrength:"
+            landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>

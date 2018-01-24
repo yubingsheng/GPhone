@@ -7,15 +7,21 @@
 //
 
 #import "RelayListViewController.h"
-#import "galaxy.h"
-@interface RelayListViewController ()
+#import "RelayStatusModel.h"
+#import "GPhoneCallService.h"
 
+@interface RelayListViewController ()<GPhoneCallServiceDelegate>
+@property (strong, nonatomic) GPhoneCallService *gphoneCallService;
 @end
 
 @implementation RelayListViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    _gphoneCallService = GPhoneCallService.sharedManager;
+    _gphoneCallService.delegate = self;
+    unsigned int relaySN = 0x11223344;
+    [_gphoneCallService relayStatus:relaySN];
     // Do any additional setup after loading the view from its nib.
 }
 
@@ -25,14 +31,9 @@
     // Dispose of any resources that can be recreated.
 }
 
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
+#pragma mark - GPhoneServiceDelegate
+-(void)relayStatusWith:(RelayStatusModel *)statusModel {
+    
 }
-*/
 
 @end

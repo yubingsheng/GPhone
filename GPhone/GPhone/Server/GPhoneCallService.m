@@ -71,6 +71,14 @@
     galaxy_callRelease();
 }
 
+- (void)relayStatus:(unsigned int)relaySN {
+    if(!galaxy_relayStatusReq(relaySN)) {
+        NSLog( @"get gmobile status failed");
+    } else {
+//        display.text = @"get gmobile status start";
+    }
+}
+
 #pragma mark - Delegate
 
 static void CallInAlertingAck_Callback(void *inUserData, int callId, unsigned int relaySN) {
@@ -79,7 +87,6 @@ static void CallInAlertingAck_Callback(void *inUserData, int callId, unsigned in
 
 - (void) handleCallInAlertingAckWithCallId: (int)callId relaySN: (unsigned int)relaySN
 {
-    //galaxy_relayStatusReq(relaySN);
     //TODO stop callInAlerting timer
     NSLog(@"SHAY callInAlertingAck got");
 }
@@ -91,7 +98,13 @@ static void RelayStatusRsp_Callback(void *inUserData, unsigned int relaySN, int 
 }
 
 - (void) handleRelayStatusRspWithRelaySN: (unsigned int)relaySN networkOK: (int)networkOK signalStrength: (int)signalStrength{
-    NSLog(@"111");
+    if ([_delegate respondsToSelector:@selector(relayStatus:)]) {
+        RelayStatusModel *model = [RelayStatusModel alloc];
+        model.relaySN = relaySN;
+        model.netWorkStatus = networkOK;
+        model.signalStrength = signalStrength;
+        [_delegate relayStatusWith:model];
+    }
 }
 
 static void RelayLoginRsp_Callback(void *inUserData, int seqId, unsigned int relaySN, int errorCode)

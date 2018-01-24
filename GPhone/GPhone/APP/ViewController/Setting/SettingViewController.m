@@ -7,6 +7,7 @@
 //
 
 #import "SettingViewController.h"
+#import "RelayListViewController.h"
 
 @interface SettingViewController ()<UITableViewDelegate,UITableViewDataSource>
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
@@ -17,7 +18,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    _settingArray = @[@"relayLogin"];
+    _settingArray = @[@"relayLogin",@"relayList"];
     _tableView.delegate = self;
     _tableView.dataSource = self;
     _tableView.tableFooterView = [UIView new];
@@ -44,18 +45,30 @@
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
-    UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"提示" message:@"绑定Relay" preferredStyle:UIAlertControllerStyleAlert];
-    [alert addTextFieldWithConfigurationHandler:^(UITextField * _Nonnull textField) {
-       
-    }];
-    alert.textFields[indexPath.row].text = @"0x11223344";
-    [alert addAction:[UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
-        [self dismissViewControllerAnimated:YES completion:nil];
-    }]];
-    [alert addAction:[UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-        [GPhoneCallService.sharedManager relayLogin:alert.textFields[indexPath.row].text];
-    }]];
-    [self.navigationController presentViewController:alert animated:YES completion:nil];
+    switch (indexPath.row) {
+        case 1:
+        {
+            RelayListViewController *vc = [[RelayListViewController alloc]initWithNibName:@"RelayListViewController" bundle:nil];
+            [self.navigationController pushViewController:vc animated:YES];
+        }
+            break;
+        case 0:
+        {
+            UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"提示" message:@"绑定Relay" preferredStyle:UIAlertControllerStyleAlert];
+            [alert addTextFieldWithConfigurationHandler:^(UITextField * _Nonnull textField) {
+                
+            }];
+            alert.textFields[indexPath.row].text = @"0x11223344";
+            [alert addAction:[UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+                [self dismissViewControllerAnimated:YES completion:nil];
+            }]];
+            [alert addAction:[UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+                [GPhoneCallService.sharedManager relayLogin:alert.textFields[indexPath.row].text];
+            }]];
+            [self.navigationController presentViewController:alert animated:YES completion:nil];
+        }
+            break;
+    }
     
 }
 
