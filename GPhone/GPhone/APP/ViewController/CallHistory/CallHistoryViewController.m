@@ -27,7 +27,13 @@
     _tableView.tableFooterView = [UIView new];
     [_segmentedControl addTarget:self action:@selector(indexDidChangeForSegmentedControl:) forControlEvents:UIControlEventValueChanged];
     [self requestAuthorizationForAddressBook];
-    [GPhoneCallService.sharedManager relayLogin:@"0x11223344"];
+    NSLog(@"%@", GPhoneConfig.sharedManager.relaySN);
+
+    NSNumber *xx = [NSNumber numberWithChar:"0x11223344"];
+    unsigned int myUnsignedInt = [xx unsignedIntValue];
+    NSLog(@"转换完的数字为：%x",287454020);
+    
+    [GPhoneCallService.sharedManager relayLogin:myUnsignedInt];
     _callHistoryArray = [GPhoneConfig.sharedManager callHistoryArray];
 }
 

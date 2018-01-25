@@ -45,8 +45,8 @@
     }
 }
 #pragma mark - API
-- (void) relayLogin:(NSString*)relay {
-    relaySN = 0x11223344;
+- (void) relayLogin:(unsigned int)relay {
+    relaySN = relay;
     static int seqId;
     strcpy(authCode_nonce, "3F2504E08D64C20A");
     strcpy(pushTokenVoIP, "67b0dbf63d7823c900fdbfdda1179185aab1a32fce25daf06586b975711e7edc"); //实际应用中，由Apple分配，并保存在flash中。
@@ -73,7 +73,7 @@
     if(!galaxy_relayStatusReq(relaySN)) {
         NSLog( @"get gmobile status failed");
     } else {
-//        display.text = @"get gmobile status start";
+        NSLog( @"get gmobile status");
     }
 }
 

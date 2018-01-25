@@ -7,6 +7,7 @@
 //
 
 #import "AppDelegate.h"
+#import "GPhoneConfig.h"
 
 @interface AppDelegate ()<PKPushRegistryDelegate>
 
@@ -25,11 +26,64 @@
     [[UIApplication sharedApplication] registerForRemoteNotifications];
     
     [self voipRegistration];
-    
 //    _providerDelegate = [[ProviderDelegate alloc] init];
     NSLog(@"SHAY application started");
     
+    if (!GPhoneConfig.sharedManager.relaySN) {
+        [GPhoneCacheManager.sharedManager store:@"287454020" withKey:RELAYSN];
+        
+    }
+    [self getHexByDecimal:287454020];
+//    NSString *str = [@"0x11223344" integerValue];
+    //先以16为参数告诉strtoul字符串参数表示16进制数字，然后使用0x%X转为数字类型
+//    unsigned long red = strtoul([str UTF8String],0,16);
     return YES;
+}
+
+- (NSInteger)numberWithHexString:(NSString *)hexString{
+    
+    const char *hexChar = [hexString cStringUsingEncoding:NSUTF8StringEncoding];
+    
+    int hexNumber;
+    
+    sscanf(hexChar, "%x", &hexNumber);
+    
+    return (NSInteger)hexNumber;
+}
+- (unsigned int)getHexByDecimal:(NSInteger)decimal {
+    
+    NSString *hex =@"";
+    NSString *letter;
+    NSInteger number;
+    for (int i = 0; i<9; i++) {
+        
+        number = decimal % 16;
+        decimal = decimal / 16;
+        switch (number) {
+                
+            case 10:
+                letter =@"A"; break;
+            case 11:
+                letter =@"B"; break;
+            case 12:
+                letter =@"C"; break;
+            case 13:
+                letter =@"D"; break;
+            case 14:
+                letter =@"E"; break;
+            case 15:
+                letter =@"F"; break;
+            default:
+                letter = [NSString stringWithFormat:@"%ld", number];
+        }
+        hex = [letter stringByAppendingString:hex];
+        if (decimal == 0) {
+            
+            break;
+        }
+    }
+    unsigned int xx =(unsigned int)hex;
+    return xx;
 }
 
 // Register for VoIP notifications

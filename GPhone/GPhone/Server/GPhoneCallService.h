@@ -28,7 +28,7 @@
 /*
  注册Relay
  */
-- (void) relayLogin:(id) relaySN ;
+- (void) relayLogin:(unsigned int)relaySN;
 /*
  呼出
  */

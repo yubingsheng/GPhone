@@ -26,6 +26,7 @@
     _gphoneCallService = GPhoneCallService.sharedManager;
     _gphoneCallService.delegate = self;
     unsigned int relaySN = 0x11223344;
+//    NSLog(@"%@", [NSString stringWithFormat:@"%d",relaySN]);
     [_gphoneCallService relayStatus:relaySN];
     // Do any additional setup after loading the view from its nib.
 }

@@ -28,7 +28,7 @@
 
 #pragma mark - APPCnfig
 @property (strong, nonatomic) NSString *relaySN;
-@property (strong, nonatomic) NSMutableArray *relaySNArray;
+@property (strong, nonatomic) NSMutableArray *relaysNArray;
 @property (strong, nonatomic) NSMutableArray *callHistoryArray;
 @property (strong, nonatomic) NSMutableArray *messageArray;
 @property (strong, nonatomic) NSString* pushKitToken;

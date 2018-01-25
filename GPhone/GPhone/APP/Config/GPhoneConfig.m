@@ -9,6 +9,7 @@
 #import "GPhoneConfig.h"
 
 @implementation GPhoneConfig
+
 +(id)sharedManager{
     static GPhoneConfig *sharedInstance = nil;
     static dispatch_once_t onceToken;
@@ -40,7 +41,7 @@
     return [GPhoneCacheManager.sharedManager restoreWithkey:RELAYSN];
 }
 
-- (NSMutableArray*)relaySNArray {
+- (NSMutableArray*)relaysNArray {
     return [GPhoneCacheManager.sharedManager restoreWithkey:RELAYSNARRAY];
 }
 
