@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		B820A0BD2019C8940061445D /* RelayListTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B820A0BB2019C8940061445D /* RelayListTableViewCell.m */; };
+		B820A0BE2019C8940061445D /* RelayListTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = B820A0BC2019C8940061445D /* RelayListTableViewCell.xib */; };
 		B880E4731FEB8808002625CF /* libgalaxy7.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B880E4721FEB8808002625CF /* libgalaxy7.a */; };
 		B880E4761FEB887C002625CF /* GPhoneBaseModel.m in Sources */ = {isa = PBXBuildFile; fileRef = B880E4751FEB887C002625CF /* GPhoneBaseModel.m */; };
 		B880E4791FEB8E09002625CF /* GPhoneCacheManager.m in Sources */ = {isa = PBXBuildFile; fileRef = B880E4781FEB8E09002625CF /* GPhoneCacheManager.m */; };
@@ -171,6 +173,9 @@
 
 /* Begin PBXFileReference section */
 		3A1E102A4EBCB0663EB476DD /* Pods-GPhone.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GPhone.debug.xcconfig"; path = "Pods/Target Support Files/Pods-GPhone/Pods-GPhone.debug.xcconfig"; sourceTree = "<group>"; };
+		B820A0BA2019C8940061445D /* RelayListTableViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RelayListTableViewCell.h; sourceTree = "<group>"; };
+		B820A0BB2019C8940061445D /* RelayListTableViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RelayListTableViewCell.m; sourceTree = "<group>"; };
+		B820A0BC2019C8940061445D /* RelayListTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = RelayListTableViewCell.xib; sourceTree = "<group>"; };
 		B880E4721FEB8808002625CF /* libgalaxy7.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libgalaxy7.a; sourceTree = "<group>"; };
 		B880E4741FEB887C002625CF /* GPhoneBaseModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GPhoneBaseModel.h; sourceTree = "<group>"; };
 		B880E4751FEB887C002625CF /* GPhoneBaseModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GPhoneBaseModel.m; sourceTree = "<group>"; };
@@ -510,6 +515,9 @@
 				D6EC68231FEF5C6A006A07F0 /* CallHistoryCell.h */,
 				D6EC68241FEF5C6A006A07F0 /* CallHistoryCell.m */,
 				D6EC68251FEF5C6A006A07F0 /* CallHistoryCell.xib */,
+				B820A0BA2019C8940061445D /* RelayListTableViewCell.h */,
+				B820A0BB2019C8940061445D /* RelayListTableViewCell.m */,
+				B820A0BC2019C8940061445D /* RelayListTableViewCell.xib */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -1021,6 +1029,7 @@
 				B8F17F741FC8015D0015B376 /* input-bar.png in Resources */,
 				D6C3FAC91FFFBA6F00E2EDEB /* icon_avp_video_white@2x.png in Resources */,
 				B8F17F5A1FC8015D0015B376 /* bubble-default-outgoing-selected.png in Resources */,
+				B820A0BE2019C8940061445D /* RelayListTableViewCell.xib in Resources */,
 				B8F17F561FC8015D0015B376 /* bubble-default-incoming.png in Resources */,
 				B8F17F661FC8015D0015B376 /* bubble-flat-outgoing.png in Resources */,
 				D6C3FAAC1FFFBA6F00E2EDEB /* call_bg@2x.png in Resources */,
@@ -1125,6 +1134,7 @@
 				D6EC68221FEF4E86006A07F0 /* GPhoneConfig.m in Sources */,
 				D6C3FAD42018C3DC00E2EDEB /* RelayStatusModel.m in Sources */,
 				B8F17F861FC801E20015B376 /* MessageListViewController.m in Sources */,
+				B820A0BD2019C8940061445D /* RelayListTableViewCell.m in Sources */,
 				B8F17F4F1FC8015D0015B376 /* JSMessagesViewController.m in Sources */,
 				B8A130FF1FB2BA32004DD6F1 /* BaseNavigationController.m in Sources */,
 				D6EC681F1FEE751A006A07F0 /* SettingViewController.m in Sources */,

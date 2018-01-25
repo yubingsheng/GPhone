@@ -61,8 +61,6 @@
     _callingView = [[RTCView alloc] initWithNumber:number nickName:name byRelay:relay];
     _callingView.delegate = self;
     [_callingView show];
-
-//    [self performSelectorOnMainThread:@selector(startSessionInviteTimer) withObject:nil waitUntilDone:NO];
 }
 
 -(void)hangup {
@@ -92,13 +90,13 @@ static void CallInAlertingAck_Callback(void *inUserData, int callId, unsigned in
 }
 
 
-static void RelayStatusRsp_Callback(void *inUserData, unsigned int relaySN, int networkOK, int signalStrength)
+static void RelayStatusRsp_Callback(void *inUserData, unsigned int relaySN, BOOL networkOK, int signalStrength)
 {
     [STRONGSELF handleRelayStatusRspWithRelaySN:relaySN networkOK:networkOK signalStrength:signalStrength];
 }
 
-- (void) handleRelayStatusRspWithRelaySN: (unsigned int)relaySN networkOK: (int)networkOK signalStrength: (int)signalStrength{
-    if ([_delegate respondsToSelector:@selector(relayStatus:)]) {
+- (void) handleRelayStatusRspWithRelaySN: (unsigned int)relaySN networkOK: (BOOL)networkOK signalStrength: (int)signalStrength{
+    if ([_delegate respondsToSelector:@selector(relayStatusWith:)]) {
         RelayStatusModel *model = [RelayStatusModel alloc];
         model.relaySN = relaySN;
         model.netWorkStatus = networkOK;
