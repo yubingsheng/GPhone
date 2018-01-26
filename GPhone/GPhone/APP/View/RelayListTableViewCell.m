@@ -8,16 +8,32 @@
 
 #import "RelayListTableViewCell.h"
 
+
+
 @implementation RelayListTableViewCell
 
 + (id)loadNib {
     return [[[NSBundle mainBundle] loadNibNamed:@"RelayListTableViewCell" owner:nil options:nil]lastObject];
 }
 
+
 - (void)awakeFromNib {
+    
+    [self.signalStrengthBGView addSubview:self.phoneSignalView];
     [super awakeFromNib];
-    // Initialization code
 }
+
+- (PhoneSignalView*)phoneSignalView {
+    if (!_phoneSignalView) {
+        _phoneSignalView = [[PhoneSignalView alloc] initWithFrame:CGRectMake(0, 0, 30, 40)];
+        _phoneSignalView.spacing = 1;
+        _phoneSignalView.lineWidth = 3;
+        _phoneSignalView.backgroundColor = [UIColor clearColor];
+        
+    }
+    return _phoneSignalView;
+}
+
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {
     [super setSelected:selected animated:animated];
