@@ -51,7 +51,7 @@
 #pragma mark - TableViewDelegate
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    
+//    [_tableView reloadData];
 }
 
 #pragma mark - TableViewDataSource
@@ -69,7 +69,8 @@
     RelayStatusModel * model = [_relayArray objectAtIndex:indexPath.row];
     cell.relayNameLabel.text =  [NSString stringWithFormat:@"%d", model.relaySN];
     cell.netWorkLabel.text = [NSString stringWithFormat:@"NetWork: %d", model.netWorkStatus];
-    cell.signalStrengthLabel.text = [NSString stringWithFormat:@"signal: %d", model.signalStrength];
+//    cell.signalStrengthLabel.text = [NSString stringWithFormat:@"signal: %d", model.signalStrength];
+    cell.phoneSignalView.signalStrength = model.signalStrength;
     return cell;
 }
 - (void)didReceiveMemoryWarning {

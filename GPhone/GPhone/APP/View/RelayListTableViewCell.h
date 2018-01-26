@@ -7,11 +7,14 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "PhoneSignalView.h"
 
 @interface RelayListTableViewCell : UITableViewCell
 @property (weak, nonatomic) IBOutlet UILabel *relayNameLabel;
 @property (weak, nonatomic) IBOutlet UILabel *netWorkLabel;
-@property (weak, nonatomic) IBOutlet UILabel *signalStrengthLabel;
+@property (weak, nonatomic) IBOutlet UIView *signalStrengthBGView;
+
+@property (nonatomic,strong)PhoneSignalView* phoneSignalView;
 
 + (id)loadNib;
 
