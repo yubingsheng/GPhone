@@ -6,7 +6,6 @@
 //  Copyright © 2017年 郁兵生. All rights reserved.
 //
 #import <Foundation/Foundation.h>
-#import "GPhoneCacheManager.h"
 
 #pragma mark - Interface
 @interface GPhoneConfig : NSObject{

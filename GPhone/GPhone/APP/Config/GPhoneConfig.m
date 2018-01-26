@@ -46,11 +46,11 @@
 }
 
 - (NSMutableArray*)messageArray {
-    return [GPhoneCacheManager.sharedManager restoreWithkey:MESSAGES];
+    return [GPhoneCacheManager.sharedManager unarchiveObjectforKey:MESSAGES];
 }
 
 - (NSMutableArray*) callHistoryArray {
-    return [GPhoneCacheManager.sharedManager restoreWithkey:CALLHISTORY];
+    return [GPhoneCacheManager.sharedManager unarchiveObjectforKey:CALLHISTORY];
 }
 
 - (NSString*)pushToken {

@@ -73,7 +73,7 @@
     NSString *name = [CNContactFormatter stringFromContact:contact style:CNContactFormatterStyleFullName];
     CNPhoneNumber *phoneValue= contactProperty.value;
     NSString *phoneNumber = phoneValue.stringValue;
-    NSLog(@"%@",contactProperty);
+    NSLog(@"%@",contact);
     [self dismissViewControllerAnimated:YES completion:^{
         UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"拨号" message:[NSString stringWithFormat:@"呼叫：%@ \n %@",name,phoneNumber] preferredStyle:UIAlertControllerStyleAlert];
         [alert addAction:[UIAlertAction actionWithTitle:@"拨打" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
@@ -81,7 +81,7 @@
             [GPhoneCacheManager.sharedManager archiveObject:contact forKey:@"1"];
             id xx = [GPhoneCacheManager.sharedManager unarchiveObjectforKey:@"1"];
             
-//            [GPhoneCallService.sharedManager dialWithNumber:@"18016388248" nickName:name byRelay:@"Relay1"];
+            [GPhoneCallService.sharedManager dialWithNumber:@"18016388248" nickName:name byRelay:@"Relay1"];
             [self dismissViewControllerAnimated:YES completion:nil];
             
         }]];

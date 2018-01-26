@@ -8,7 +8,7 @@
 
 #import "AppDelegate.h"
 #import "GPhoneConfig.h"
-
+#import "GPhoneCacheManager.h"
 @interface AppDelegate ()<PKPushRegistryDelegate>
 
 @end
@@ -33,62 +33,9 @@
         [GPhoneCacheManager.sharedManager store:@"287454020" withKey:RELAYSN];
         //0x11223344
     }
-    
-//    [self getHexByDecimal:287454020];
-
-    
-//    NSString *str = [@"0x11223344" integerValue];
-    //先以16为参数告诉strtoul字符串参数表示16进制数字，然后使用0x%X转为数字类型
-//    unsigned long red = strtoul([str UTF8String],0,16);
     return YES;
 }
 
-- (NSInteger)numberWithHexString:(NSString *)hexString{
-    
-    const char *hexChar = [hexString cStringUsingEncoding:NSUTF8StringEncoding];
-    
-    int hexNumber;
-    
-    sscanf(hexChar, "%x", &hexNumber);
-    
-    return (NSInteger)hexNumber;
-}
-- (unsigned int)getHexByDecimal:(NSInteger)decimal {
-    
-    NSString *hex =@"";
-    NSString *letter;
-    NSInteger number;
-    for (int i = 0; i<9; i++) {
-        
-        number = decimal % 16;
-        decimal = decimal / 16;
-        switch (number) {
-                
-            case 10:
-                letter =@"A"; break;
-            case 11:
-                letter =@"B"; break;
-            case 12:
-                letter =@"C"; break;
-            case 13:
-                letter =@"D"; break;
-            case 14:
-                letter =@"E"; break;
-            case 15:
-                letter =@"F"; break;
-            default:
-                letter = [NSString stringWithFormat:@"%ld", number];
-        }
-        hex = [letter stringByAppendingString:hex];
-        if (decimal == 0) {
-            
-            break;
-        }
-    }
-    hex = [@"0x" stringByAppendingString:hex];
-    unsigned int order = (unsigned int)[hex intValue];
-    return order;
-}
 
 // Register for VoIP notifications
 - (void) voipRegistration {
@@ -108,10 +55,8 @@
 
 
 - (void)applicationDidEnterBackground:(UIApplication *)application {
-    // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later.
-    // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
+     [GPhoneCacheManager.sharedManager archiveObject:GPhoneConfig.sharedManager.callHistoryArray forKey:CALLHISTORY];
 }
-
 
 - (void)applicationWillEnterForeground:(UIApplication *)application {
     // Called as part of the transition from the background to the active state; here you can undo many of the changes made on entering the background.

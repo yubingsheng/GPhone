@@ -8,10 +8,8 @@
 
 #define STRONGSELF (__bridge GPhoneCallService *)inUserData
 
-#import "CommonCrypto/CommonDigest.h"
 #import "GPhoneCallService.h"
-#import "galaxy.h"
-#import "MBProgressHUD.h"
+
 
 @implementation GPhoneCallService {
     NSTimer *timerSessionInvite;
@@ -55,6 +53,8 @@
 }
 
 - (void)dialWithNumber:(NSString *)number nickName:(NSString *)name byRelay:(NSString *)relay {
+//    ContactModel *contactModel = [[ContactModel alloc]init];
+
     number = [number stringByReplacingOccurrencesOfString:@"-" withString:@""];
     const char *asciiCode = [number UTF8String]; //65
     galaxy_sessionInvite(asciiCode, 0, 0, 0, relaySN);
