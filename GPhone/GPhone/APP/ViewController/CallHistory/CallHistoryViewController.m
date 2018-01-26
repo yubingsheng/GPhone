@@ -27,13 +27,12 @@
     _tableView.tableFooterView = [UIView new];
     [_segmentedControl addTarget:self action:@selector(indexDidChangeForSegmentedControl:) forControlEvents:UIControlEventValueChanged];
     [self requestAuthorizationForAddressBook];
-    NSLog(@"%@", GPhoneConfig.sharedManager.relaySN);
-
-    NSNumber *xx = [NSNumber numberWithChar:"0x11223344"];
-    unsigned int myUnsignedInt = [xx unsignedIntValue];
-    NSLog(@"转换完的数字为：%x",287454020);
+//    unsigned int x = 0x11223344;
     
-    [GPhoneCallService.sharedManager relayLogin:myUnsignedInt];
+    NSNumber *relaySN = [NSNumber numberWithInteger:GPhoneConfig.sharedManager.relaySN.integerValue];
+    NSLog(@"转换完的数字为：%@",relaySN);
+    
+    [GPhoneCallService.sharedManager relayLogin:[relaySN unsignedIntValue]];
     _callHistoryArray = [GPhoneConfig.sharedManager callHistoryArray];
 }
 
@@ -43,7 +42,7 @@
         CNContactStore *contactStore = [[CNContactStore alloc] init];
         [contactStore requestAccessForEntityType:CNEntityTypeContacts completionHandler:^(BOOL granted, NSError * _Nullable error) {
             if (granted) {
-                NSLog(@"已授权");
+                NSLog(@"通讯录已授权");
             } else {
                 NSLog(@"授权失败, error=%@", error);
             }
@@ -74,11 +73,15 @@
     NSString *name = [CNContactFormatter stringFromContact:contact style:CNContactFormatterStyleFullName];
     CNPhoneNumber *phoneValue= contactProperty.value;
     NSString *phoneNumber = phoneValue.stringValue;
-    
+    NSLog(@"%@",contactProperty);
     [self dismissViewControllerAnimated:YES completion:^{
         UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"拨号" message:[NSString stringWithFormat:@"呼叫：%@ \n %@",name,phoneNumber] preferredStyle:UIAlertControllerStyleAlert];
         [alert addAction:[UIAlertAction actionWithTitle:@"拨打" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-            [GPhoneCallService.sharedManager dialWithNumber:@"18016388248" nickName:name byRelay:@"Relay1"];
+            
+            [GPhoneCacheManager.sharedManager archiveObject:contact forKey:@"1"];
+            id xx = [GPhoneCacheManager.sharedManager unarchiveObjectforKey:@"1"];
+            
+//            [GPhoneCallService.sharedManager dialWithNumber:@"18016388248" nickName:name byRelay:@"Relay1"];
             [self dismissViewControllerAnimated:YES completion:nil];
             
         }]];

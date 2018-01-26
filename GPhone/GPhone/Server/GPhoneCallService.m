@@ -120,7 +120,7 @@ static void RelayLoginRsp_Callback(void *inUserData, int seqId, unsigned int rel
     else if(errorCode == 3) result = @"gmobile登录失败，请先弹出SIM卡再重新尝试登陆";
     else if(errorCode == 4) result = @"gmobile登录失败，gmobile不在线";
     else result = [NSString stringWithFormat: @"relay login failed with error code %d", errorCode];
-    NSLog(@"%@",result);
+
 }
 
 static void SessionConfirm_Callback(void *inUserData, unsigned int relaySN, int menuSupport, int chatSupport, int callSupport, const char *nonce, int errorCode) {
@@ -137,7 +137,6 @@ static void SessionConfirm_Callback(void *inUserData, unsigned int relaySN, int 
     if(!callSupport) {
         return;
     }
-    
     if(nonce) {
         if(strlen(nonce) != 8) {
             return;
@@ -153,18 +152,19 @@ static void SessionConfirm_Callback(void *inUserData, unsigned int relaySN, int 
     [self performSelectorOnMainThread:@selector(startCallSetupTimer) withObject:nil waitUntilDone:NO];
     
 }
-- (void) startCallSetupTimer
-{
+- (void) startCallSetupTimer{
     timerCallSetup = [NSTimer scheduledTimerWithTimeInterval:3.0 target:self selector:@selector(repeatCallSetup) userInfo:nil repeats:YES];
 }
+- (void) repeatCallSetup{
+    if(strlen(authCode_nonce) == 24) galaxy_callSetup(1, callMD5, 0);//set parm repeated to 1 !!!
+    else galaxy_callSetup(1, 0, 0);//set parm repeated to 1 !!!
+}
 
-static void CallTrying_Callback(void *inUserData)
-{
+static void CallTrying_Callback(void *inUserData){
     [STRONGSELF handleCallTryingCallBack];
 }
 
-- (void) handleCallTryingCallBack
-{
+- (void) handleCallTryingCallBack{
     [timerCallSetup invalidate];
 }
 
@@ -173,11 +173,7 @@ static void CallAlerting_Callback(void *inUserData) {
 }
 
 - (void) handleCallAlertingCallBack {
-    [self performSelectorOnMainThread:@selector(displayCallAlerting) withObject:nil waitUntilDone:NO];
-}
-
-- (void) displayCallAlerting {
-    
+    NSLog(@"CallAlertingCallBack");
 }
 
 static void CallAnswer_Callback(void *inUserData) {

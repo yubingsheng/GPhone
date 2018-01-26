@@ -25,9 +25,8 @@
     _tableView.tableFooterView = [UIView new];
     _gphoneCallService = GPhoneCallService.sharedManager;
     _gphoneCallService.delegate = self;
-    unsigned int relaySN = 0x11223344;
-//    NSLog(@"%@", [NSString stringWithFormat:@"%d",relaySN]);
-    [_gphoneCallService relayStatus:relaySN];
+     NSNumber *relaySN = [NSNumber numberWithInteger:GPhoneConfig.sharedManager.relaySN.integerValue];
+    [_gphoneCallService relayStatus:relaySN.unsignedIntValue];
     // Do any additional setup after loading the view from its nib.
 }
 #pragma mark - LazyLoading

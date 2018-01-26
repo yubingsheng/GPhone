@@ -27,6 +27,7 @@
     pad.delegate = self;
     [self.view addSubview:pad];
     
+    
 }
 
 #pragma mark - JCDialPadDelegate

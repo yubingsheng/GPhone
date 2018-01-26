@@ -31,9 +31,12 @@
     
     if (!GPhoneConfig.sharedManager.relaySN) {
         [GPhoneCacheManager.sharedManager store:@"287454020" withKey:RELAYSN];
-        
+        //0x11223344
     }
-    [self getHexByDecimal:287454020];
+    
+//    [self getHexByDecimal:287454020];
+
+    
 //    NSString *str = [@"0x11223344" integerValue];
     //先以16为参数告诉strtoul字符串参数表示16进制数字，然后使用0x%X转为数字类型
 //    unsigned long red = strtoul([str UTF8String],0,16);
@@ -82,8 +85,9 @@
             break;
         }
     }
-    unsigned int xx =(unsigned int)hex;
-    return xx;
+    hex = [@"0x" stringByAppendingString:hex];
+    unsigned int order = (unsigned int)[hex intValue];
+    return order;
 }
 
 // Register for VoIP notifications
