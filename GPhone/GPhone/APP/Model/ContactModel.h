@@ -13,10 +13,11 @@
 
 @property (assign, nonatomic) int id;
 @property (assign, nonatomic) int time;
+@property (strong, nonatomic) NSString *identifier;
 @property (strong, nonatomic) NSString *phoneNumber;
 @property (strong, nonatomic) NSString *fullName;
 @property (strong, nonatomic) NSString *creatTime;
 
-- (instancetype)initWithId:(int)id time:(int)time phoneNumber:(NSString *)phoneNumber fullName:(NSString*)fullName creatTime:(NSString *)creatTime;
+- (instancetype)initWithId:(int)id time:(int)time identifier:(NSString*)identifier phoneNumber:(NSString *)phoneNumber fullName:(NSString*)fullName creatTime:(NSString *)creatTime;
 
 @end

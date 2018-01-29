@@ -12,22 +12,19 @@
 
 #pragma mark - Handel
 
-+ (NSMutableArray *)callHistoryContainWith:(CNContactProperty *)contact {
++ (NSMutableArray *)callHistoryContainWith:(ContactModel *)contactModel {
     BOOL contain = NO;
-    ContactModel *contactModel = [[ContactModel alloc]init];
-    contactModel.contact = contact;
-    contactModel.time = 1;
     NSMutableArray * history = GPhoneConfig.sharedManager.callHistoryArray;
     for (NSInteger i = 0; i < history.count; i++) {
         ContactModel * tmpContact = history[i];
-        if ([contact.identifier isEqualToString:tmpContact.contact.identifier]) {
+        if ([contactModel.identifier isEqualToString:tmpContact.identifier]) {
             contain = YES;
             contactModel.time += tmpContact.time;
             [history removeObjectAtIndex:i];
             i = history.count - 1;
         }
     }
-    [history insertObject:contact atIndex:0];
+    [history insertObject:contactModel atIndex:0];
     return history;
 }
 
