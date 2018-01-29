@@ -32,7 +32,7 @@
 /*
  呼出
  */
-- (void)dialWithNumber:(NSString *)number nickName:(NSString *)name byRelay:(NSString *)relay;
+- (void)dialWith:(ContactModel *)contactModel;
 /*
  主动挂断
  */

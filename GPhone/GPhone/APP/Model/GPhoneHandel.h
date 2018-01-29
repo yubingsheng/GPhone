@@ -16,5 +16,14 @@
  通话记录缓存
  */
 + (NSMutableArray *)callHistoryContainWith:(ContactModel *)contactModel;
+
+/*
+ 时间格式
+ */
 +(NSString *)friendlyTime:(NSString *)datetime;
+
+/*
+ date to string
+ */
++ (NSString *)dateToStringWith:(NSDate *)date;
 @end

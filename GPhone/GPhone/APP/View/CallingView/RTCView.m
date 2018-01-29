@@ -28,7 +28,7 @@ NSString *const kVideoCaptureNotification = @"kVideoCaptureNotification";
 
 #define kRTCRate        ([UIScreen mainScreen].bounds.size.width / 320.0)
 // 底部按钮容器的高度
-#define kContainerH     (162 * kRTCRate)
+#define kContainerH     (81 * kRTCRate)
 // 每个按钮的宽度
 #define kBtnW           (60 * kRTCRate)
 // 视频聊天时，小窗口的宽
@@ -36,7 +36,7 @@ NSString *const kVideoCaptureNotification = @"kVideoCaptureNotification";
 // 视频聊天时，小窗口的高
 #define kMicVideoH      (120 * kRTCRate)
 
-@interface RTCView ()
+@interface RTCView ()<JCDialPadDelegate>
 
 /** 是否是视频聊天 */
 @property (assign, nonatomic)   BOOL                    isVideo;
@@ -91,6 +91,8 @@ NSString *const kVideoCaptureNotification = @"kVideoCaptureNotification";
 @property (strong, nonatomic)   UIView                  *coverView;
 /** 动画用的layer */
 @property (strong, nonatomic)   CAShapeLayer            *shapeLayer;
+/** 拨号键盘 */
+@property (strong, nonatomic)   JCDialPad *pad;
 
 @end
 
@@ -126,7 +128,6 @@ NSString *const kVideoCaptureNotification = @"kVideoCaptureNotification";
     if (self.isVideo && !self.callee) {
         // 视频通话时，呼叫方的UI初始化
         [self initUIForVideoCaller];
-        
 //        // 模拟对方点击通话后的动画效果
         [self performSelector:@selector(connected) withObject:nil afterDelay:3.0];
         _answered = YES;
@@ -146,7 +147,6 @@ NSString *const kVideoCaptureNotification = @"kVideoCaptureNotification";
         [self initUIForAudioCallee];
     } else {
         // 视频通话时，被呼叫方UI初始化
-        [self initUIForVideoCallee];
     }
 }
 
@@ -169,7 +169,7 @@ NSString *const kVideoCaptureNotification = @"kVideoCaptureNotification";
     self.nickNameLabel.frame = CGRectMake(20, topOffset, kRTCWidth - 20 * 3 - switchBtnW, 30);
     self.nickNameLabel.textColor = [UIColor whiteColor];
     self.nickNameLabel.textAlignment = NSTextAlignmentLeft;
-    self.nickNameLabel.text = self.nickName ? :@"飞翔的昵称";
+    self.nickNameLabel.text = self.nickName ? :@"未知号码";
     [self addSubview:_nickNameLabel];
     
     self.connectLabel.frame = CGRectMake(20, CGRectGetMaxY(self.nickNameLabel.frame), CGRectGetWidth(self.nickNameLabel.frame), 20);
@@ -192,35 +192,6 @@ NSString *const kVideoCaptureNotification = @"kVideoCaptureNotification";
     [self addSubview:_coverView];
     
     [self loudspeakerClick];
-}
-
-/**
- *  视频通话，被呼叫方UI初始化
- */
-- (void)initUIForVideoCallee
-{
-    // 上面 通用部分
-    [self initUIForTopCommonViews];
-    
-    CGFloat btnW = kBtnW;
-    CGFloat btnH = kBtnW + 20;
-    CGFloat paddingX = (kRTCWidth - btnW * 2) / 3;
-    self.hangupBtn.frame = CGRectMake(paddingX, kContainerH - btnH - 5, btnW, btnH);
-    [self.btnContainerView addSubview:_hangupBtn];
-    
-    self.answerBtn.frame = CGRectMake(paddingX * 2 + btnW, kContainerH - btnH - 5, btnW, btnH);
-    [self.btnContainerView addSubview:_answerBtn];
-    
-    // 这里还需要添加两个按钮
-    self.msgReplyBtn.frame = CGRectMake(paddingX, 5, btnW, btnW);
-    [self.btnContainerView addSubview:_msgReplyBtn];
-    
-    self.voiceAnswerBtn.frame = CGRectMake(paddingX * 2 + btnW, 5, btnW, btnW);
-    [self.btnContainerView addSubview:_voiceAnswerBtn];
-    
-    self.coverView.frame = self.frame;
-    self.coverView.hidden = YES;
-    [self addSubview:_coverView];
 }
 
 /**
@@ -281,17 +252,24 @@ NSString *const kVideoCaptureNotification = @"kVideoCaptureNotification";
     
     self.bgImageView.frame = self.frame;
     [self addSubview:_bgImageView];
-    
+    [self sendSubviewToBack:_bgImageView];
+    _pad = [[JCDialPad alloc] initWithFrame:CGRectMake(10, 10, self.bounds.size.width- 10 *2, self.bounds.size.height- 10 *2)];
+    _pad.formatTextToPhoneNumber = YES;
+    _pad.buttons = [JCDialPad defaultButtons];
+    _pad.phoneButton.removeFromSuperview;
+    _pad.delegate = self;
+    //        _pad.backgroundColor = [UIColor redColor];
+    [self addSubview:_pad];
     CGFloat portraitW = 130 * kRTCRate;
-    self.portraitImageView.frame = CGRectMake(0, 0, portraitW, portraitW);
-    self.portraitImageView.center = CGPointMake(centerX, portraitW);
+    self.portraitImageView.frame = CGRectMake(0, 0, portraitW, 0);
+    self.portraitImageView.center = CGPointMake(centerX, 0);
     self.portraitImageView.layer.cornerRadius = portraitW * 0.5;
     self.portraitImageView.layer.masksToBounds = YES;
     [self addSubview:_portraitImageView];
     
     self.nickNameLabel.frame = CGRectMake(0, 0, kRTCWidth, 30);
     self.nickNameLabel.center = CGPointMake(centerX, CGRectGetMaxY(self.portraitImageView.frame) + 40);
-    self.nickNameLabel.text = self.nickName ? :@"飞翔的昵称";
+    self.nickNameLabel.text = self.nickName ? :@"未知号码";
     [self addSubview:_nickNameLabel];
     
     self.connectLabel.frame = CGRectMake(0, 0, kRTCWidth, 30);
@@ -304,6 +282,7 @@ NSString *const kVideoCaptureNotification = @"kVideoCaptureNotification";
     [self addSubview:_netTipLabel];
     
     self.btnContainerView.frame = CGRectMake(0, kRTCHeight - kContainerH, kRTCWidth, kContainerH);
+    _btnContainerView.backgroundColor = [UIColor redColor];
     [self addSubview:_btnContainerView];
 }
 
@@ -314,15 +293,13 @@ NSString *const kVideoCaptureNotification = @"kVideoCaptureNotification";
 {
     CGFloat btnW = kBtnW;
     CGFloat paddingX = (self.frame.size.width - btnW*3) / 4;
-    CGFloat paddingY = (kContainerH - btnW *2) / 3;
+    CGFloat paddingY = (kContainerH - btnW *3) / 3;
     
-    self.loudspeakerBtn.frame = CGRectMake(paddingX * 2 + btnW , paddingY, btnW, btnW);
+    self.loudspeakerBtn.frame = CGRectMake(paddingX , paddingY * 2 + btnW, btnW, btnW);
     self.loudspeakerBtn.selected = self.loudSpeaker;
     [self.btnContainerView addSubview:_loudspeakerBtn];
-    
     self.hangupBtn.frame = CGRectMake(paddingX * 2 + btnW, paddingY * 2 + btnW, btnW, btnW);
     [self.btnContainerView addSubview:_hangupBtn];
-    
     self.packupBtn.frame = CGRectMake(paddingX * 3 + btnW * 2, paddingY * 2 + btnW, btnW, btnW);
     [self.btnContainerView addSubview:_packupBtn];
 }
@@ -398,9 +375,7 @@ NSString *const kVideoCaptureNotification = @"kVideoCaptureNotification";
 {
     [self.subviews makeObjectsPerformSelector:@selector(removeFromSuperview)];
     _bgImageView = nil;
-//    _ownImageView = nil;
-//    _adverseImageView = nil;
-//    _portraitImageView = nil;
+    _portraitImageView = nil;
     _nickNameLabel = nil;
     _connectLabel = nil;
     _netTipLabel = nil;

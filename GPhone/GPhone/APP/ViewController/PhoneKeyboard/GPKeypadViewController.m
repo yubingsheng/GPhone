@@ -7,7 +7,6 @@
 //
 
 #import "GPKeypadViewController.h"
-#import "JCDialPad.h"
 
 @interface GPKeypadViewController ()<JCDialPadDelegate>
 
@@ -33,7 +32,8 @@
 #pragma mark - JCDialPadDelegate
 -(void)dialingWith:(NSString *)phone {
      NSLog(@"%@",phone);
-//    [GPhoneCallService.sharedManager dialWith:phone];
+     ContactModel *model = [[ContactModel alloc]initWithId:0 time:1 identifier:@"" phoneNumber:phone fullName:@"" creatTime:[GPhoneHandel dateToStringWith:[NSDate date]]];
+     [GPhoneCallService.sharedManager dialWith:model];
 }
 
 -(void)hangUp {

@@ -20,6 +20,11 @@
 
 @implementation CallHistoryViewController
 
+- (void)viewWillAppear:(BOOL)animated {
+    [super  viewWillAppear:animated];
+    _callHistoryArray = GPhoneConfig.sharedManager.callHistoryArray;
+    [_tableView reloadData];
+}
 - (void)viewDidLoad {
     [super viewDidLoad];
     _tableView.delegate = self;
@@ -33,7 +38,7 @@
     NSLog(@"转换完的数字为：%@",relaySN);
     
     [GPhoneCallService.sharedManager relayLogin:[relaySN unsignedIntValue]];
-    _callHistoryArray = [GPhoneConfig.sharedManager callHistoryArray];
+    
 }
 
 - (void)requestAuthorizationForAddressBook {
@@ -49,7 +54,18 @@
         }];
     }
 }
-
+- (void)dialingWith:(ContactModel *)contact {
+    UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"拨号" message:[NSString stringWithFormat:@"呼叫：%@ \n %@",contact.fullName,contact.phoneNumber] preferredStyle:UIAlertControllerStyleAlert];
+    [alert addAction:[UIAlertAction actionWithTitle:@"拨打" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        [GPhoneCallService.sharedManager dialWith:contact];
+        [self viewWillAppear:NO];
+        [self dismissViewControllerAnimated:YES completion:nil];
+    }]];
+    [alert addAction:[UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+        [self dismissViewControllerAnimated:YES completion:nil];
+    }]];
+    [self.navigationController presentViewController:alert animated:YES completion:nil];
+}
 #pragma mark - Segment
 
 -(void)indexDidChangeForSegmentedControl:(UISegmentedControl *)sender {
@@ -73,22 +89,9 @@
     NSString *name = [CNContactFormatter stringFromContact:contact style:CNContactFormatterStyleFullName];
     CNPhoneNumber *phoneValue= contactProperty.value;
     NSString *phoneNumber = phoneValue.stringValue;
-    NSLog(@"%@",contact);
     [self dismissViewControllerAnimated:YES completion:^{
-        UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"拨号" message:[NSString stringWithFormat:@"呼叫：%@ \n %@",name,phoneNumber] preferredStyle:UIAlertControllerStyleAlert];
-        [alert addAction:[UIAlertAction actionWithTitle:@"拨打" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-            
-            [GPhoneCacheManager.sharedManager archiveObject:contact forKey:@"1"];
-            id xx = [GPhoneCacheManager.sharedManager unarchiveObjectforKey:@"1"];
-            
-            [GPhoneCallService.sharedManager dialWithNumber:@"18016388248" nickName:name byRelay:@"Relay1"];
-            [self dismissViewControllerAnimated:YES completion:nil];
-            
-        }]];
-        [alert addAction:[UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
-            [self dismissViewControllerAnimated:YES completion:nil];
-        }]];
-        [self.navigationController presentViewController:alert animated:YES completion:nil];
+        ContactModel *model = [[ContactModel alloc]initWithId:0 time:1 identifier:contact.identifier phoneNumber:phoneNumber fullName:name creatTime:[GPhoneHandel dateToStringWith:[NSDate date]]];
+        [self dialingWith:model];
     }];
 }
 
@@ -101,7 +104,7 @@
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return 10;
+    return _callHistoryArray.count;
 }
 
 - (UITableViewCell*)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -110,12 +113,33 @@
     if (!cell) {
         cell = [CallHistoryCell loadNib];
     }
+    ContactModel *model = _callHistoryArray[indexPath.row];
+    cell.fullNameLabel.text =[NSString stringWithFormat:@"%@(%d)",model.fullName,model.time];
+    if (model.fullName.length > 0) {
+        cell.numberLabel.text = model.phoneNumber;
+    }else  cell.numberLabel.text = @"";
+    cell.relayLabel.text = GPhoneConfig.sharedManager.relaySN;
+    cell.dateLabel.text = [GPhoneHandel friendlyTime:model.creatTime];
     return cell;
 }
 
 #pragma mark - TableViewDelegate
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    [self dialingWith:[_callHistoryArray objectAtIndex:indexPath.row]];
+}
+-(BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
+    return YES;
+}
+-(UITableViewCellEditingStyle)tableView:(UITableView *)tableView editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath {
+    return UITableViewCellEditingStyleDelete;
+}
+- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
+    if (editingStyle == UITableViewCellEditingStyleDelete) {
+        [_callHistoryArray removeObjectAtIndex:indexPath.row];
+        GPhoneConfig.sharedManager.callHistoryArray = _callHistoryArray;
+        [_tableView reloadData];
+    }
 }
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];

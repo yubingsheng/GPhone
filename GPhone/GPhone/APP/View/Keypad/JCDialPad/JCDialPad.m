@@ -72,7 +72,7 @@
     
     
     self.phoneButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    [self.phoneButton addTarget:self action:@selector(phoneButton:) forControlEvents:UIControlEventTouchUpInside];
+    [self.phoneButton addTarget:self action:@selector(phoneAction:) forControlEvents:UIControlEventTouchUpInside];
     self.phoneButton.titleLabel.font = [UIFont systemFontOfSize:16.0];
 //    [self.phoneButton setTitle:@"打电话" forState:UIControlStateNormal];
     [self.phoneButton setBackgroundImage:[UIImage imageNamed:@"answer.png"] forState:UIControlStateNormal];
@@ -190,14 +190,16 @@
 }
 
 #pragma mark - phoneButtonAction
-- (void)phoneButton:(UIButton *)sender {
+- (void)phoneACtion:(UIButton *)sender {
     if (_isDialing) {
         if ([self.delegate respondsToSelector:@selector(dialingWith:)]){
+            [self.phoneButton setBackgroundImage:[UIImage imageNamed:@"接电话"] forState:UIControlStateNormal];
             [_delegate dialingWith:_rawText];
         }
     }else {
         if ([self.delegate respondsToSelector:@selector(hangUp)]) {
             [_delegate hangUp];
+            [self.phoneButton setBackgroundImage:[UIImage imageNamed:@"挂电话"] forState:UIControlStateNormal];
         }
     }
     _isDialing = !_isDialing;

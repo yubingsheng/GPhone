@@ -9,5 +9,10 @@
 #import <UIKit/UIKit.h>
 
 @interface CallHistoryCell : UITableViewCell
+@property (weak, nonatomic) IBOutlet UILabel *fullNameLabel;
+@property (weak, nonatomic) IBOutlet UILabel *numberLabel;
+@property (weak, nonatomic) IBOutlet UILabel *relayLabel;
+@property (weak, nonatomic) IBOutlet UILabel *dateLabel;
+
 + (id)loadNib;
 @end

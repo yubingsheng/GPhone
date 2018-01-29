@@ -20,5 +20,5 @@
 #import "CommonCrypto/CommonDigest.h"
 #import "galaxy.h"
 #import "MBProgressHUD.h"
-
+#import "JCDialPad.h"
 #endif /* GPhone_pch */

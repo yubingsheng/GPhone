@@ -52,13 +52,12 @@
     galaxy_relayLoginReq(seqId++, relaySN, [@"xiaoyu" UTF8String], 1, "02a2fca6e3ec1ea62aa4b6a344fb9ad7f31f491b7099c0ddf7761cea6c563980", pushTokenVoIP, authCode_nonce);
 }
 
-- (void)dialWithNumber:(NSString *)number nickName:(NSString *)name byRelay:(NSString *)relay {
-//    ContactModel *contactModel = [[ContactModel alloc]init];
-
-    number = [number stringByReplacingOccurrencesOfString:@"-" withString:@""];
-    const char *asciiCode = [number UTF8String]; //65
-    galaxy_sessionInvite(asciiCode, 0, 0, 0, relaySN);
-    _callingView = [[RTCView alloc] initWithNumber:number nickName:name byRelay:relay];
+- (void)dialWith:(ContactModel *)contactModel {
+    contactModel.phoneNumber = [contactModel.phoneNumber stringByReplacingOccurrencesOfString:@"-" withString:@""];
+    [GPhoneHandel callHistoryContainWith:contactModel];
+    const char *asciiCode = [contactModel.phoneNumber UTF8String]; //65
+//    galaxy_sessionInvite(asciiCode, 0, 0, 0, relaySN);
+    _callingView = [[RTCView alloc] initWithNumber:contactModel.phoneNumber nickName:contactModel.fullName byRelay:[GPhoneConfig.sharedManager relaySN]];
     _callingView.delegate = self;
     [_callingView show];
 }

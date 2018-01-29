@@ -36,7 +36,7 @@
 }
 
 #pragma mark - lazyLoading
-
+// getter
 - (NSString*)relaySN{
     return [GPhoneCacheManager.sharedManager restoreWithkey:RELAYSN];
 }
@@ -55,6 +55,16 @@
 
 - (NSString*)pushToken {
     return [GPhoneCacheManager.sharedManager restoreWithkey:PUSHTOKEN];
+}
+// setter
+- (void)setCallHistoryArray:(NSMutableArray *)callHistoryArray {
+    [GPhoneCacheManager.sharedManager archiveObject:callHistoryArray forKey:CALLHISTORY];
+}
+- (void)setRelaysNArray:(NSMutableArray *)relaysNArray {
+    [GPhoneCacheManager.sharedManager archiveObject:relaysNArray forKey:RELAYSNARRAY];
+}
+- (void)setMessageArray:(NSMutableArray *)messageArray {
+    [GPhoneCacheManager.sharedManager archiveObject:messageArray forKey:MESSAGES];
 }
 
 @end

@@ -14,21 +14,40 @@
 
 + (NSMutableArray *)callHistoryContainWith:(ContactModel *)contactModel {
     BOOL contain = NO;
-    NSMutableArray * history = GPhoneConfig.sharedManager.callHistoryArray;
+    if (contactModel.fullName.length == 0) {
+        contactModel.fullName = contactModel.phoneNumber;
+    }
+    NSMutableArray * history =  [NSMutableArray arrayWithArray:GPhoneConfig.sharedManager.callHistoryArray]; 
     for (NSInteger i = 0; i < history.count; i++) {
         ContactModel * tmpContact = history[i];
-        if ([contactModel.identifier isEqualToString:tmpContact.identifier]) {
+        if ([contactModel.phoneNumber isEqualToString:tmpContact.phoneNumber]) {
             contain = YES;
-            contactModel.time += tmpContact.time;
+            tmpContact.time ++;
+            contactModel = tmpContact;
             [history removeObjectAtIndex:i];
             i = history.count - 1;
         }
     }
+    if (contain) {
+        contactModel.creatTime = [GPhoneHandel dateToStringWith:[NSDate date]];
+    }
     [history insertObject:contactModel atIndex:0];
+    GPhoneConfig.sharedManager.callHistoryArray = history;
     return history;
 }
 
-+(NSString *)friendlyTime:(NSString *)datetime
+#pragma mark - NSDate helpHandel
+
++ (NSString *)dateToStringWith:(NSDate *)date {
+    //用于格式化NSDate对象
+    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    //设置格式：zzz表示时区
+    [dateFormatter setDateFormat:@"yyyy-MM-dd HH:mm:ss"];
+    //NSDate转NSString
+    NSString *currentDateString = [dateFormatter stringFromDate:date];
+    return currentDateString;
+}
++ (NSString *)friendlyTime:(NSString *)datetime
 {
     NSDateFormatter *dateFormatter;
     if (dateFormatter == nil) {
@@ -76,10 +95,10 @@
         //        distance = distance / 60 / 60 / 24;
         _timestamp = @"前天";
     }
-    else if (distance < 60 * 60 * 24 * 7) {
-        distance = distance / 60 / 60 / 24;
-        _timestamp = [NSString stringWithFormat:@"%d%@", distance, (distance == 1) ? @"天前" : @"天前"];
-    }
+//    else if (distance < 60 * 60 * 24 * 7) {
+//        distance = distance / 60 / 60 / 24;
+//        _timestamp = [NSString stringWithFormat:@"%d%@", distance, (distance == 1) ? @"天前" : @"天前"];
+//    }
     else{
         NSCalendar *calendar = [[NSCalendar alloc]initWithCalendarIdentifier:NSGregorianCalendar];
         unsigned units  = NSMonthCalendarUnit|NSDayCalendarUnit|NSYearCalendarUnit;
