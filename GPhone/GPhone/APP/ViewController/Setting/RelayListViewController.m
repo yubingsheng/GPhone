@@ -27,7 +27,14 @@
     _gphoneCallService.delegate = self;
      NSNumber *relaySN = [NSNumber numberWithInteger:GPhoneConfig.sharedManager.relaySN.integerValue];
     [_gphoneCallService relayStatus:relaySN.unsignedIntValue];
+    
+    
     // Do any additional setup after loading the view from its nib.
+}
+
+
+- (void)delayMethod {
+    [_tableView reloadData];
 }
 #pragma mark - LazyLoading
 
@@ -43,7 +50,10 @@
 -(void)relayStatusWith:(RelayStatusModel *)statusModel {
     dispatch_sync(dispatch_get_main_queue(), ^(){
         [self.relayArray addObject:statusModel];
+        [self.relayArray addObject:statusModel];
+        [self.relayArray addObject:statusModel];
         [_tableView reloadData];
+        [self performSelector:@selector(delayMethod) withObject:nil afterDelay:0.1];
     });
     
 }
@@ -51,7 +61,7 @@
 #pragma mark - TableViewDelegate
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-//    [_tableView reloadData];
+    [_tableView reloadData];
 }
 
 #pragma mark - TableViewDataSource
