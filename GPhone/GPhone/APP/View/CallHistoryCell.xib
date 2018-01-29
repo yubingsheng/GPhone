@@ -26,7 +26,7 @@
                         <nil key="highlightedColor"/>
                     </label>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" preservesSuperviewLayoutMargins="YES" text="手机" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="iv2-CL-iG5">
-                        <rect key="frame" x="15" y="32" width="29" height="17"/>
+                        <rect key="frame" x="17" y="32" width="29" height="17"/>
                         <fontDescription key="fontDescription" type="system" weight="light" pointSize="14"/>
                         <color key="textColor" red="0.49803921569999998" green="0.49803921569999998" blue="0.49803921569999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <nil key="highlightedColor"/>
@@ -51,7 +51,7 @@
                     <constraint firstItem="Ktq-e9-tf1" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="NkT-RD-ZWa"/>
                     <constraint firstItem="6JP-4c-iW5" firstAttribute="leading" secondItem="YMV-MT-G71" secondAttribute="trailing" constant="20" id="PqT-pn-SiK"/>
                     <constraint firstItem="iv2-CL-iG5" firstAttribute="top" secondItem="YMV-MT-G71" secondAttribute="bottom" constant="1" id="Qag-Yg-ZMC"/>
-                    <constraint firstItem="iv2-CL-iG5" firstAttribute="leading" secondItem="YMV-MT-G71" secondAttribute="leading" id="RHc-Ch-5VC"/>
+                    <constraint firstItem="iv2-CL-iG5" firstAttribute="leading" secondItem="YMV-MT-G71" secondAttribute="leading" constant="2" id="RHc-Ch-5VC"/>
                     <constraint firstItem="YMV-MT-G71" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" constant="-7" id="UEb-UX-tfb"/>
                 </constraints>
             </tableViewCellContentView>
