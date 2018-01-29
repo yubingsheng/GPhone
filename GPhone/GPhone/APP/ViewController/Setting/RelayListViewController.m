@@ -50,12 +50,9 @@
 -(void)relayStatusWith:(RelayStatusModel *)statusModel {
     dispatch_sync(dispatch_get_main_queue(), ^(){
         [self.relayArray addObject:statusModel];
-        [self.relayArray addObject:statusModel];
-        [self.relayArray addObject:statusModel];
         [_tableView reloadData];
         [self performSelector:@selector(delayMethod) withObject:nil afterDelay:0.1];
     });
-    
 }
 
 #pragma mark - TableViewDelegate

@@ -190,7 +190,7 @@
 }
 
 #pragma mark - phoneButtonAction
-- (void)phoneACtion:(UIButton *)sender {
+- (void)phoneAction:(UIButton *)sender {
     if (_isDialing) {
         if ([self.delegate respondsToSelector:@selector(dialingWith:)]){
             [self.phoneButton setBackgroundImage:[UIImage imageNamed:@"接电话"] forState:UIControlStateNormal];
@@ -287,9 +287,9 @@
 	
     CGFloat textFieldWidth = 250;
     self.digitsTextField.frame = CGRectMake((self.correctWidth / 2.0) - (textFieldWidth / 2.0), top, textFieldWidth, 40);
-    [self.contentView addSubview:self.digitsTextField];
-    
-    
+    if (!_isTint) {
+        [self.contentView addSubview:self.digitsTextField];
+    }
     [self.phoneButton addSubview:self.deleteButton];
     [self.contentView addSubview:self.deleteButton];
 }
@@ -335,7 +335,9 @@
             [self setUpButton:btn left:left top:top];
         }else{
             if (idx == 13) {
-                [self setUpButton:self.phoneButton left:left top:top];
+                if (!_isTint) {
+                    [self setUpButton:self.phoneButton left:left top:top];
+                }
             }else if (idx == 14){
                 [self setUpButton:self.deleteButton left:left top:top];
             }

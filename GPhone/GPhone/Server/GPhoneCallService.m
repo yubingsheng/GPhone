@@ -48,7 +48,6 @@
     static int seqId;
     strcpy(authCode_nonce, "3F2504E08D64C20A");
     strcpy(pushTokenVoIP, "67b0dbf63d7823c900fdbfdda1179185aab1a32fce25daf06586b975711e7edc"); //实际应用中，由Apple分配，并保存在flash中。
-    
     galaxy_relayLoginReq(seqId++, relaySN, [@"xiaoyu" UTF8String], 1, "02a2fca6e3ec1ea62aa4b6a344fb9ad7f31f491b7099c0ddf7761cea6c563980", pushTokenVoIP, authCode_nonce);
 }
 
@@ -56,10 +55,12 @@
     contactModel.phoneNumber = [contactModel.phoneNumber stringByReplacingOccurrencesOfString:@"-" withString:@""];
     [GPhoneHandel callHistoryContainWith:contactModel];
     const char *asciiCode = [contactModel.phoneNumber UTF8String]; //65
-//    galaxy_sessionInvite(asciiCode, 0, 0, 0, relaySN);
+    galaxy_sessionInvite(asciiCode, 0, 0, 0, relaySN);
     _callingView = [[RTCView alloc] initWithNumber:contactModel.phoneNumber nickName:contactModel.fullName byRelay:[GPhoneConfig.sharedManager relaySN]];
     _callingView.delegate = self;
     [_callingView show];
+    
+    
 }
 
 -(void)hangup {
@@ -69,8 +70,9 @@
 }
 
 - (void)relayStatus:(unsigned int)relaySN {
+    [self showWith:@""];
     if(!galaxy_relayStatusReq(relaySN)) {
-        NSLog( @"get gmobile status failed");
+        [self hiddenWith:@"获取relayStatus失败！"];
     } else {
         NSLog( @"get gmobile status");
     }
@@ -119,7 +121,7 @@ static void RelayLoginRsp_Callback(void *inUserData, int seqId, unsigned int rel
     else if(errorCode == 3) result = @"gmobile登录失败，请先弹出SIM卡再重新尝试登陆";
     else if(errorCode == 4) result = @"gmobile登录失败，gmobile不在线";
     else result = [NSString stringWithFormat: @"relay login failed with error code %d", errorCode];
-
+    [self hiddenWith: result];
 }
 
 static void SessionConfirm_Callback(void *inUserData, unsigned int relaySN, int menuSupport, int chatSupport, int callSupport, const char *nonce, int errorCode) {
@@ -130,7 +132,7 @@ static void SessionConfirm_Callback(void *inUserData, unsigned int relaySN, int 
     [timerSessionInvite invalidate];
     if(errorCode) {
         NSString *result = [NSString stringWithFormat: @"Session Confirm got with error code %d", errorCode];
-        NSLog(@"%@",result);
+        [self hiddenWith: result];
         return;
     }
     if(!callSupport) {
@@ -194,11 +196,31 @@ static void CallReleased_Callback(void *inUserData, int errorCode) {
     else if(errorCode == 8) result = @"呼叫鉴权失败，请删除gmobile重新添加";
     else if(errorCode == 10) result = @"呼叫失败，请确认运营商服务是否正常，比如SIM卡是否欠费停机";
     else result = [NSString stringWithFormat: @"Call released with error code %d", errorCode];
-    NSLog(@"%@",result);
+    [self hiddenWith: result];
 }
 #pragma mark - RTCDelegate
 -(void)hangUp {
     [self hangup];
 }
-
+#pragma mark - HUD
+- (void)showWith:(NSString *)title {
+    dispatch_sync(dispatch_get_main_queue(), ^(){
+        self.hud.label.text = title;
+        _hud.mode = MBProgressHUDModeIndeterminate;
+    });
+}
+- (void)hiddenWith:(NSString*)title {
+    dispatch_sync(dispatch_get_main_queue(), ^(){
+        self.hud.label.text = title;
+        _hud.mode = MBProgressHUDModeText;
+        [_hud hideAnimated:YES afterDelay:0.5];
+    });
+    
+}
+- (MBProgressHUD *)hud {
+    if (!_hud) {
+        _hud  = [MBProgressHUD showHUDAddedTo:[UIApplication sharedApplication].delegate.window animated:YES];
+    }
+    return _hud;
+}
 @end

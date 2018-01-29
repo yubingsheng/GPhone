@@ -162,7 +162,7 @@ NSString *const kVideoCaptureNotification = @"kVideoCaptureNotification";
     [self addSubview:_ownImageView];
     
     CGFloat switchBtnW = 45 * kRTCRate;
-    CGFloat topOffset = 30 * kRTCRate;
+    CGFloat topOffset = 40 * kRTCRate;
     self.swichBtn.frame = CGRectMake(kRTCWidth - switchBtnW - 10, topOffset, switchBtnW, switchBtnW);
     [self addSubview:_swichBtn];
     
@@ -172,7 +172,7 @@ NSString *const kVideoCaptureNotification = @"kVideoCaptureNotification";
     self.nickNameLabel.text = self.nickName ? :@"未知号码";
     [self addSubview:_nickNameLabel];
     
-    self.connectLabel.frame = CGRectMake(20, CGRectGetMaxY(self.nickNameLabel.frame), CGRectGetWidth(self.nickNameLabel.frame), 20);
+    self.connectLabel.frame = CGRectMake(20, CGRectGetMaxY(self.nickNameLabel.frame) + 10, CGRectGetWidth(self.nickNameLabel.frame), 20);
     self.connectLabel.textColor = [UIColor whiteColor];
     self.connectLabel.textAlignment = NSTextAlignmentLeft;
     self.connectLabel.text = self.connectText;
@@ -256,7 +256,7 @@ NSString *const kVideoCaptureNotification = @"kVideoCaptureNotification";
     _pad = [[JCDialPad alloc] initWithFrame:CGRectMake(10, 10, self.bounds.size.width- 10 *2, self.bounds.size.height- 10 *2)];
     _pad.formatTextToPhoneNumber = YES;
     _pad.buttons = [JCDialPad defaultButtons];
-    _pad.phoneButton.removeFromSuperview;
+    _pad.isTint = YES;
     _pad.delegate = self;
     //        _pad.backgroundColor = [UIColor redColor];
     [self addSubview:_pad];
@@ -268,21 +268,20 @@ NSString *const kVideoCaptureNotification = @"kVideoCaptureNotification";
     [self addSubview:_portraitImageView];
     
     self.nickNameLabel.frame = CGRectMake(0, 0, kRTCWidth, 30);
-    self.nickNameLabel.center = CGPointMake(centerX, CGRectGetMaxY(self.portraitImageView.frame) + 40);
+    self.nickNameLabel.center = CGPointMake(centerX, CGRectGetMaxY(self.portraitImageView.frame) + 60);
     self.nickNameLabel.text = self.nickName ? :@"未知号码";
     [self addSubview:_nickNameLabel];
     
     self.connectLabel.frame = CGRectMake(0, 0, kRTCWidth, 30);
-    self.connectLabel.center = CGPointMake(centerX, CGRectGetMaxY(self.nickNameLabel.frame) + 10);
+    self.connectLabel.center = CGPointMake(centerX, CGRectGetMaxY(self.nickNameLabel.frame) + 20);
     self.connectLabel.text = self.connectText;
     [self addSubview:_connectLabel];
     
     self.netTipLabel.frame = CGRectMake(0, 0, kRTCWidth, 30);
-    self.netTipLabel.center = CGPointMake(centerX, CGRectGetMaxY(self.connectLabel.frame) + 40);
+    self.netTipLabel.center = CGPointMake(centerX, CGRectGetMaxY(self.connectLabel.frame) +20);
     [self addSubview:_netTipLabel];
     
     self.btnContainerView.frame = CGRectMake(0, kRTCHeight - kContainerH, kRTCWidth, kContainerH);
-    _btnContainerView.backgroundColor = [UIColor redColor];
     [self addSubview:_btnContainerView];
 }
 
@@ -748,7 +747,10 @@ NSString *const kVideoCaptureNotification = @"kVideoCaptureNotification";
         self.shapeLayer = nil;
     }
 }
-
+#pragma mark  - padDelegate
+-(void)dialingWith:(NSString *)phone {
+    NSLog(@"%@",phone);
+}
 #pragma mark - 懒加载
 - (UIImageView *)bgImageView
 {
@@ -790,9 +792,9 @@ NSString *const kVideoCaptureNotification = @"kVideoCaptureNotification";
 {
     if (!_nickNameLabel) {
         _nickNameLabel = [[UILabel alloc] init];
-        _nickNameLabel.text = @"飞翔的昵称";
-        _nickNameLabel.font = [UIFont systemFontOfSize:17.0f];
-        _nickNameLabel.textColor = [UIColor darkGrayColor];
+        _nickNameLabel.text = @"";
+        _nickNameLabel.font = [UIFont systemFontOfSize:22.0f];
+        _nickNameLabel.textColor = [UIColor blackColor];
         _nickNameLabel.textAlignment = NSTextAlignmentCenter;
     }
     
@@ -804,8 +806,8 @@ NSString *const kVideoCaptureNotification = @"kVideoCaptureNotification";
     if (!_connectLabel) {
         _connectLabel = [[UILabel alloc] init];
         _connectLabel.text = @"等待对方接听...";
-        _connectLabel.font = [UIFont systemFontOfSize:15.0f];
-        _connectLabel.textColor = [UIColor grayColor];
+        _connectLabel.font = [UIFont systemFontOfSize:18.0f];
+        _connectLabel.textColor = [UIColor blackColor];
         _connectLabel.textAlignment = NSTextAlignmentCenter;
     }
     
@@ -827,7 +829,7 @@ NSString *const kVideoCaptureNotification = @"kVideoCaptureNotification";
     if (!_netTipLabel) {
         _netTipLabel = [[UILabel alloc] init];
         _netTipLabel.text = @"对方网络良好";
-        _netTipLabel.font = [UIFont systemFontOfSize:13.0f];
+        _netTipLabel.font = [UIFont systemFontOfSize:17.0f];
         _netTipLabel.textColor = [UIColor grayColor];
         _netTipLabel.textAlignment = NSTextAlignmentCenter;
     }
