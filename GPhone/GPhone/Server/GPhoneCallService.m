@@ -204,10 +204,9 @@ static void CallReleased_Callback(void *inUserData, int errorCode) {
 }
 #pragma mark - HUD
 - (void)showWith:(NSString *)title {
-    dispatch_sync(dispatch_get_main_queue(), ^(){
         self.hud.label.text = title;
         _hud.mode = MBProgressHUDModeIndeterminate;
-    });
+
 }
 - (void)hiddenWith:(NSString*)title {
     dispatch_sync(dispatch_get_main_queue(), ^(){
