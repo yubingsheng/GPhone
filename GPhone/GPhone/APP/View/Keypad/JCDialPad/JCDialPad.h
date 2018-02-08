@@ -13,6 +13,7 @@
 @optional
 - (BOOL)dialPad:(JCDialPad *)dialPad shouldInsertText:(NSString *)text forButtonPress:(JCPadButton *)button;
 - (void)dialingWith:(NSString*)phone;
+- (void)dialingWithSingle:(NSString *)number;
 - (void)hangUp;
 @end
 

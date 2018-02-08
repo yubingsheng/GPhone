@@ -29,10 +29,6 @@
 //    _providerDelegate = [[ProviderDelegate alloc] init];
     NSLog(@"SHAY application started");
     
-    if (!GPhoneConfig.sharedManager.relaySN) {
-        [GPhoneCacheManager.sharedManager store:@"287454020" withKey:RELAYSN];
-        //0x11223344
-    }
     return YES;
 }
 
@@ -71,6 +67,5 @@
 - (void)applicationWillTerminate:(UIApplication *)application {
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
 }
-
 
 @end

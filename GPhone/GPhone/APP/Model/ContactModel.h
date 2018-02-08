@@ -17,6 +17,8 @@
 @property (strong, nonatomic) NSString *phoneNumber;
 @property (strong, nonatomic) NSString *fullName;
 @property (strong, nonatomic) NSString *creatTime;
+@property (strong, nonatomic) NSString *relayName;
+@property (strong, nonatomic) NSString *relaySN;
 
 - (instancetype)initWithId:(int)id time:(int)time identifier:(NSString*)identifier phoneNumber:(NSString *)phoneNumber fullName:(NSString*)fullName creatTime:(NSString *)creatTime;
 

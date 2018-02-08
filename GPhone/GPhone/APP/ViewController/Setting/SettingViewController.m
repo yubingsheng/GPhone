@@ -28,7 +28,8 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    _settingArray = @[@"relayLogin",@"relayList"];
+    self.title = @"设置";
+    _settingArray = @[@"GMobile管理",@"关于",@"联系我们"];
     _tableView.delegate = self;
     _tableView.dataSource = self;
     _tableView.tableFooterView = [UIView new];
@@ -73,7 +74,7 @@
                 [self dismissViewControllerAnimated:YES completion:nil];
             }]];
             [alert addAction:[UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-                [GPhoneCallService.sharedManager relayLogin:alert.textFields[indexPath.row].text];
+//                [GPhoneCallService.sharedManager relayLoginWith:<#(unsigned int)#> relayName:<#(NSString *)#>:alert.textFields[indexPath.row].text];
             }]];
             [self.navigationController presentViewController:alert animated:YES completion:nil];
         }

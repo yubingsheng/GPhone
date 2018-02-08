@@ -17,6 +17,8 @@
     if (contactModel.fullName.length == 0) {
         contactModel.fullName = contactModel.phoneNumber;
     }
+    contactModel.relaySN = GPhoneConfig.sharedManager.relaySN;
+    contactModel.relayName = GPhoneConfig.sharedManager.relayName;
     NSMutableArray * history =  [NSMutableArray arrayWithArray:GPhoneConfig.sharedManager.callHistoryArray]; 
     for (NSInteger i = 0; i < history.count; i++) {
         ContactModel * tmpContact = history[i];

@@ -748,8 +748,12 @@ NSString *const kVideoCaptureNotification = @"kVideoCaptureNotification";
     }
 }
 #pragma mark  - padDelegate
--(void)dialingWith:(NSString *)phone {
-    NSLog(@"%@",phone);
+- (BOOL)dialPad:(JCDialPad *)dialPad shouldInsertText:(NSString *)text forButtonPress:(JCPadButton *)button {
+    [GPhoneCallService.sharedManager dialWith_dtmf:text];
+    return YES;
+}
+-(void)dialingWithSingle:(NSString *)number {
+    
 }
 #pragma mark - 懒加载
 - (UIImageView *)bgImageView

@@ -12,7 +12,7 @@
 #import "CallHistoryCell.h"
 
 
-@interface CallHistoryViewController ()<CNContactPickerDelegate,UITableViewDelegate,UITableViewDataSource>
+@interface CallHistoryViewController ()<CNContactPickerDelegate,UITableViewDelegate,UITableViewDataSource,GPhoneCallServiceDelegate>
 @property (weak, nonatomic) IBOutlet UISegmentedControl *segmentedControl;
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 @property (strong, nonatomic) NSMutableArray *callHistoryArray;
@@ -32,12 +32,34 @@
     _tableView.tableFooterView = [UIView new];
     [_segmentedControl addTarget:self action:@selector(indexDidChangeForSegmentedControl:) forControlEvents:UIControlEventValueChanged];
     [self requestAuthorizationForAddressBook];
-//    unsigned int x = 0x11223344;
     
-    NSNumber *relaySN = [NSNumber numberWithInteger:GPhoneConfig.sharedManager.relaySN.integerValue];
-    NSLog(@"转换完的数字为：%@",relaySN);
-    
-    [GPhoneCallService.sharedManager relayLogin:[relaySN unsignedIntValue]];
+    GPhoneCallService.sharedManager.delegate = self;
+    [GPhoneCallService.sharedManager versionCheck];
+    if (!GPhoneConfig.sharedManager.relaySN) {
+        UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"提示" message:@"添加GMobile" preferredStyle:UIAlertControllerStyleAlert];
+        [alert addTextFieldWithConfigurationHandler:^(UITextField * _Nonnull textField) {
+            
+        }];
+        alert.textFields[0].placeholder = @"GMobile";
+        [alert addTextFieldWithConfigurationHandler:^(UITextField * _Nonnull textField) {
+            
+        }];
+        alert.textFields[1].placeholder = @"昵称";
+        [alert addAction:[UIAlertAction actionWithTitle:@"以后添加" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+            
+        }]];
+        [alert addAction:[UIAlertAction actionWithTitle:@"添加" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+            NSNumber *relaySN = [NSNumber numberWithInteger:alert.textFields[0].text.integerValue];
+            NSLog(@"转换完的数字为：%@",relaySN);
+            [GPhoneCallService.sharedManager relayLoginWith:[relaySN unsignedIntValue] relayName:alert.textFields[1].text];
+            }]];
+        [self.navigationController presentViewController:alert animated:YES completion:nil];
+        //0x11223344 287454020
+    }else {
+        NSNumber *relaySN = [NSNumber numberWithInteger:[GPhoneConfig.sharedManager relaySN].integerValue];
+        NSLog(@"relaySn：%@ name: %@",relaySN,[GPhoneConfig.sharedManager relayName]);
+        [GPhoneCallService.sharedManager relayLoginWith:[relaySN unsignedIntValue] relayName:[GPhoneConfig.sharedManager relayName]];
+    }
     
 }
 
@@ -98,6 +120,31 @@
 - (void)contactPickerDidCancel:(CNContactPickerViewController *)picker {
     
 }
+
+#pragma mark - GPhoneServiceDelegate
+
+- (void)versionStatusWith:(int)status {
+    //实际应用中，如果result返回2，也就是versionMustUpdate，应当立即弹出对话框，提示用户“应用必须升级到最新版本才能继续使用”，用户点击确认后，退出APP
+    UIAlertController *alert;
+    if (status == 2) {
+        alert = [UIAlertController alertControllerWithTitle:@"提示" message:@"应用必须升级到最新版本才能继续使用" preferredStyle:UIAlertControllerStyleAlert];
+        [alert addAction:[UIAlertAction actionWithTitle:@"立即升级" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+            
+        }]];
+    } else if(status == 1){
+        alert = [UIAlertController alertControllerWithTitle:@"提示" message:@"应用有新版本更新" preferredStyle:UIAlertControllerStyleAlert];
+        [alert addAction:[UIAlertAction actionWithTitle:@"立即升级" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+            
+        }]];
+        [alert addAction:[UIAlertAction actionWithTitle:@"暂不升级" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+            
+        }]];
+    }
+    if (alert) {
+        [self.navigationController presentViewController:alert animated:YES completion:nil];
+    }
+}
+
 #pragma mark - TableViewDataSource
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     return 56;
@@ -118,7 +165,7 @@
     if (model.fullName.length > 0) {
         cell.numberLabel.text = model.phoneNumber;
     }else  cell.numberLabel.text = @"";
-    cell.relayLabel.text = GPhoneConfig.sharedManager.relaySN;
+    cell.relayLabel.text = model.relayName;
     cell.dateLabel.text = [GPhoneHandel friendlyTime:model.creatTime];
     return cell;
 }

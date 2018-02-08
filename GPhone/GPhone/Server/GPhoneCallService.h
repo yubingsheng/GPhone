@@ -14,6 +14,7 @@
 @protocol GPhoneCallServiceDelegate<NSObject>
 @optional
 - (void)relayStatusWith:(RelayStatusModel*) statusModel;
+- (void)versionStatusWith:(int) status;
 @end
 
 @interface GPhoneCallService : NSObject <RTCDelegate>
@@ -29,14 +30,21 @@
 /*
  注册Relay
  */
-- (void) relayLogin:(unsigned int)relaySN;
+- (void) relayLoginWith:(unsigned int)relay relayName:(NSString*)name;
 /*
  呼出
  */
 - (void)dialWith:(ContactModel *)contactModel;
 /*
+ 分机号
+ */
+- (void)dialWith_dtmf:(NSString *)number;
+/*
  主动挂断
  */
 - (void)hangup;
-
+/*
+ 版本检查
+ */
+- (void)versionCheck;
 @end

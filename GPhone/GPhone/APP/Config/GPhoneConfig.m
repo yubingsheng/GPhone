@@ -40,7 +40,9 @@
 - (NSString*)relaySN{
     return [GPhoneCacheManager.sharedManager restoreWithkey:RELAYSN];
 }
-
+- (NSString*)relayName{
+    return [GPhoneCacheManager.sharedManager restoreWithkey:RELAYNAME];
+}
 - (NSMutableArray*)relaysNArray {
     return [GPhoneCacheManager.sharedManager restoreWithkey:RELAYSNARRAY];
 }

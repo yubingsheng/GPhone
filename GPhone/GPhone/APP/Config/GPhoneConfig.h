@@ -20,6 +20,7 @@
 #pragma mark - KEYS
 
 #define RELAYSN @"relaysn"
+#define RELAYNAME @"relayname"
 #define RELAYSNARRAY @"relaysn"
 #define MESSAGES @"message"
 #define CALLHISTORY @"callhistory"
@@ -27,6 +28,7 @@
 
 #pragma mark - APPCnfig
 @property (strong, nonatomic) NSString *relaySN;
+@property (strong, nonatomic) NSString *relayName;
 @property (strong, nonatomic) NSMutableArray *relaysNArray;
 @property (strong, nonatomic) NSMutableArray *callHistoryArray;
 @property (strong, nonatomic) NSMutableArray *messageArray;

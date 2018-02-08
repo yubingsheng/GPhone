@@ -12,11 +12,13 @@
 
 
 @implementation GPhoneCallService {
+    NSTimer *timerVersionCheck;
     NSTimer *timerSessionInvite;
     NSTimer *timerCallSetup;
     
     int loginSeqId;
     unsigned int relaySN;
+    NSString *relayName;
     char pushToken[128];  //puthToken(64) + 0
     char authCode_nonce[25];  //authCode(8) + nonce(8) + 0
     char pushTokenVoIP[128];
@@ -33,22 +35,29 @@
     return gPhoneCallService;
 }
 - (void) initGalaxy {
-    if(!galaxy_init(RelayLoginRsp_Callback,RelayStatusRsp_Callback,(__bridge void *)(self),
-                    SessionConfirm_Callback, (__bridge void *)(self),
-                    0, 0,
-                    CallTrying_Callback,0, CallAlerting_Callback, CallAnswer_Callback, CallReleased_Callback,(__bridge void *)(self),
-                    CallInAlertingAck_Callback,0,0,0,(__bridge void *)(self),
-                    0,0,0,0)) {
+    if(!galaxy_init()) {
+        char gerror[32];
+        NSLog(@"galaxy_init failed, gerror=%s", galaxy_error(gerror));
+    }
+    else {
         
     }
+    galaxy_setVersionCheckCallbacks(VersionCheckRsp_Callback,(__bridge void *)(self));
+    galaxy_setRelayCallbacks(RelayLoginRsp_Callback,RelayStatusRsp_Callback,(__bridge void *)(self));
+    galaxy_setSessionCallbacks(SessionConfirm_Callback, (__bridge void *)(self));
+    galaxy_setCallOutCallbacks(CallTrying_Callback,0, CallAlerting_Callback, CallAnswer_Callback, CallReleased_Callback,(__bridge void *)(self));
+    //实际应用中，callIn的每个callback必须有，且必须要做相应的处理，比如定时器的停止。尤其对于callInRelease_Callback，要在callkit做相应的结束呼叫的处理。
+    galaxy_setCallInCallbacks(CallInAlertingAck_Callback,0,0,0, (__bridge void *)(self));
 }
 #pragma mark - API
-- (void) relayLogin:(unsigned int)relay {
+- (void) relayLoginWith:(unsigned int)relay relayName:(NSString*)name {
+    [self showWith:@""];
     relaySN = relay;
+    relayName = name;
     static int seqId;
     strcpy(authCode_nonce, "3F2504E08D64C20A");
     strcpy(pushTokenVoIP, "67b0dbf63d7823c900fdbfdda1179185aab1a32fce25daf06586b975711e7edc"); //实际应用中，由Apple分配，并保存在flash中。
-    galaxy_relayLoginReq(seqId++, relaySN, [@"xiaoyu" UTF8String], 1, "02a2fca6e3ec1ea62aa4b6a344fb9ad7f31f491b7099c0ddf7761cea6c563980", pushTokenVoIP, authCode_nonce);
+    galaxy_relayLoginReq(seqId++, relaySN, [relayName UTF8String], 1, "02a2fca6e3ec1ea62aa4b6a344fb9ad7f31f491b7099c0ddf7761cea6c563980", pushTokenVoIP, authCode_nonce);
 }
 
 - (void)dialWith:(ContactModel *)contactModel {
@@ -59,8 +68,16 @@
     _callingView = [[RTCView alloc] initWithNumber:contactModel.phoneNumber nickName:contactModel.fullName byRelay:[GPhoneConfig.sharedManager relaySN]];
     _callingView.delegate = self;
     [_callingView show];
-    
-    
+}
+
+- (void)dialWith_dtmf:(NSString *)number {
+  
+    if(galaxy_dial_dtmf(number.UTF8String)){
+        NSLog(@"success！");
+    } else {
+        char gerror[32];
+        NSLog(@"galaxy_versionCheck failed, gerror=%s", galaxy_error(gerror));
+    }
 }
 
 -(void)hangup {
@@ -69,10 +86,21 @@
     galaxy_callRelease();
 }
 
+- (void)versionCheck {
+    if(!galaxy_versionCheckReq()) {
+        char gerror[32];
+        NSLog(@"galaxy_versionCheck failed, gerror=%s", galaxy_error(gerror));
+    } else {
+        if (!timerVersionCheck) {
+            timerVersionCheck = [NSTimer scheduledTimerWithTimeInterval:3.0 target:self selector:@selector(versionCheck) userInfo:nil repeats:YES];
+        }
+    }
+}
+
 - (void)relayStatus:(unsigned int)relaySN {
     [self showWith:@""];
     if(!galaxy_relayStatusReq(relaySN)) {
-        [self hiddenWith:@"获取relayStatus失败！"];
+        [self hiddenWith:@"获取GMobil状态失败！"];
     } else {
         NSLog( @"get gmobile status");
     }
@@ -91,8 +119,7 @@ static void CallInAlertingAck_Callback(void *inUserData, int callId, unsigned in
 }
 
 
-static void RelayStatusRsp_Callback(void *inUserData, unsigned int relaySN, BOOL networkOK, int signalStrength)
-{
+static void RelayStatusRsp_Callback(void *inUserData, unsigned int relaySN, int networkOK, int signalStrength) {
     [STRONGSELF handleRelayStatusRspWithRelaySN:relaySN networkOK:networkOK signalStrength:signalStrength];
 }
 
@@ -116,7 +143,9 @@ static void RelayLoginRsp_Callback(void *inUserData, int seqId, unsigned int rel
     NSString *result;
     if(errorCode == 0) {
         //实际应用中，登录成功后，需要将relay、pushToken和authCode写入flash保存，APP启动时，首先读取已经保存的这些数据
-        result = @"relay login success";
+        [GPhoneCacheManager.sharedManager store:[NSString stringWithFormat:@"%u",relaySN] withKey:RELAYSN];
+        [GPhoneCacheManager.sharedManager store:relayName withKey:RELAYNAME];
+        result = [NSString stringWithFormat:@"%@添加成功!",relayName];
     }
     else if(errorCode == 3) result = @"gmobile登录失败，请先弹出SIM卡再重新尝试登陆";
     else if(errorCode == 4) result = @"gmobile登录失败，gmobile不在线";
@@ -198,6 +227,19 @@ static void CallReleased_Callback(void *inUserData, int errorCode) {
     else result = [NSString stringWithFormat: @"Call released with error code %d", errorCode];
     [self hiddenWith: result];
 }
+
+static void VersionCheckRsp_Callback(void *inUserData, int result) {
+    [STRONGSELF handleVersionCheckRspWithResult:result];
+}
+
+- (void) handleVersionCheckRspWithResult: (int)result {
+    [timerVersionCheck invalidate];
+    //实际应用中，如果result返回2，也就是versionMustUpdate，应当立即弹出对话框，提示用户“应用必须升级到最新版本才能继续使用”，用户点击确认后，退出APP
+    if ([_delegate respondsToSelector:@selector(versionStatusWith:)]) {
+        [_delegate versionStatusWith:result];
+    }
+}
+
 #pragma mark - RTCDelegate
 -(void)hangUp {
     [self hangup];

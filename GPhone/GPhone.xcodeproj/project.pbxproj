@@ -185,7 +185,6 @@
 		B880E4771FEB8E09002625CF /* GPhoneCacheManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GPhoneCacheManager.h; sourceTree = "<group>"; };
 		B880E4781FEB8E09002625CF /* GPhoneCacheManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GPhoneCacheManager.m; sourceTree = "<group>"; };
 		B89A77E01FD525A7000A079A /* PushKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = PushKit.framework; path = System/Library/Frameworks/PushKit.framework; sourceTree = SDKROOT; };
-		B89A77E31FD52650000A079A /* brook.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = brook.h; sourceTree = "<group>"; };
 		B89A77E41FD52650000A079A /* galaxy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = galaxy.h; sourceTree = "<group>"; };
 		B89A77E61FD52692000A079A /* libgalaxy1.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libgalaxy1.a; sourceTree = "<group>"; };
 		B89A77E71FD52692000A079A /* libgalaxy21.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libgalaxy21.a; sourceTree = "<group>"; };
@@ -442,7 +441,6 @@
 		B89A77E21FD52650000A079A /* include */ = {
 			isa = PBXGroup;
 			children = (
-				B89A77E31FD52650000A079A /* brook.h */,
 				B89A77E41FD52650000A079A /* galaxy.h */,
 			);
 			path = include;
@@ -1361,9 +1359,10 @@
 			baseConfigurationReference = 3A1E102A4EBCB0663EB476DD /* Pods-GPhone.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer: Xuesong Li (BVX4TD5XH8)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 4TPTQHW8P8;
+				DEVELOPMENT_TEAM = XF28H54YS2;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "$(SRCROOT)/GPhone/APP/Config/GPhone.pch";
 				INFOPLIST_FILE = GPhone/Info.plist;
@@ -1374,7 +1373,7 @@
 					"$(PROJECT_DIR)",
 					"$(PROJECT_DIR)/GPhone/lib",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.launchhill.GPhone;
+				PRODUCT_BUNDLE_IDENTIFIER = com.xiaoyu.Voiptest;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -1386,9 +1385,10 @@
 			baseConfigurationReference = F1864404B9FEFAD2B7D977ED /* Pods-GPhone.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer: Xuesong Li (BVX4TD5XH8)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 4TPTQHW8P8;
+				DEVELOPMENT_TEAM = XF28H54YS2;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "$(SRCROOT)/GPhone/APP/Config/GPhone.pch";
 				INFOPLIST_FILE = GPhone/Info.plist;
@@ -1399,7 +1399,7 @@
 					"$(PROJECT_DIR)",
 					"$(PROJECT_DIR)/GPhone/lib",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.launchhill.GPhone;
+				PRODUCT_BUNDLE_IDENTIFIER = com.xiaoyu.Voiptest;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				TARGETED_DEVICE_FAMILY = "1,2";
