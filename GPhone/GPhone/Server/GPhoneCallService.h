@@ -26,7 +26,7 @@
 /*
  获取RelayStatus
  */
-- (void)relayStatus:(unsigned int)relaySN;
+- (void)relayStatus:(unsigned int)relaySN relayName:(NSString*)name;
 /*
  注册Relay
  */
@@ -47,4 +47,8 @@
  版本检查
  */
 - (void)versionCheck;
+/*
+ hud
+ */
+- (void)hiddenWith:(NSString*)title;
 @end

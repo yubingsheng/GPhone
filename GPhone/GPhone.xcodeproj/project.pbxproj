@@ -43,6 +43,8 @@
 		B8C39F3820186C9600040A75 /* RelayListViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = B8C39F3620186C9600040A75 /* RelayListViewController.xib */; };
 		B8C48DB71FFF5A6300972A15 /* CallingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B8C48DB51FFF5A6300972A15 /* CallingViewController.m */; };
 		B8C48DB81FFF5A6300972A15 /* CallingViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = B8C48DB61FFF5A6300972A15 /* CallingViewController.xib */; };
+		B8E3DFC6202D785500B6A1B1 /* CallKitHandel.m in Sources */ = {isa = PBXBuildFile; fileRef = B8E3DFC4202D785500B6A1B1 /* CallKitHandel.m */; };
+		B8E3DFC9202D904500B6A1B1 /* RelayModel.m in Sources */ = {isa = PBXBuildFile; fileRef = B8E3DFC8202D904500B6A1B1 /* RelayModel.m */; };
 		B8F17EFC1FC7ED780015B376 /* GPhoneCallService.m in Sources */ = {isa = PBXBuildFile; fileRef = B8F17EFB1FC7ED780015B376 /* GPhoneCallService.m */; };
 		B8F17F4A1FC8015D0015B376 /* JSBubbleMessageCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B8F17F021FC8015D0015B376 /* JSBubbleMessageCell.m */; };
 		B8F17F4B1FC8015D0015B376 /* JSBubbleView.m in Sources */ = {isa = PBXBuildFile; fileRef = B8F17F041FC8015D0015B376 /* JSBubbleView.m */; };
@@ -230,6 +232,11 @@
 		B8C48DB41FFF5A6300972A15 /* CallingViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CallingViewController.h; sourceTree = "<group>"; };
 		B8C48DB51FFF5A6300972A15 /* CallingViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CallingViewController.m; sourceTree = "<group>"; };
 		B8C48DB61FFF5A6300972A15 /* CallingViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CallingViewController.xib; sourceTree = "<group>"; };
+		B8E3DF8F202D72ED00B6A1B1 /* GPhone.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = GPhone.entitlements; sourceTree = "<group>"; };
+		B8E3DFC4202D785500B6A1B1 /* CallKitHandel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CallKitHandel.m; sourceTree = "<group>"; };
+		B8E3DFC5202D785500B6A1B1 /* CallKitHandel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CallKitHandel.h; sourceTree = "<group>"; };
+		B8E3DFC7202D904500B6A1B1 /* RelayModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RelayModel.h; sourceTree = "<group>"; };
+		B8E3DFC8202D904500B6A1B1 /* RelayModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RelayModel.m; sourceTree = "<group>"; };
 		B8F17EFA1FC7ED780015B376 /* GPhoneCallService.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GPhoneCallService.h; sourceTree = "<group>"; };
 		B8F17EFB1FC7ED780015B376 /* GPhoneCallService.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GPhoneCallService.m; sourceTree = "<group>"; };
 		B8F17F011FC8015D0015B376 /* JSBubbleMessageCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JSBubbleMessageCell.h; sourceTree = "<group>"; };
@@ -470,6 +477,8 @@
 			children = (
 				B8F17EFA1FC7ED780015B376 /* GPhoneCallService.h */,
 				B8F17EFB1FC7ED780015B376 /* GPhoneCallService.m */,
+				B8E3DFC5202D785500B6A1B1 /* CallKitHandel.h */,
+				B8E3DFC4202D785500B6A1B1 /* CallKitHandel.m */,
 				B880E4771FEB8E09002625CF /* GPhoneCacheManager.h */,
 				B880E4781FEB8E09002625CF /* GPhoneCacheManager.m */,
 			);
@@ -544,6 +553,8 @@
 				D6C3FAD32018C3DC00E2EDEB /* RelayStatusModel.m */,
 				B8B155C8201B12910018EE22 /* ContactModel.h */,
 				B8B155C9201B12910018EE22 /* ContactModel.m */,
+				B8E3DFC7202D904500B6A1B1 /* RelayModel.h */,
+				B8E3DFC8202D904500B6A1B1 /* RelayModel.m */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -603,6 +614,7 @@
 		B8A466F31FB186BD007EFB09 /* GPhone */ = {
 			isa = PBXGroup;
 			children = (
+				B8E3DF8F202D72ED00B6A1B1 /* GPhone.entitlements */,
 				FCBB17331FDA89AC00639D3E /* images */,
 				B89A77E51FD52692000A079A /* lib */,
 				B89A77E21FD52650000A079A /* include */,
@@ -950,6 +962,9 @@
 							com.apple.BackgroundModes = {
 								enabled = 1;
 							};
+							com.apple.Push = {
+								enabled = 1;
+							};
 						};
 					};
 					B8A467081FB186BD007EFB09 = {
@@ -1176,6 +1191,7 @@
 				B8C39F3720186C9600040A75 /* RelayListViewController.m in Sources */,
 				B8F17F4A1FC8015D0015B376 /* JSBubbleMessageCell.m in Sources */,
 				B8B155CA201B12910018EE22 /* ContactModel.m in Sources */,
+				B8E3DFC6202D785500B6A1B1 /* CallKitHandel.m in Sources */,
 				B8F17F4E1FC8015D0015B376 /* JSMessageSoundEffect.m in Sources */,
 				B8C48DB71FFF5A6300972A15 /* CallingViewController.m in Sources */,
 				B8F17F4C1FC8015D0015B376 /* JSDismissiveTextView.m in Sources */,
@@ -1195,6 +1211,7 @@
 				B8F17F821FC8015D0015B376 /* UIImage+JSMessagesView.m in Sources */,
 				FCBB17311FDA89A100639D3E /* JCPadButton.m in Sources */,
 				B8A466F61FB186BD007EFB09 /* AppDelegate.m in Sources */,
+				B8E3DFC9202D904500B6A1B1 /* RelayModel.m in Sources */,
 				B8B155C7201B0F4A0018EE22 /* GPhoneHandel.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1359,10 +1376,12 @@
 			baseConfigurationReference = 3A1E102A4EBCB0663EB476DD /* Pods-GPhone.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = GPhone/GPhone.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer: Xuesong Li (BVX4TD5XH8)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = XF28H54YS2;
+				GCC_NO_COMMON_BLOCKS = NO;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "$(SRCROOT)/GPhone/APP/Config/GPhone.pch";
 				INFOPLIST_FILE = GPhone/Info.plist;
@@ -1373,7 +1392,7 @@
 					"$(PROJECT_DIR)",
 					"$(PROJECT_DIR)/GPhone/lib",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.xiaoyu.Voiptest;
+				PRODUCT_BUNDLE_IDENTIFIER = com.zgot.gphone;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -1385,10 +1404,12 @@
 			baseConfigurationReference = F1864404B9FEFAD2B7D977ED /* Pods-GPhone.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = GPhone/GPhone.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer: Xuesong Li (BVX4TD5XH8)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = XF28H54YS2;
+				GCC_NO_COMMON_BLOCKS = NO;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "$(SRCROOT)/GPhone/APP/Config/GPhone.pch";
 				INFOPLIST_FILE = GPhone/Info.plist;
@@ -1399,7 +1420,7 @@
 					"$(PROJECT_DIR)",
 					"$(PROJECT_DIR)/GPhone/lib",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.xiaoyu.Voiptest;
+				PRODUCT_BUNDLE_IDENTIFIER = com.zgot.gphone;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				TARGETED_DEVICE_FAMILY = "1,2";

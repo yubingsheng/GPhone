@@ -56,8 +56,12 @@
     relayName = name;
     static int seqId;
     strcpy(authCode_nonce, "3F2504E08D64C20A");
-    strcpy(pushTokenVoIP, "67b0dbf63d7823c900fdbfdda1179185aab1a32fce25daf06586b975711e7edc"); //实际应用中，由Apple分配，并保存在flash中。
-    galaxy_relayLoginReq(seqId++, relaySN, [relayName UTF8String], 1, "02a2fca6e3ec1ea62aa4b6a344fb9ad7f31f491b7099c0ddf7761cea6c563980", pushTokenVoIP, authCode_nonce);
+//    memcpy(authCode_nonce, [GPhoneConfig.sharedManager.authCode_nonce cStringUsingEncoding:NSASCIIStringEncoding], 2*[GPhoneConfig.sharedManager.authCode_nonce length]);
+    
+    memcpy(pushTokenVoIP, [GPhoneConfig.sharedManager.pushKitToken cStringUsingEncoding:NSASCIIStringEncoding], 2*[GPhoneConfig.sharedManager.pushKitToken length]);
+    memcpy(pushToken, [GPhoneConfig.sharedManager.pushToken cStringUsingEncoding:NSASCIIStringEncoding], 2*[GPhoneConfig.sharedManager.pushToken length]);
+//    strcpy(pushTokenVoIP, pushToken); //实际应用中，由Apple分配，并保存在flash中。
+    galaxy_relayLoginReq(seqId++, relaySN, [relayName UTF8String], 1, pushToken, pushTokenVoIP, authCode_nonce);
 }
 
 - (void)dialWith:(ContactModel *)contactModel {
@@ -97,8 +101,9 @@
     }
 }
 
-- (void)relayStatus:(unsigned int)relaySN {
+- (void)relayStatus:(unsigned int)relaySN relayName:(NSString*)name {
     [self showWith:@""];
+    relayName = name;
     if(!galaxy_relayStatusReq(relaySN)) {
         [self hiddenWith:@"获取GMobil状态失败！"];
     } else {
@@ -129,6 +134,7 @@ static void RelayStatusRsp_Callback(void *inUserData, unsigned int relaySN, int 
         model.relaySN = relaySN;
         model.netWorkStatus = networkOK;
         model.signalStrength = signalStrength;
+        model.relayName = relayName;
         [_delegate relayStatusWith:model];
     }
 }
@@ -145,6 +151,12 @@ static void RelayLoginRsp_Callback(void *inUserData, int seqId, unsigned int rel
         //实际应用中，登录成功后，需要将relay、pushToken和authCode写入flash保存，APP启动时，首先读取已经保存的这些数据
         [GPhoneCacheManager.sharedManager store:[NSString stringWithFormat:@"%u",relaySN] withKey:RELAYSN];
         [GPhoneCacheManager.sharedManager store:relayName withKey:RELAYNAME];
+        RelayModel *model = [RelayModel alloc];
+        model.relayName = relayName;
+        model.relaySN = relaySN;
+        NSMutableArray *relayArray = [NSMutableArray arrayWithArray:GPhoneConfig.sharedManager.relaysNArray];
+        [relayArray addObject:model];
+        GPhoneConfig.sharedManager.relaysNArray = relayArray;
         result = [NSString stringWithFormat:@"%@添加成功!",relayName];
     }
     else if(errorCode == 3) result = @"gmobile登录失败，请先弹出SIM卡再重新尝试登陆";

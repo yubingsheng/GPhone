@@ -12,7 +12,6 @@
 #import "MJRefresh.h"
 
 @interface BaseViewController : UIViewController
-
-
+- (void)showToastWith:(NSString*)text;
 @end
 

@@ -9,8 +9,8 @@
 #import "AppDelegate.h"
 #import "GPhoneConfig.h"
 #import "GPhoneCacheManager.h"
-@interface AppDelegate ()<PKPushRegistryDelegate>
-
+@interface AppDelegate ()<PKPushRegistryDelegate,ProviderDelegate>
+@property (nonatomic, strong) CallKitHandel* callKitHandel;
 @end
 
 @implementation AppDelegate
@@ -25,13 +25,25 @@
     // Register for remote notifications.
     [[UIApplication sharedApplication] registerForRemoteNotifications];
     
+    [[AVAudioSession sharedInstance] requestRecordPermission:^(BOOL granted) {
+        
+    }];
     [self voipRegistration];
-//    _providerDelegate = [[ProviderDelegate alloc] init];
+    _callKitHandel = [[CallKitHandel alloc] init];
     NSLog(@"SHAY application started");
-    
+    // 13255030725
     return YES;
 }
 
+// Handle remote notification registration.
+- (void)application:(UIApplication *)app didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)devToken {
+    // Forward the token to your provider, using a custom method.
+    //[self enableRemoteNotificationFeatures];
+    //[self forwardTokenToServer:devTokenBytes];
+    NSString * tokenString = [[[[devToken description] stringByReplacingOccurrencesOfString: @"<" withString: @""] stringByReplacingOccurrencesOfString: @">" withString: @""] stringByReplacingOccurrencesOfString: @" " withString: @""];
+     [GPhoneCacheManager.sharedManager store:tokenString withKey:PUSHTOKEN];
+    NSLog(@"device token: %@", tokenString);
+}
 
 // Register for VoIP notifications
 - (void) voipRegistration {
@@ -68,4 +80,38 @@
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
 }
 
+#pragma mark - PKPushRegistryDelegate
+
+- (void)pushRegistry:(PKPushRegistry *)registry didUpdatePushCredentials:(PKPushCredentials *)pushCredentials forType:(PKPushType)type {
+    NSString * tokenString = [[[[pushCredentials.token description] stringByReplacingOccurrencesOfString: @"<" withString: @""] stringByReplacingOccurrencesOfString: @">" withString: @""] stringByReplacingOccurrencesOfString: @" " withString: @""];
+    NSLog(@"voip device token: %@", tokenString);
+    [GPhoneCacheManager.sharedManager store:tokenString withKey:PUSHKITTOKEN];
+}
+
+// Handle incoming pushes
+- (void)pushRegistry:(PKPushRegistry *)registry didReceiveIncomingPushWithPayload:(PKPushPayload *)payload forType:(PKPushType)type withCompletionHandler:(void (^)(void))completion {
+    NSLog(@"voip push got");
+    NSDictionary * dic = payload.dictionaryPayload;
+    NSString *callId = dic[@"callid"];
+    if(!callId) {
+        NSLog(@"push payload no callid");
+        return;
+    }
+    NSString *relaysn = dic[@"relaysn"];
+    if(!relaysn) {
+        NSLog(@"push payload no relaysn");
+        return;
+    }
+    NSString *callingNumber = dic[@"number"];
+    if(!callingNumber) {
+        NSLog(@"push payload no number");
+        return;
+    }
+    [_callKitHandel reportIncomingCallWithCallId:callId relaysn:relaysn callingNumber:callingNumber];
+    completion();
+}
+#pragma mark - ProviderDelegate
+- (void)endCall {
+    
+}
 @end

@@ -19,6 +19,9 @@
     // Do any additional setup after loading the view, typically from a nib.
 }
 
+- (void)showToastWith:(NSString*)text {
+    [[[[iToast makeText:text] setGravity:iToastGravityCenter] setDuration:iToastDurationShort] show];
+}
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];

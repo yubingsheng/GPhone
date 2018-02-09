@@ -11,6 +11,7 @@
 
 @interface RelayStatusModel : GPhoneBaseModel
 @property (assign, nonatomic) unsigned int relaySN;
+@property (strong, nonatomic) NSString *relayName;
 @property (assign, nonatomic) int netWorkStatus;
 @property (assign, nonatomic) int signalStrength;
 

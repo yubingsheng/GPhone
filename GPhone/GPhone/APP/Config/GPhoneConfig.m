@@ -44,7 +44,11 @@
     return [GPhoneCacheManager.sharedManager restoreWithkey:RELAYNAME];
 }
 - (NSMutableArray*)relaysNArray {
-    return [GPhoneCacheManager.sharedManager restoreWithkey:RELAYSNARRAY];
+    NSMutableArray *array = [GPhoneCacheManager.sharedManager unarchiveObjectforKey:RELAYSNARRAY];
+    if (!array) {
+        array = [[NSMutableArray alloc]init];
+    }
+    return array;
 }
 
 - (NSMutableArray*)messageArray {
@@ -55,8 +59,15 @@
     return [GPhoneCacheManager.sharedManager unarchiveObjectforKey:CALLHISTORY];
 }
 
-- (NSString*)pushToken {
-    return [GPhoneCacheManager.sharedManager restoreWithkey:PUSHTOKEN];
+- (NSString*)pushKitToken {
+    return [GPhoneCacheManager.sharedManager restoreWithkey:PUSHKITTOKEN];
+}
+
+- (NSString *)pushToken {
+     return [GPhoneCacheManager.sharedManager restoreWithkey:PUSHTOKEN];
+}
+- (NSString *)authCode_nonce {
+    return [NSString stringWithFormat:@"%d",arc4random() % 101];
 }
 // setter
 - (void)setCallHistoryArray:(NSMutableArray *)callHistoryArray {

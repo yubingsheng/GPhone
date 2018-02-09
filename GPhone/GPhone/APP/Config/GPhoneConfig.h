@@ -21,10 +21,12 @@
 
 #define RELAYSN @"relaysn"
 #define RELAYNAME @"relayname"
-#define RELAYSNARRAY @"relaysn"
+#define RELAYSNARRAY @"relayarray"
 #define MESSAGES @"message"
 #define CALLHISTORY @"callhistory"
-#define PUSHTOKEN @"pushtoken"
+#define PUSHKITTOKEN @"pushKitToken"
+#define PUSHTOKEN @"pushToken"
+#define AUTHCODE @"authCode_nonce"
 
 #pragma mark - APPCnfig
 @property (strong, nonatomic) NSString *relaySN;
@@ -33,5 +35,6 @@
 @property (strong, nonatomic) NSMutableArray *callHistoryArray;
 @property (strong, nonatomic) NSMutableArray *messageArray;
 @property (strong, nonatomic) NSString* pushKitToken;
-
+@property (strong, nonatomic) NSString* pushToken;
+@property (strong, nonatomic) NSString* authCode_nonce;
 @end

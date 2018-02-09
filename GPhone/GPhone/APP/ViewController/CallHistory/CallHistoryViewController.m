@@ -32,7 +32,6 @@
     _tableView.tableFooterView = [UIView new];
     [_segmentedControl addTarget:self action:@selector(indexDidChangeForSegmentedControl:) forControlEvents:UIControlEventValueChanged];
     [self requestAuthorizationForAddressBook];
-    
     GPhoneCallService.sharedManager.delegate = self;
     [GPhoneCallService.sharedManager versionCheck];
     if (!GPhoneConfig.sharedManager.relaySN) {
@@ -49,16 +48,22 @@
             
         }]];
         [alert addAction:[UIAlertAction actionWithTitle:@"添加" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-            NSNumber *relaySN = [NSNumber numberWithInteger:alert.textFields[0].text.integerValue];
-            NSLog(@"转换完的数字为：%@",relaySN);
-            [GPhoneCallService.sharedManager relayLoginWith:[relaySN unsignedIntValue] relayName:alert.textFields[1].text];
+            if (alert.textFields[0].text.length ==0) {
+                [self showToastWith:@"GMobil不能为空！"];
+            }else if (alert.textFields[1].text.length ==0) {
+                [self showToastWith:@"GMobil的昵称不能为空！"];
+            }else {
+                NSNumber *relaySN = [NSNumber numberWithInteger:alert.textFields[0].text.integerValue];
+                NSLog(@"转换完的数字为：%@",relaySN);
+                [GPhoneCallService.sharedManager relayLoginWith:[relaySN unsignedIntValue] relayName:alert.textFields[1].text];
+            }
             }]];
         [self.navigationController presentViewController:alert animated:YES completion:nil];
         //0x11223344 287454020
     }else {
-        NSNumber *relaySN = [NSNumber numberWithInteger:[GPhoneConfig.sharedManager relaySN].integerValue];
-        NSLog(@"relaySn：%@ name: %@",relaySN,[GPhoneConfig.sharedManager relayName]);
-        [GPhoneCallService.sharedManager relayLoginWith:[relaySN unsignedIntValue] relayName:[GPhoneConfig.sharedManager relayName]];
+//        NSNumber *relaySN = [NSNumber numberWithInteger:[GPhoneConfig.sharedManager relaySN].integerValue];
+//        NSLog(@"relaySn：%@ name: %@",relaySN,[GPhoneConfig.sharedManager relayName]);
+//        [GPhoneCallService.sharedManager relayLoginWith:[relaySN unsignedIntValue] relayName:[GPhoneConfig.sharedManager relayName]];
     }
     
 }

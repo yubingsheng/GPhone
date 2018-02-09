@@ -8,6 +8,8 @@
 
 #ifndef GPhone_pch
 #define GPhone_pch
+#import <AVFoundation/AVFAudio.h>
+
 #import "AppDelegate.h"
 #import "MBProgressHUD.h"
 #import "GPhoneConfig.h"
@@ -19,6 +21,8 @@
 #import "RelayStatusModel.h"
 #import "CommonCrypto/CommonDigest.h"
 #import "galaxy.h"
-
+#import "CallKitHandel.h"
 #import "JCDialPad.h"
+#import "RelayModel.h"
+#import "iToast.h"
 #endif /* GPhone_pch */

@@ -15,6 +15,8 @@
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 @property (strong, nonatomic) GPhoneCallService *gphoneCallService;
 @property (strong, nonatomic) NSMutableArray *relayArray;
+@property (strong, nonatomic) NSString *relaySN;
+@property (strong, nonatomic) NSString *relayName;
 @end
 
 @implementation RelayListViewController
@@ -25,17 +27,53 @@
     _tableView.tableFooterView = [UIView new];
     _gphoneCallService = GPhoneCallService.sharedManager;
     _gphoneCallService.delegate = self;
-     NSNumber *relaySN = [NSNumber numberWithInteger:GPhoneConfig.sharedManager.relaySN.integerValue];
-    [_gphoneCallService relayStatus:relaySN.unsignedIntValue];
-    
+    for (int i = 0; i < [GPhoneConfig.sharedManager.relaysNArray count] ; i++) {
+        RelayModel *model = GPhoneConfig.sharedManager.relaysNArray[i];
+        [_gphoneCallService relayStatus:model.relaySN relayName:model.relayName];
+    }
+    UIBarButtonItem *bar = [[UIBarButtonItem alloc] initWithTitle:@"添加" style:UIBarButtonItemStylePlain target:self action:@selector(addRelay)];
+    self.navigationItem.rightBarButtonItem = bar;
     
     // Do any additional setup after loading the view from its nib.
 }
 
+- (void)addRelay {
+    UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"提示" message:@"添加GMobile" preferredStyle:UIAlertControllerStyleAlert];
+    [alert addTextFieldWithConfigurationHandler:^(UITextField * _Nonnull textField) {
+        textField.text = _relaySN;
+    }];
+    alert.textFields[0].placeholder = @"GMobile";
+    alert.textFields[0].text = _relaySN;
+    
+    [alert addTextFieldWithConfigurationHandler:^(UITextField * _Nonnull textField) {
+        textField.text = _relayName;
+    }];
+    alert.textFields[1].placeholder = @"昵称";
+    alert.textFields[1].text = _relayName;
+    [alert addAction:[UIAlertAction actionWithTitle:@"以后添加" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        
+    }]];
+    [alert addAction:[UIAlertAction actionWithTitle:@"添加" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        _relaySN = alert.textFields[0].text;
+        _relayName = alert.textFields[1].text;
+        if (_relaySN.length ==0) {
+            [self showToastWith:@"GMobil不能为空！"];
+        }else if (_relayName.length ==0) {
+            [self showToastWith:@"GMobil的昵称不能为空！"];
+        }else {
+            NSNumber *relaySN = [NSNumber numberWithInteger:alert.textFields[0].text.integerValue];
+            _relaySN = @"";
+            _relayName = @"";
+            [GPhoneCallService.sharedManager relayLoginWith:[relaySN unsignedIntValue] relayName:alert.textFields[1].text];
+        }
+    }]];
+    [self.navigationController presentViewController:alert animated:YES completion:nil];
+}
 
 - (void)delayMethod {
     [_tableView reloadData];
 }
+
 #pragma mark - LazyLoading
 
 - (NSMutableArray *)relayArray {
@@ -48,11 +86,15 @@
 #pragma mark - GPhoneServiceDelegate
 
 -(void)relayStatusWith:(RelayStatusModel *)statusModel {
-    dispatch_sync(dispatch_get_main_queue(), ^(){
-        [self.relayArray addObject:statusModel];
-        [_tableView reloadData];
-        [self performSelector:@selector(delayMethod) withObject:nil afterDelay:0.1];
-    });
+    [self.relayArray addObject:statusModel];
+    if (_relayArray.count == [GPhoneConfig.sharedManager.relaysNArray count]) {
+         [_gphoneCallService hiddenWith:@""];
+        dispatch_sync(dispatch_get_main_queue(), ^(){
+             [_tableView reloadData];
+             [self performSelector:@selector(delayMethod) withObject:nil afterDelay:0.1];
+        });
+    }
+    
 }
 
 #pragma mark - TableViewDelegate
@@ -74,9 +116,9 @@
         cell = [RelayListTableViewCell loadNib];
     }
     RelayStatusModel * model = [_relayArray objectAtIndex:indexPath.row];
-    cell.relayNameLabel.text =  [NSString stringWithFormat:@"%d", model.relaySN];
+    cell.relayNameLabel.text = model.relayName;
     cell.netWorkLabel.text = [NSString stringWithFormat:@"NetWork: %d", model.netWorkStatus];
-//    cell.signalStrengthLabel.text = [NSString stringWithFormat:@"signal: %d", model.signalStrength];
+    //    cell.signalStrengthLabel.text = [NSString stringWithFormat:@"signal: %d", model.signalStrength];
     cell.phoneSignalView.signalStrength = model.signalStrength;
     return cell;
 }
