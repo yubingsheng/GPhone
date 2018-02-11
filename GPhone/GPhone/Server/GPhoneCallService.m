@@ -47,7 +47,8 @@
     galaxy_setSessionCallbacks(SessionConfirm_Callback, (__bridge void *)(self));
     galaxy_setCallOutCallbacks(CallTrying_Callback,0, CallAlerting_Callback, CallAnswer_Callback, CallReleased_Callback,(__bridge void *)(self));
     //实际应用中，callIn的每个callback必须有，且必须要做相应的处理，比如定时器的停止。尤其对于callInRelease_Callback，要在callkit做相应的结束呼叫的处理。
-    galaxy_setCallInCallbacks(CallInAlertingAck_Callback,0,0,0, (__bridge void *)(self));
+    galaxy_setCallInCallbacks(CallInAlertingAck_Callback,0,0,OutCallReleased_Callback, (__bridge void *)(self));
+
 }
 #pragma mark - API
 - (void) relayLoginWith:(unsigned int)relay relayName:(NSString*)name {
@@ -87,7 +88,12 @@
 -(void)hangup {
     [timerSessionInvite invalidate];
     [timerCallSetup invalidate];
-    galaxy_callRelease();
+    if(!galaxy_callRelease()) {
+        char gerror[32];
+        NSLog(@"galaxy_callInRelease failed, gerror=%s", galaxy_error(gerror));
+    }else {
+        
+    }
 }
 
 - (void)versionCheck {
@@ -229,7 +235,6 @@ static void CallAnswer_Callback(void *inUserData) {
 static void CallReleased_Callback(void *inUserData, int errorCode) {
     [STRONGSELF handleCallReleasedCallBackWithErrorCode:errorCode];
 }
-
 - (void) handleCallReleasedCallBackWithErrorCode: (int)errorCode {
     [timerCallSetup invalidate];
     NSString *result;
@@ -238,6 +243,24 @@ static void CallReleased_Callback(void *inUserData, int errorCode) {
     else if(errorCode == 10) result = @"呼叫失败，请确认运营商服务是否正常，比如SIM卡是否欠费停机";
     else result = [NSString stringWithFormat: @"Call released with error code %d", errorCode];
     [self hiddenWith: result];
+}
+
+static void OutCallReleased_Callback(void *inUserData, int errorCode) {
+    
+    [STRONGSELF handleCallReleasedCallBackWithErrorCodee:errorCode];
+}
+- (void) handleCallReleasedCallBackWithErrorCodee: (int)errorCode {
+    [timerCallSetup invalidate];
+    NSString *result;
+    if(errorCode == 0) result = @"Call released normally";
+    else if(errorCode == 8) result = @"呼叫鉴权失败，请删除gmobile重新添加";
+    else if(errorCode == 10) result = @"呼叫失败，请确认运营商服务是否正常，比如SIM卡是否欠费停机";
+    else result = [NSString stringWithFormat: @"Call released with error code %d", errorCode];
+    [self hiddenWith: result];
+    NSLog(@"uuid == %@", _uuid);
+    [ADCallKitManager.sharedInstance endCall: _uuid completion:^(NSError * _Nullable error) {
+        
+    }];
 }
 
 static void VersionCheckRsp_Callback(void *inUserData, int result) {

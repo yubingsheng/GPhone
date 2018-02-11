@@ -21,6 +21,7 @@
 @property (strong, nonatomic) RTCView *callingView;
 @property (assign, nonatomic) id<GPhoneCallServiceDelegate> delegate;
 @property (strong, nonatomic) MBProgressHUD *hud;
+@property (strong, nonatomic) NSUUID *uuid;
 +(GPhoneCallService *)sharedManager;
 
 /*

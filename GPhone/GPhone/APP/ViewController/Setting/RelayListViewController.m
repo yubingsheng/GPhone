@@ -87,12 +87,15 @@
 
 -(void)relayStatusWith:(RelayStatusModel *)statusModel {
     [self.relayArray addObject:statusModel];
+     [_gphoneCallService hiddenWith:@""];
+    dispatch_sync(dispatch_get_main_queue(), ^(){
+       
+        [_tableView reloadData];
+        [self performSelector:@selector(delayMethod) withObject:nil afterDelay:0.1];
+    });
     if (_relayArray.count == [GPhoneConfig.sharedManager.relaysNArray count]) {
-         [_gphoneCallService hiddenWith:@""];
-        dispatch_sync(dispatch_get_main_queue(), ^(){
-             [_tableView reloadData];
-             [self performSelector:@selector(delayMethod) withObject:nil afterDelay:0.1];
-        });
+      
+        
     }
     
 }

@@ -79,7 +79,9 @@
 - (void)applicationWillTerminate:(UIApplication *)application {
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
 }
-
+- (BOOL)application:(UIApplication *)app openURL:(NSURL *)url options:(NSDictionary<UIApplicationOpenURLOptionsKey,id> *)options {
+    return YES;
+}
 #pragma mark - PKPushRegistryDelegate
 
 - (void)pushRegistry:(PKPushRegistry *)registry didUpdatePushCredentials:(PKPushCredentials *)pushCredentials forType:(PKPushType)type {
@@ -108,6 +110,7 @@
         return;
     }
     [_callKitHandel reportIncomingCallWithCallId:callId relaysn:relaysn callingNumber:callingNumber];
+  
     completion();
 }
 #pragma mark - ProviderDelegate
