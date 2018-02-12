@@ -49,9 +49,9 @@
         }]];
         [alert addAction:[UIAlertAction actionWithTitle:@"添加" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
             if (alert.textFields[0].text.length ==0) {
-                [self showToastWith:@"GMobil不能为空！"];
+                [self showToastWith:@"GMobile不能为空！"];
             }else if (alert.textFields[1].text.length ==0) {
-                [self showToastWith:@"GMobil的昵称不能为空！"];
+                [self showToastWith:@"GMobile的昵称不能为空！"];
             }else {
                 NSNumber *relaySN = [NSNumber numberWithInteger:alert.textFields[0].text.integerValue];
                 NSLog(@"转换完的数字为：%@",relaySN);
@@ -136,15 +136,7 @@
         [alert addAction:[UIAlertAction actionWithTitle:@"立即升级" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
             
         }]];
-    } else if(status == 1){
-        alert = [UIAlertController alertControllerWithTitle:@"提示" message:@"应用有新版本更新" preferredStyle:UIAlertControllerStyleAlert];
-        [alert addAction:[UIAlertAction actionWithTitle:@"立即升级" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-            
-        }]];
-        [alert addAction:[UIAlertAction actionWithTitle:@"暂不升级" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
-            
-        }]];
-    }
+    } 
     if (alert) {
         [self.navigationController presentViewController:alert animated:YES completion:nil];
     }

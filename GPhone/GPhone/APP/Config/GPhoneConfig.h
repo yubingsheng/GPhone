@@ -8,13 +8,7 @@
 #import <Foundation/Foundation.h>
 
 #pragma mark - Interface
-@interface GPhoneConfig : NSObject{
-//    int loginSeqId;
-//    unsigned int relaySN;
-//    char pushToken[65];  //puthToken(64) + 0
-//    char authCode_nonce[41];  //authCode(8) + nonce(8) + 0
-//    unsigned char callMD5[16];
-}
+@interface GPhoneConfig : NSObject
 +(GPhoneConfig *)sharedManager;
 
 #pragma mark - KEYS
