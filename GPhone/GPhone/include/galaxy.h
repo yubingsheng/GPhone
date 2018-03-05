@@ -7,15 +7,22 @@ extern "C" {
 /*this is the API for galaxy mcc01 client developing*/
 /*
 release notes:
+20180223:
+1，针对callkit做了优化，包括demo程序。本文档下面有针对callkit和galaxy库配合的使用规则的详细说明。
+
+20180208:
+1，可以进行短消息的发送和接收。具体步骤请参考信令流程和相应的API注释。demo程序也有相应的代码可供参考。
+2, galaxy_setMessageCallbacks函数参数做了调整。增加了message_in_hello_ack回调函数。
+
 20180128:
-1, 入呼叫此版本已经可以正常使用。参考下面的入呼叫信令流程说明以及demo程序。由于demo程序对callkit的使用还有些问题，此版本demo程序只能正常接收一次入呼叫，需要杀掉demo程序后，才能再次正常接收入呼叫。使用demo程序测试入呼叫的步骤：
+1，入呼叫此版本已经可以正常使用。参考下面的入呼叫信令流程说明以及demo程序。由于demo程序对callkit的使用还有些问题，此版本demo程序只能正常接收一次入呼叫，需要杀掉demo程序后，才能再次正常接收入呼叫。使用demo程序测试入呼叫的步骤：
    1)，手工修改demo程序的ViewController.m里的device token和voip device token的值，设置为从APNS获取的正确的值。编译安装demo app。
    2)，使用任意电话拨打测试号码13255030725。
    3)，pushkit和callkit将被激活，可以在界面上应答呼叫。
-2, 增加了versionCheck机制，包括galaxy_versionCheckReq()函数和相应的回调函数。APP在执行了galaxy_init()函数和设置了相应的回调函数后，应当调用galaxy_versionCheckReq()检查APP包含的galaxy库的版本兼容性。具体参考galaxy_versionCheckReq()函数说明和demo程序。
+2，增加了versionCheck机制，包括galaxy_versionCheckReq()函数和相应的回调函数。APP在执行了galaxy_init()函数和设置了相应的回调函数后，应当调用galaxy_versionCheckReq()检查APP包含的galaxy库的版本兼容性。具体参考galaxy_versionCheckReq()函数说明和demo程序。
 3，增加galaxy_error()函数，APP在某个galaxy函数调用失败时，需要使用galaxy_error()获取错误码并使用半透明灰色提示条将错误码呈现。更多内容参考galaxy_error()函数说明和demo程序。
-4, 修改了galaxy_init()函数，去除了回调函数参数。回调函数单独在galaxy_setXxxxxCallbacks()中进行设置;
-5, 头文件brook.h不再需要。
+4，修改了galaxy_init()函数，去除了回调函数参数。回调函数单独在galaxy_setXxxxxCallbacks()中进行设置;
+5，头文件brook.h不再需要。
 
 20171227:
 1，galaxy_relayLoginReq方法增加relayName参数和pushTokenVoIP参数。relayName设置为用户输入的gmobile的名称，使用UTF-8编码；而pushTokenVoIP参数设置为APP从APPLE获取的pushkit device token。demo程序的类AppDelegate增加了相应的获取pushkit device token的代码。
@@ -30,7 +37,7 @@ release notes:
 用户添加gmobile时，APP应当首先检查对应relaySN的gmobile是否已经添加过，如果已经添加过，则要提示用户"您要添加的gmobile已经存在，是否需要重新添加？"，并提供是和否的选项。
 
 相应的，demo程序的以下变量定义和函数做了修改：
-char authCode_nonce[41];  //authCode(16) + nonce(8) + 0
+char authCode_nonce[25];  //authCode(16) + nonce(8) + 0
 
 - (void) handleSessionConfirmCallBackWithRelaySN: (unsigned int)relaySN MenuSupport: (int)menuSupport ChatSupport: (int)chatSupport CallSupport: (int)callSupport Nonce: (const char*)nonce ErrorCode: (int)errorCode
 - (void) repeatCallSetup
@@ -56,6 +63,69 @@ char authCode_nonce[41];  //authCode(16) + nonce(8) + 0
 20171128:
 1，galaxy_callSetup()函数增加了repeated参数。并增加了galaxy_callSetup()的注释说明，要求在调用galaxy_callSetup()时，启动定时器以重发galaxy_callSetup()。并在demo程序里写了相应的示例。特别的，APP需要为此增加call_trying回调函数。
 2，galaxy库增加了bitcode支持。
+*/
+
+/*
+ callkit和galaxy库配合使用规则说明：
+    This is the key difference between the CXProvider and the CXCallController: while the provider’s job is to report to the system, the call controller makes requests from the system on behalf of the user.
+    以上来自 http://blog.csdn.net/kmyhy/article/details/74388913 ，英文版 https://www.raywenderlich.com/150015/callkit-tutorial-ios 。
+    因为callkit能管理audiosession的激活和去激活，所以APP不必也不能显式得对audiosession进行激活和去激活。
+	下面分入呼叫、出呼叫、呼叫结束三种情况进行描述。
+
+一，入呼叫建立：
+1）	从pushkit得到入呼叫后，使用CXProvider的reportNewIncomingCall 弹出iphone原生的电话振铃界面。
+2）	用户划屏应答后，CXProviderDelegate的provider: performAnswerCallAction：回调函数被调用。APP必须实现这个回调函数，在这个回调函数中，需要做以下事情：
+configureAudioSession()  //只配置，不激活！！！
+其他必须的事情。
+如果一切OK，最后[action fulfill]，否则[action fail]
+3）	这之后，callkit会激活这个audiosession，无需APP手工调用setActive进行激活！！！ callkit激活auodiosession之后，会回调CXProviderDelegate的provider:(CXProvider *)provider didActivateAudioSession:(AVAudioSession *)audioSession方法。在这个方法中，APP调用galaxy_callInAnswer创建audio stream。
+
+二，出呼叫建立
+1）	用户在APP UI上点击拨打按钮。
+2）	APP创建CXStartCallAction，然后调用CXCallController的requestTransaction将外呼请求报告为callkit。
+3）	callkit回调CXProviderDelegate的provider:(CXProvider *)provider performStartCallAction:(CXStartCallAction *)action。在此回调函数中，APP需要实现以下事情：
+configureAudioSession()  //只配置，不激活！！！
+调出APP的出呼叫界面。
+如果一切OK，最后[action fulfill]，否则[action fail]
+
+4）	这之后，callkit会激活这个audiosession，无需APP手工调用setActive进行激活！！！ callkit激活auodiosession之后，会回调CXProviderDelegate的provider:(CXProvider *)provider didActivateAudioSession:(AVAudioSession *)audioSession方法。在这个方法中，APP调用galaxy_sessionInvite创建media stream。要注意出呼叫建立和入呼叫建立，都要回调到这个方法，但APP采取的做法是不一样的，所以APP要记录这个是出呼叫还是入呼叫，然后在此回调函数里采取适当的做法。
+    在CXProviderDelegate的provider:(CXProvider *)provider didActivateAudioSession:(AVAudioSession *)audioSession方法中，还可调用CXProvider的reportOutgoingCallWithUUID:startedConnectingAtDate:方法向callkit报告呼叫状态，这个动作可做可不做。
+    APP收到对端的callAnswer后，要调用CXProvider的reportOutgoingCallWithUUID:connectedAtDate:方法向callkit报告呼叫状态。
+
+
+这里要说明一点：如果用户是通过iphone系统通讯录里沉淀的记录进行外呼，则流程是这样的：
+1）	用户点击iphone系统通讯录里沉淀的记录进行外呼。
+callkit回调UIApplicationDelegate的- (BOOL)application:(UIApplication *)application continueUserActivity:(NSUserActivity *)userActivity  restorationHandler:(void (^)(NSArray *restorableObjects))restorationHandler
+2）	 只需在此回调函数里解析出对应的电话号码，发起主叫流程即可：
+  INInteraction *interaction = [userActivity interaction];  
+  INIntent *intent = interaction.intent;  
+  if ([intent isKindOfClass:[INStartAudioCallIntent class]])  {  
+    INStartAudioCallIntent *audioIntent = (INStartAudioCallIntent *)intent;  
+    INPerson *person = audioIntent.contacts.firstObject;  
+    NSString *phoneNum = person.personHandle.value;      
+    //继续出呼叫建立里的第2步。
+  }
+  注意应当：#import <Intents/Intents.h>
+
+三，结束呼叫
+参考资料：
+http://blog.csdn.net/zhaochen_009/article/details/53410288?locationNum=12&fps=1
+https://www.jianshu.com/p/305bd923c1ae
+上述两份资料里的结束呼叫探讨值得一看。
+
+1，对于入呼叫来讲，如果是本地结束呼叫，则是用户在系统拨号界面上点击挂机，则：callkit会回调CXProviderDelegate的provider:(CXProvider *)provider performEndCallAction:(CXEndCallAction *)action。APP在此回调函数中：
+调用galaxy_callRelease
+如果一切OK，最后[action fulfill]，否则[action fail]
+
+然后callkit会自动deactivate此audiosession，并调用provider:(CXProvider *)provider didDeactivateAudioSession:(AVAudioSession *)audioSession回调函数，在此回调函数中，APP并无需做什么事情，写个LOG即可。
+
+2，对于出呼叫来讲，如果是本地结束呼叫，则是在APP UI中点击挂机按钮。则APP：
+创建CXEndCallAction对象
+通过CXCallController，调用requestTransaction将这个挂断事件通知给Callkit
+Callkit通过当前通话状态，通过CXProvider将挂断动作通知回给APP，这是通过回调CXProviderDelegate的provider:(CXProvider *)provider performEndCallAction:(CXEndCallAction *)action实现的。
+然后继续上面的结束呼叫情况1。
+3，对于入呼叫或出呼叫来讲，如果是远端结束呼叫，则APP调用CXProvider的reportCallWithUUID:endedAtDate:reason:方法。
+
 */
 
 
@@ -97,18 +167,19 @@ char authCode_nonce[41];  //authCode(16) + nonce(8) + 0
 四，从APP角度看短信发送流程：
 
 动作                                                                                                      对应的MCC01消息
-1，APP调用galaxy_messageNonceReq()。 以获取鉴权用的nonce。                                                发送messageNonceReq消息
+1，APP调用galaxy_messageNonceReq()。 以获取鉴权用的nonce。注意要使用定时器重发。                          发送messageNonceReq消息
 2，message_nonce_rsp()回调函数被调用。                                                                    收到messageNonceRsp消息
-3，APP调用galaxy_messageSubmit()。                                                                        发送messageSubmit消息
-4，message_submit_ack()回调函数被调用，指示对端成功发送了短信。                                           收到messageSubmitAck消息
+3，APP调用galaxy_messageSubmitReq()。注意要使用定时器重发。                                               发送messageSubmitReq消息
+4，message_submit_rsp()回调函数被调用，指示对端成功发送了短信。                                           收到messageSubmitRsp消息
 
 五，从APP角度看短信接收流程：
 
 动作                                                                                                      对应的MCC01消息
 1，APP收到PUSH普通推送消息，指示有新的短信。
-2，APP调用galaxy_messageInHello()。                                                                       发送messageInHello消息
+2，APP调用galaxy_messageInHello()。注意要使用定时器重发。                                                 发送messageInHello消息
 3，galaxy收到对端发送的messageInHelloAck消息时，调用message_in_hello_ack()回调函数。
-3，message_deliver()回调函数被调用，指示有新的短信。                                                      收到messageDeliver消息
+3，message_deliver_req()回调函数被调用，指示有新的短信。                                                  收到messageDeliverReq消息
+!!!通过message_deliver_req()收到的短消息要注意丢弃重复接收到的短消息。具体请参考galaxy_setMessageCallbacks函数的说明。
 */
 
 
@@ -119,15 +190,15 @@ void galaxy_setHDVoice(int enable_hd_voice);
 
 //此结构目前不使用
 typedef struct GMenu {
-	char *menuLevel;
-	char *contentType;
-	unsigned char *content;
+	const char *menuLevel;
+	const char *contentType;
+	const unsigned char *content;
 	int contentSize;
 	int needUserInput1;
 	int needUserInput2;
 	int needUserInput3;
 	int nextAction; //0, none, 1, menu, 2, chat, 3, call, 4, cnc, 5, newSession
-	char *newCalledNumber;
+	const char *newCalledNumber;
 }GMenu;
 
 //inUserData normally used in IOS to transfer 'self' reference. in android just simply set to 0
@@ -168,7 +239,7 @@ typedef void (*RelayStatusRsp)(void *inUserData, unsigned int relaySN, int netwo
    menuSupport：目前忽略此参数。
    chatSupport：目前忽略此参数。
    callSupport：如果此参数值为0，APP应当提示用户“被叫号码不支持语音呼叫”并结束本次呼叫。errorCode不为0时，此参数值无意义。
-   nonce：如果此指针值不为NULL，APP在后续调用的galaxy_callSetup()函数中，必须设置auth值。errorCode不为0时，此参数值无意义。
+   nonce：如果此指针值不为NULL，APP在后续调用的galaxy_callSetup()函数中，必须设置auth值。errorCode不为0时，此参数值无意义。nonce长度为8字节。
    errorCode：errorCode不等于0时，表示sessionInvite失败，APP应当提示用户“暂时无法发起呼叫”并结束后续流程。errorCode的取值参看MCC01协议的Mcc01SessionErrorCode。
 */
 typedef void (*SessionConfirm)(void *inUserData, unsigned int relaySN, int menuSupport, int chatSupport, int callSupport, const char *nonce, int errorCode);
@@ -206,22 +277,44 @@ typedef void (*CallInReleased)(void *inUserData, int errorCode);
    参数解释：
    messageId：等于galaxy_messageNonceReq()调用时填入的messageId。
    relaySN：等于galaxy_messageNonceReq()调用时填入的relaySN。
-   nonce：返回的nonce。nonce为NULL时，表示无需鉴权，后续的galaxy_messageSubmit()调用的auth填写为NULL。
+   nonce：返回的nonce。nonce为NULL时，表示无需鉴权，后续的galaxy_messageSubmit()调用的auth填写为NULL。nonce长度为8字节。
    errorCode：参看MCC01协议的Mcc01MessageNonceErrorCode。
 */
 typedef void (*MessageNonceRsp)(void *inUserData, int messageId, unsigned int relaySN, const char *nonce, int errorCode);
 /*
    参数解释：
-   messageId：等于galaxy_messageSubmit()调用时填入的messageId。
-   relaySN：等于galaxy_messageSubmit()调用时填入的relaySN。
+   messageId：等于galaxy_messageSubmitReq()调用时填入的messageId。
+   relaySN：等于galaxy_messageSubmitReq()调用时填入的relaySN。
    errorCode：参看MCC01协议的Mcc01MessageSubmitErrorCode。当返回的errorCode为authFailed时，APP要提示用户删除对应的gmobile重新添加（即重新执行galaxy_relayLoginReq()
 */
-typedef void (*MessageSubmitAck)(void *inUserData, int messageId, unsigned int relaySN, int errorCode);
+typedef void (*MessageSubmitRsp)(void *inUserData, int messageId, unsigned int relaySN, int errorCode);
 /*
    参数解释：
-   参数含义和galaxy_messageSubmit()函数各项参数的含义相同。
+   参数含义和galaxy_messageInHello()函数各项参数的含义相同。
 */
-typedef void (*MessageDeliver)(void *inUserData, int messageId, unsigned int relaySN, const char *calledNumber, const char *callingNumber, const char *content, int contentSize);
+typedef void (*MessageInHelloAck)(void *inUserData, int seqId, unsigned int relaySN);
+/*
+   参数解释：
+   参数含义和galaxy_messageSubmitReq()函数各项参数的含义相同。
+   timestamp: 主叫用户发送短消息的时间,带有时区信息。格式为yyyyMMddHHmmssZ，比如20180205091435+0800
+              在IOS中，可以用如下的方法对timestamp进行操作,转换为本地时区时间：
+-(NSString *)formatTimestamp:(NSString *)timestamp
+{
+	NSDate *Date;
+	//新建一个Date格式类，
+	NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+	//设置为timeStr的日期格式
+	[dateFormatter setDateFormat:@"yyyyMMddHHmmssZ"];
+	//以timeStr的格式来得到Date
+	Date = [dateFormatter dateFromString:timestamp];
+	//设置日期格式为要转化的类型
+	[dateFormatter setDateFormat:@"yyyy-MM-dd HH:mm:ss"];
+	//将要转化的日期变为字符串
+	NSString *formatStr = [dateFormatter stringFromDate:Date];
+	return formatStr;
+}
+*/
+typedef void (*MessageDeliverReq)(void *inUserData, int messageId, unsigned int relaySN, const char *callingNumber, const char *content, const char *timestamp);
 
 /*
    函数功能：
@@ -231,53 +324,84 @@ typedef void (*MessageDeliver)(void *inUserData, int messageId, unsigned int rel
    函数执行成功返回1，失败返回0。
 
 */
-int galaxy_init();
+int galaxy_init(void);
 
 /*
    函数功能：
-   galaxy_setXXXCallbacks()函数用于设置相关的回调函数。
-
-   返回值：无
+   用于设置版本兼容性检查消息的回调函数。
 
    参数解释：
-   以下参数应用于出呼叫：
+   version_check_rsp：参考galaxy_versionCheckReq()函数的解释。
+   inUserData_version：参考galaxy_setSessionCallbacks函数的inUserData_session参数的解释。
+*/
+void galaxy_setVersionCheckCallbacks(const VersionCheckRsp version_check_rsp, void *inUserData_version);
+/*
+   函数功能：
+   用于设置relay相关的回调函数。
+
+   参数解释：
+   relay_login_rsp：参考galaxy_relayLoginReq()函数的解释。
+   relay_status_rsp：参考galaxy_relayStatusReq()函数的解释。
+   //relay_firmware_upate_rsp：参考galaxy_relayFirmwareUpdateReq()函数的解释。
+   inUserData_relay：参考galaxy_setSessionCallbacks函数的inUserData_session参数的解释
+*/
+void galaxy_setRelayCallbacks(const RelayLoginRsp relay_login_rsp, const RelayStatusRsp relay_status_rsp, void *inUserData_relay);
+/*
+   函数功能：
+   用于设置session相关的回调函数。
+
+   参数解释：
    session_confirm：这是galaxy库收到MCC01的sessionConfirm消息时的回调函数，sessionConfirm是对端对sessionInvite消息的回应。对SessionConfirm类型的解释，请参考brook.h。 APP在此回调函数里，应当停止针对galaxy_sessionInvite()的重发定时器，参考函数galaxy_sessionInvite()的注释里重发定时器的说明。
    inUserData_session：用户数据，APP在调用galaxy_init()函数时，可将用户数据指针放入，sessionConfirm回调函数的第一个参数将返回这个指针。本函数的其他inUserData_xxx参数的作用类似。
+*/
+void galaxy_setSessionCallbacks(const SessionConfirm session_confirm, void *inUserData_session);
+/*
+   函数功能：
+   用于设置menu相关的回调函数。
+
+   参数解释：
    menu_rsp：目前不使用，直接设置为NULL。
    inUserData_menu：目前不使用，直接设置为NULL。
+*/
+void galaxy_setMenuCallbacks(const MenuRsp menu_rsp, void *inUserData_menu);
+/*
+   函数功能：
+   用于设置出呼叫相关的回调函数。
+
+   参数解释：
    call_trying：这是出呼叫对端指示接收到呼叫时的回调函数。APP在此回调函数里，应当停止针对galaxy_callSetup()的重发定时器，参考函数galaxy_callSetup()的注释。
    call_busy：直接设置为NULL。
    call_alerting：这是出呼叫对端振铃时的回调函数。galaxy库收到对端发送的MCC01 callAlerting消息后，调用此回调函数。APP在此回调函数里，应当停止针对galaxy_callSetup()的重发定时器，参考函数galaxy_callSetup()的注释里重发定时器的说明。
    call_answer：这是出呼叫对端应答时的回调函数。galaxy库收到对端发送的MCC01 callAnswer消息后，调用此回调函数。APP在此回调函数里，应当停止针对galaxy_callSetup()的重发定时器，参考函数galaxy_callSetup()的注释里重发定时器的说明。
    call_released：这是出呼叫对端挂机时的回调函数。galaxy库收到对端发送的MCC01 callRelease消息后，调用此回调函数。APP在此回调函数里，应当停止针对galaxy_callSetup()的重发定时器，参考函数galaxy_callSetup()的注释里重发定时器的说明。
-   inUserData_call：参考inUserData_session的解释。
+   inUserData_call：参考galaxy_setSessionCallbacks函数的inUserData_session参数的解释
+*/
+void galaxy_setCallOutCallbacks(const CallNotify call_trying, const CallNotify call_busy, const CallNotify call_alerting, const CallNotify call_answer, const CallReleased call_released, void *inUserData_call);
+/*
+   函数功能：
+   用于设置入呼叫相关的回调函数。
 
-   以下参数应用于入呼叫：
+   参数解释：
    call_in_alerting_ack：对于入呼叫，APP收到PUSHKIT消息后，确认当前空闲时需要调用galaxy_callInAlerting()向对端发送MCC01 callInAlerting消息向对端提示，本端正在振铃。在收到对端回应的MCC01 callInAlertingAck消息时，galaxy回调此函数，APP在此回调函数里，应当停止针对galaxy_callInAlerting()的重发定时器，参考函数galaxy_callInAlerting()的注释里重发定时器的说明。
    call_in_reject_ack：对于入呼叫，APP收到PUSHKIT消息后，如果确认拒接此呼叫，需要调用galaxy_callInReject()向对端发送MCC01 callInReject消息。在收到对端回应的MCC01 callInRejectAck消息时，galaxy回调此函数，APP在此回调函数里，应当停止针对galaxy_callInReject()的重发定时器，参考函数galaxy_callInReject()的注释里重发定时器的说明。
-   call_in_answer_ack：对于入呼叫，APP在用户按键应答电话时需要调用galaxy_callInAnswer()向对端发送MCC01 callInAnswer消息向对端提示本端已经应答。在收到对端回应的MCC01 callInAnswerAck消息时，galaxy回调此函数，APP在此回调函数里，应当停止针对galaxy_callInAnswer()的重发定时器，参考函数galaxy_callInAnswer()的注释里重发定时器的说明。
-   call_in_released：这是入呼叫对端挂机时的回调函数。galaxy库收到对端发送的MCC01 callInRelease消息后，调用此回调函数。
-   inUserData_call_in：参考inUserData_session的解释。
-   
-   以下参数应用于短信的发送和接收：
+   call_in_answer_ack：对于入呼叫，APP在用户按键应答电话时需要调用galaxy_callInAnswer()向对端发送MCC01 callInAnswer消息向对端提示本端已经应答。在收到对端回应的MCC01 callInAnswerAck消息时，galaxy回调此函数，APP在此回调函数里，应当停止针对galaxy_callInAlerting()和galaxy_callInAnswer()的重发定时器，参考函数galaxy_callInAlerting()和galaxy_callInAnswer()的注释里重发定时器的说明。
+   call_in_released：这是入呼叫对端挂机时的回调函数。galaxy库收到对端发送的MCC01 callInRelease消息后，调用此回调函数。APP在此回调函数里，应当停止针对galaxy_callInAlerting()和galaxy_callInAnswer()的重发定时器，参考函数galaxy_callInAlerting()和galaxy_callInAnswer()的注释里重发定时器的说明。
+   inUserData_call_in：参考galaxy_setSessionCallbacks函数的inUserData_session参数的解释
+*/
+void galaxy_setCallInCallbacks(const CallInAlertingAck call_in_alerting_ack, const CallInRejectAck call_in_reject_ack, const CallInAnswerAck call_in_answer_ack, const CallInReleased call_in_released, void *inUserData_call_in);
+/*
+   函数功能：
+   用于设置短消息相关的回调函数。
+
+   参数解释：
    message_nonce_rsp：galaxy收到对端的MCC01 messageNonceRsp消息时的回调函数，MCC01 messageNonceRsp是对端对MCC01 messageNonceReq消息的回应。
    message_submit_ack：galaxy收到对端的MCC01 messageSubmitAck消息时的回调函数。
-   message_deliver：galaxy收到对端的MCC01 messageDeliver消息时的回调函数。
-   inUserData_message：参考inUserData_session的解释。
+   message_in_hello_ack: galaxy收到对端的MCC01 messageInHelloAck消息时的回调函数。
+   message_deliver_req：galaxy收到对端的MCC01 messageDeliverReq消息时的回调函数。要特别注意的是，APP应当缓存最近五分钟内通过本回调函数收到的短消息的所有messageId，如果后续通过本回调函数收到的短消息的messageId和缓存中的某个messageId相同，就说明是重复发送，APP应当丢弃收到的短消息。
+   inUserData_message：参考galaxy_setSessionCallbacks函数的inUserData_session参数的解释
    
-   以下参数应用于gmobile：
-   relay_login_rsp：参考galaxy_relayLoginReq()函数的解释。
-   relay_status_rsp：参考galaxy_relayStatusReq()函数的解释。
-   //relay_firmware_upate_rsp：参考galaxy_relayFirmwareUpdateReq()函数的解释。
-   inUserData_relay：
 */
-void galaxy_setVersionCheckCallbacks(const VersionCheckRsp version_check_rsp, void *inUserData_version);
-void galaxy_setRelayCallbacks(const RelayLoginRsp relay_login_rsp, const RelayStatusRsp relay_status_rsp, void *inUserData_relay);
-void galaxy_setSessionCallbacks(const SessionConfirm session_confirm, void *inUserData_session);
-void galaxy_setMenuCallbacks(const MenuRsp menu_rsp, void *inUserData_menu);
-void galaxy_setCallOutCallbacks(const CallNotify call_trying, const CallNotify call_busy, const CallNotify call_alerting, const CallNotify call_answer, const CallReleased call_released, void *inUserData_call);
-void galaxy_setCallInCallbacks(const CallInAlertingAck call_in_alerting_ack, const CallInRejectAck call_in_reject_ack, const CallInAnswerAck call_in_answer_ack, const CallInReleased call_in_released, void *inUserData_call_in);
-void galaxy_setMessageCallbacks(const MessageNonceRsp message_nonce_rsp, const MessageSubmitAck message_submit_ack, const MessageDeliver message_deliver, void *inUserData_message);
+void galaxy_setMessageCallbacks(const MessageNonceRsp message_nonce_rsp, const MessageSubmitRsp message_submit_rsp, const MessageInHelloAck message_in_hello_ack, const MessageDeliverReq message_deliver_req, void *inUserData_message);
 
 /*
    函数功能：
@@ -290,7 +414,7 @@ void galaxy_setMessageCallbacks(const MessageNonceRsp message_nonce_rsp, const M
    函数执行成功返回1，失败返回0。
    
 */
-int galaxy_versionCheckReq();
+int galaxy_versionCheckReq(void);
 /*
    函数功能：
    galaxy_relayLoginReq()用于添加gmobile。 relay是指VoIP呼叫的中继设备，gmobile是其中一种relay。
@@ -369,7 +493,7 @@ int galaxy_menuReq(const char *menuLevel, const char *userInputContent1, int use
    
    参数解释：
    repeated：由于定时器到需要重新调用galaxy_callSetup()时，repeated参数置为1，否则置为0。 
-   auth：鉴权信息。auth = MD5(authCode + nonce)。其中的authCode对应于在调用galaxy_relayLoginReq()使用的authCode(session_confirm回调函数返回的relaySN对应的gmobile的authCode)；nonce为session_confirm返回的nonce值。当session_confirm返回的nonce为NULL时，auth设置为NULL。举个例子：authCode="3F2504E0"，nonce="8E98347D"，则auth=MD5("3F2504E08E98347D")
+   auth：鉴权信息。auth = MD5(authCode + nonce)。其中的authCode对应于在调用galaxy_relayLoginReq()使用的authCode(session_confirm回调函数返回的relaySN对应的gmobile的authCode)；nonce为session_confirm返回的nonce值。当session_confirm返回的nonce为NULL时，auth设置为NULL。举个例子：authCode="3F2504E083E7D89B"，nonce="8E98347D"，则auth=MD5("3F2504E083E7D89B8E98347D")
    menuLevel：填入NULL。
 */
 int galaxy_callSetup(int repeated, const unsigned char *auth, const char *menuLevel);
@@ -406,13 +530,13 @@ int galaxy_callInReject(int callid,  unsigned int relaySN);
 /*
    函数功能：
    本函数用于入呼叫。用户点击接听按钮时，APP调用此函数向对端发送MCC01 callInAnswer消息，以提示对端本端应答。
-   APP应当每隔3秒钟调用galaxy_callInAnswer()重发MCC01 callAlerting消息，直到收到对端的回应消息或呼叫结束。所以应当在接收到相应MCC01消息的回调函数里，停止计时器。参见galaxy_init()函数的说明。
+   APP应当每隔3秒钟调用galaxy_callInAnswer()重发MCC01 callAnswer消息，直到收到对端的回应消息或呼叫结束。所以应当在接收到相应MCC01消息的回调函数里，停止计时器。参见galaxy_init()函数的说明。
 
    返回值：
    函数执行成功返回1，失败返回0。
 */
 //#define galaxy_callInAnswer()   send_mcc01_callInAnswer() 
-int galaxy_callInAnswer();
+int galaxy_callInAnswer(void);
 
 /*
    函数功能：
@@ -422,7 +546,7 @@ int galaxy_callInAnswer();
    函数执行成功返回1，失败返回0。
 */
 //#define galaxy_callRelease() send_mcc01_callRelease()
-int galaxy_callRelease();
+int galaxy_callRelease(void);
 /*
    函数功能：
    本函数可用于入呼叫和出呼叫。当APP检测到手机的网络环境发生改变，比如由运营商数据网络切换到WIFI，或者网络中断后又恢复，必须立即调用此函数更新语音媒体流。
@@ -430,7 +554,7 @@ int galaxy_callRelease();
    返回值：
    函数执行成功返回1，失败返回0。
 */
-int galaxy_callResetAudioStream();
+int galaxy_callResetAudioStream(void);
 //此函数目前不使用
 //#define galaxy_callSetHDVoice(enable_hd_voice) send_mcc01_callSetAudioCodecReq(enable_hd_voice)
 int galaxy_callSetHDVoice(int enable_hd_voice);
@@ -456,6 +580,7 @@ int galaxy_dial_dtmf(const char *dtmf_char);
    APP第一次调用galaxy_messageNonceReq()后，应当启动定时器。并在APP界面上提示消息正在被发送。如果5秒钟后没有收到MCC01 messageNonceRsp消息（即message_nonce_rsp回调函数没有被调用），APP应当重新调用本函数以尝试重新发送MCC01 messageNonceReq消息。
    APP第二次调用galaxy_messageNonceReq()后，应当启动定时器。如果15秒钟后没有收到MCC01 messageNonceRsp消息，APP应当重新调用本函数以尝试重新发送MCC01 messageNonceReq消息。
    APP第三次调用galaxy_messageNonceReq()后，应当启动定时器。如果15秒钟后没有收到MCC01 messageNonceRsp消息，APP提示用户消息没有被成功发送。
+   重复发送的消息，其messageId必须相同。
    
    APP应当有能力鉴别针对同一个messageId的多次MCC01 messageNonceRsp消息（即message_nonce_rsp回调函数被多次调用），应当忽略后续重复的回应消息。
 
@@ -474,6 +599,7 @@ int galaxy_messageNonceReq(int messageId, unsigned int relaySN);
    APP第一次调用galaxy_messageSubmit()后，应当启动定时器。如果5秒钟后没有收到MCC01 messageSubmitAck消息（即message_submit_ack回调函数没有被调用），APP应当重新调用本函数以尝试重新发送MCC01 messageNonceReq消息。
    APP第二次调用galaxy_messageSubmit()后，应当启动定时器。如果15秒钟后没有收到MCC01 messageSubmitAck消息，APP应当重新调用本函数以尝试重新发送MCC01 messageSubmit消息。
    APP第三次调用galaxy_messageSubmit()后，应当启动定时器。如果15秒钟后没有收到MCC01 messageSubmitAck消息，APP提示用户消息没有被成功发送。
+   重复发送的消息，其messageId必须相同。
    如果接收到对端发送的MCC01 messageSubmitAck消息（message_submit_ack回调函数被调用），APP应当在界面上提示消息被成功发送。
       
    APP应当有能力鉴别针对同一个messageId的多次MCC01 messageSubmitAck消息（即message_submit_ack回调函数被多次调用），应当忽略后续重复的回应消息。
@@ -484,14 +610,29 @@ int galaxy_messageNonceReq(int messageId, unsigned int relaySN);
    参数解释：
    relaySN：必须和之前的galaxy_messageNonceReq调用的relaySN相同。
    messageId：必须和之前的galaxy_messageNonceReq调用的messageId相同。
-   auth：鉴权信息。auth = MD5(authCode + nonce)。 其中的authCode对应于在调用galaxy_relayLoginReq()使用的authCode(relaySN对应的gmobile的authCode)；nonce为message_nonce_rsp返回的nonce值。当message_nonce_rsp返回的nonce为NULL时，auth设置为NULL。举个例子：authCode="3F2504E0"，nonce="8E98347D"，则auth=MD5("3F2504E08E98347D")
+   auth：鉴权信息。auth = MD5(authCode + nonce)。 其中的authCode对应于在调用galaxy_relayLoginReq()使用的authCode(relaySN对应的gmobile的authCode)；nonce为message_nonce_rsp返回的nonce值。当message_nonce_rsp返回的nonce为NULL时，auth设置为NULL。举个例子：authCode="3F2504E083E7D89B"，nonce="8E98347D"，则auth=MD5("3F2504E083E7D89B8E98347D")
    calledNumber：接收短信的被叫号码。
-   callingNumber：填写为NULL。
    content：短信内容，UTF8编码格式。
-   contentSize：短信字节数。
 */
 //#define galaxy_messageSubmit(messageId, relaySN, auth, calledNumber, callingNumber, content, contentSize)    send_mcc01_messageSubmit(messageId, relaySN, auth, calledNumber, callingNumber, content, contentSize)
-int galaxy_messageSubmit(int messageId, unsigned int relaySN, const unsigned char *auth, const char *calledNumber, const char *callingNumber, const char *content, int contentSize);
+int galaxy_messageSubmitReq(int messageId, unsigned int relaySN, const unsigned char *auth, const char *calledNumber, const char *content);
+
+/*
+   函数功能：
+   每次APP启动，或者由后台转到前台，或者收到消息推送后用户点击消息启动程序，APP都需要调用本函数以通知服务器发送缓存的短消息。服务器收到messageInHello消息后，将会以messageDeliverReq消息发送所有缓存的短消息。
+   如果APP在5秒内没有收到messageInHelloAck消息（也即message_in_hello_ack回调函数被调用），或者没有收到messageDeliverReq消息（也即message_deliver_req回调函数被调用），应当重复调用本函数，最多重复调用本函数3次。
+
+   重复发送的消息，其seqId必须相同。
+   
+
+   返回值：
+   函数执行成功返回1，失败返回0。
+   
+   参数解释：
+   seqId：APP产生的一个随机数。在回调函数message_in_hello_ack中，将返回相同的seqId。
+   relaySN：通过此relaySN对应的gmobile发送短信。
+*/
+int galaxy_messageInHello(int seqId, unsigned int relaySN);
 
 /*
    函数功能：

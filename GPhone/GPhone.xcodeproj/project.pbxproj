@@ -644,7 +644,6 @@
 		B8A466F31FB186BD007EFB09 /* GPhone */ = {
 			isa = PBXGroup;
 			children = (
-				B8E3DF8F202D72ED00B6A1B1 /* GPhone.entitlements */,
 				FCBB17331FDA89AC00639D3E /* images */,
 				B89A77E51FD52692000A079A /* lib */,
 				B89A77E21FD52650000A079A /* include */,
@@ -657,6 +656,7 @@
 				B8A466FD1FB186BD007EFB09 /* Assets.xcassets */,
 				B8A467031FB186BD007EFB09 /* main.m */,
 				B8A467021FB186BD007EFB09 /* Info.plist */,
+				B8E3DF8F202D72ED00B6A1B1 /* GPhone.entitlements */,
 			);
 			path = GPhone;
 			sourceTree = "<group>";
