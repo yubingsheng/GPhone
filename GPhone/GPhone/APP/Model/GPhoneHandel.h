@@ -26,4 +26,9 @@
  date to string
  */
 + (NSString *)dateToStringWith:(NSDate *)date;
+
+/*
+ authCode
+ */
++ (const char*)authCode;
 @end

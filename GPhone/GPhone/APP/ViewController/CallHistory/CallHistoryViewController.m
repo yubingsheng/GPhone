@@ -64,8 +64,9 @@
 //        NSNumber *relaySN = [NSNumber numberWithInteger:[GPhoneConfig.sharedManager relaySN].integerValue];
 //        NSLog(@"relaySn：%@ name: %@",relaySN,[GPhoneConfig.sharedManager relayName]);
 //        [GPhoneCallService.sharedManager relayLoginWith:[relaySN unsignedIntValue] relayName:[GPhoneConfig.sharedManager relayName]];
+        [GPhoneCallService.sharedManager sendMsgWith:@"111"];
+
     }
-    
 }
 
 - (void)requestAuthorizationForAddressBook {

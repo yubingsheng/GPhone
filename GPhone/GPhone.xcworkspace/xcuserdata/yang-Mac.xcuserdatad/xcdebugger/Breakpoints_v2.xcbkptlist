@@ -24,45 +24,13 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "GPhone/Server/GPhoneCallService.m"
-            timestampString = "540042918.879317"
+            timestampString = "541948492.664885"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "261"
-            endingLineNumber = "261"
-            landmarkName = "-handleCallReleasedCallBackWithErrorCodee:"
+            startingLineNumber = "365"
+            endingLineNumber = "365"
+            landmarkName = "-handleMessageDeliverReqCallBackWithMessageId:relaySN:callingNumber:content:timestamp:"
             landmarkType = "7">
-            <Locations>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "-[GPhoneCallService handleCallReleasedCallBackWithErrorCodee:]"
-                  moduleName = "GPhone"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/yang-Mac/Desktop/yubingsheng/GPhone/GPhone/Server/GPhoneCallService.m"
-                  timestampString = "540042918.9788769"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "261"
-                  endingLineNumber = "261"
-                  offsetFromSymbolStart = "308">
-               </Location>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "__62-[GPhoneCallService handleCallReleasedCallBackWithErrorCodee:]_block_invoke"
-                  moduleName = "GPhone"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/yang-Mac/Desktop/yubingsheng/GPhone/GPhone/Server/GPhoneCallService.m"
-                  timestampString = "540042918.982529"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "263"
-                  endingLineNumber = "263"
-                  offsetFromSymbolStart = "52">
-               </Location>
-            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>

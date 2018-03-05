@@ -8,14 +8,12 @@
 #import "galaxy.h"
 #import "CallKitHandel.h"
 
-@interface CallKitHandel ()<ADContactProtocol>
-
-@property (nonatomic, strong) CXProvider* provider;
-@property (nonatomic, strong) CXCallController* callController;
+@interface CallKitHandel ()
+{
+    BOOL outCall;
+    NSString *calledNumberOutCall;
+}
 @property (nonatomic, readonly) CXProviderConfiguration* config;
-
-
-
 @end
 
 @implementation CallKitHandel
@@ -25,7 +23,7 @@
     
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
-        configInternal = [[CXProviderConfiguration alloc] initWithLocalizedName:@"GMobile"];
+        configInternal = [[CXProviderConfiguration alloc] initWithLocalizedName:@"gphone"];
         configInternal.supportsVideo = NO;
         configInternal.maximumCallsPerCallGroup = 1;
         configInternal.maximumCallGroups = 1;
@@ -41,80 +39,156 @@
 - (instancetype)init{
     self = [super init];
     if (self) {
-        _callController = [[CXCallController alloc] init];
         _provider = [[CXProvider alloc] initWithConfiguration:self.config];
+        [_provider setDelegate:self queue:nil];
     }
+    
     return self;
 }
 
-- (NSString *)displayName {
-    return @"xx";
-}
-- (NSString*)phoneNumber {
-    return self.currentHandle;
-}
 - (void)reportIncomingCallWithCallId:(NSString*)callId relaysn:(NSString*)relaysn callingNumber:(NSString*)callingNumber{
+    
     NSLog(@"SHAY reportIncomingCallWithCallId, callId=%@, relaysn=%@, callingNumber=%@", callId, relaysn, callingNumber);
-    self.currentHandle = callingNumber;
     CXCallUpdate* update = [[CXCallUpdate alloc] init];
     update.hasVideo = NO;
     update.remoteHandle = [[CXHandle alloc] initWithType:CXHandleTypePhoneNumber value:callingNumber];
-    _currentUUID = [NSUUID UUID];
-    NSLog(@"uuid == %@", _currentUUID);
-    GPhoneCallService.sharedManager.uuid = _currentUUID;
-    _startConnectingDate = [NSDate date];
-    [[ADCallKitManager sharedInstance] setupWithAppName:@"GMobile" supportsVideo:YES actionNotificationBlock:^(CXCallAction * _Nonnull action, ADCallActionType actionType) {
-        switch (actionType) {
-            case ADCallActionTypeEnd:
-            {
-                if(!galaxy_callRelease()) {
-                    char gerror[32];
-                    NSLog(@"galaxy_callInRelease failed, gerror=%s", galaxy_error(gerror));
-                }else {
-                    if ([_delegate respondsToSelector:@selector(endCall)]) {
-                        [_delegate endCall];
-                    }
-                }
-            }
-            case ADCallActionTypeStart:
-            {
-                CXTransaction* transaction = [[CXTransaction alloc] init];
-                [transaction addAction:action];
-                [self requestTransaction:transaction];
-            }
-            case ADCallActionTypeAnswer:
-            {
-                if(!galaxy_callInAnswer()) {
-                    char gerror[32];
-                    NSLog(@"galaxy_callInAnswer failed, gerror=%s", galaxy_error(gerror));
-                }else {
-                    NSLog(@"SHAY galaxy_callInAnswer sent");
-                }
-            }
-            default:
-                break;
-        }
-    }];
     
-   [[ADCallKitManager sharedInstance] reportIncomingCallWithContact:self completion:^(NSError * _Nullable error) {
+    
+    self.inCallUUID = [NSUUID UUID];
+    [self.provider reportNewIncomingCallWithUUID:self.inCallUUID update:update completion:^(NSError * _Nullable error) {
         if (error) {
             NSLog(@"report error");
         }
         else {
+            //实际应用中，要启动定时器重发galaxy_callInAlerting
             if(!galaxy_callInAlerting([callId intValue], [relaysn intValue])) {
                 char gerror[32];
-                NSLog(@"error=%s", galaxy_error(gerror));
-            }else NSLog(@"callInAlerting sent");
+                NSLog(@"galaxy_callInAlerting failed, gerror=%s", galaxy_error(gerror));
+            }
+            NSLog(@"SHAY galaxy_callInAlerting sent");
         }
     }];
+    NSLog(@"SHAY after report NewIncomingCall");
 }
 
-- (void)requestTransaction:(CXTransaction*)transaction{
-    [self.callController requestTransaction:transaction completion:^(NSError * _Nullable error) {
-        if (error) {
-            NSLog(@"requestTransaction error %@", error);
+- (BOOL)configureAudioSession {
+    AVAudioSession *sess = [AVAudioSession sharedInstance];
+    if ([sess respondsToSelector:@selector(setCategory:mode:options:error:)]) {
+        if([sess setCategory:AVAudioSessionCategoryPlayAndRecord
+                        mode:AVAudioSessionModeVoiceChat
+                     options:AVAudioSessionCategoryOptionAllowBluetooth
+                       error:nil] != YES) {
+            NSLog(@"Warning: failed setting audio session category mode options");
+            return NO;
         }
-    }];
+        else {
+            NSLog(@"SHAY setting audio session category mode options succ");
+            return YES;
+        }
+    }
+    else {
+        BOOL err;
+        if ([sess respondsToSelector:@selector(setCategory:withOptions:error:)]) {
+            err = [sess setCategory:AVAudioSessionCategoryPlayAndRecord
+                        withOptions:AVAudioSessionCategoryOptionAllowBluetooth
+                              error:nil];
+        } else {
+            err = [sess setCategory:AVAudioSessionCategoryPlayAndRecord
+                              error:nil];
+        }
+        if (err) {
+            NSLog(@"Warning: failed settting audio session category");
+            return NO;
+        }
+        else {
+            if ([sess respondsToSelector:@selector(setMode:error:)] && [sess setMode:AVAudioSessionModeVoiceChat error:nil] != YES) {
+                NSLog(@"Warning: failed settting audio mode");
+                return NO;
+            }
+            else return YES;
+        }
+    }
+}
+
+
+#pragma mark - CXProviderDelegate
+- (void)provider:(CXProvider *)provider performStartCallAction:(CXStartCallAction *)action{
+    NSLog(@"SHAY peformStartCallAction called");
+    calledNumberOutCall = action.handle.value;
+    outCall = YES;
+    if([self configureAudioSession] == YES) [action fulfill];
+    else [action fail];
+}
+
+// user answered this incoming call
+- (void)provider:(CXProvider *)provider performAnswerCallAction:(CXAnswerCallAction *)action{
+    outCall = NO;
+    if([self configureAudioSession] == YES) [action fulfill];
+    else [action fail];
+}
+
+// user end this call
+- (void)provider:(CXProvider *)provider performEndCallAction:(CXEndCallAction *)action{
+    //在实际应用中，如果是incall，要停止针对callInAlerting和callInAnswer的重发定时器
+    if(!galaxy_callRelease()) {
+        char gerror[32];
+        NSLog(@"galaxy_callInRelease failed, gerror=%s", galaxy_error(gerror));
+        [action fail];
+    }
+    else {
+        NSLog(@"SHAY galaxy_callInRelease sent");
+        [action fulfill];
+    }
+    
+}
+- (void) startSessionInviteTimer{
+    _timerSessionInvite = [NSTimer scheduledTimerWithTimeInterval:3.0 target:self selector:@selector(sessionInvite) userInfo:nil repeats:YES];
+}
+
+- (void) sessionInvite{
+    if(!galaxy_sessionInvite(calledNumberOutCall.UTF8String, 0, 0, 0, [[NSNumber numberWithInteger:[GPhoneConfig.sharedManager relaySN].integerValue] unsignedIntValue])) {
+        char gerror[32];
+        NSLog(@"galaxy_sessionInvite failed, gerror=%s", galaxy_error(gerror));
+    }
+}
+
+- (void)provider:(CXProvider *)provider didActivateAudioSession:(AVAudioSession *)audioSession{
+    /*
+     [self.callController startAudio];
+     */
+    NSLog(@"session has activate");
+    if(outCall) {
+        NSLog(@"SHAY it's an out call, send sessionInvite");
+        [self sessionInvite];
+        [self performSelectorOnMainThread:@selector(startSessionInviteTimer) withObject:nil waitUntilDone:NO];
+    }
+    else {  //incall
+        NSLog(@"SHAY it's an in call, send callInAnswer");
+        //实际应用中，要启动定时器重发galaxy_callInAnswer
+        if(!galaxy_callInAnswer()) {
+            char gerror[32];
+            NSLog(@"galaxy_callInAnswer failed, gerror=%s", galaxy_error(gerror));
+        }
+        else {
+            NSLog(@"SHAY galaxy_callInAnswer sent");
+        }
+    }
+    
+}
+
+- (void)provider:(CXProvider *)provider didDeactivateAudioSession:(AVAudioSession *)audioSession{
+    NSLog(@"session has deactivate");
+}
+
+- (void)providerDidReset:(nonnull CXProvider *)provider {
+    //在实际应用中，如果是incall，要停止针对callInAlerting和callInAnswer的重发定时器
+    if(!galaxy_callRelease()) {
+        char gerror[32];
+        NSLog(@"galaxy_callInRelease failed, gerror=%s", galaxy_error(gerror));
+    }
+    else {
+        NSLog(@"SHAY galaxy_callInRelease sent");
+    }
 }
 
 @end

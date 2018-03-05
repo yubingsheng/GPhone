@@ -49,6 +49,11 @@
  */
 - (void)versionCheck;
 /*
+ sms
+ */
+- (void)sendMsgWith:(NSString*)text;
+#pragma mark - HUD
+/*
  hud
  */
 - (void)hiddenWith:(NSString*)title;

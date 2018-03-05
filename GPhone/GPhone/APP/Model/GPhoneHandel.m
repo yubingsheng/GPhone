@@ -127,6 +127,15 @@
     return _timestamp;
 }
 
++ (const char*)authCode {
+    int a = rand();
+    int b = rand();
+    const char authcode[25];
+    sprintf(authcode, "%08x%08x", a, b);
+    srand(time(0));
+    return authcode;
+}
+
 #pragma mark - 10进制、16进制互转
 
 - (NSInteger)numberWithHexString:(NSString *)hexString{

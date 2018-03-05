@@ -23,6 +23,8 @@
     char authCode_nonce[25];  //authCode(8) + nonce(8) + 0
     char pushTokenVoIP[128];
     unsigned char callMD5[16];
+    char authCode_nonce_message[25];
+    
 }
 
 +(GPhoneCallService *)sharedManager{
@@ -48,6 +50,7 @@
     galaxy_setCallOutCallbacks(CallTrying_Callback,0, CallAlerting_Callback, CallAnswer_Callback, CallReleased_Callback,(__bridge void *)(self));
     //实际应用中，callIn的每个callback必须有，且必须要做相应的处理，比如定时器的停止。尤其对于callInRelease_Callback，要在callkit做相应的结束呼叫的处理。
     galaxy_setCallInCallbacks(CallInAlertingAck_Callback,0,0,OutCallReleased_Callback, (__bridge void *)(self));
+    galaxy_setMessageCallbacks(MessageNonceRsp_Callback, MessageSubmitRsp_Callback, MessageInHelloAck_Callback, MessageDeliverReq_Callback, (__bridge void *)(self));
 
 }
 #pragma mark - API
@@ -55,14 +58,12 @@
     [self showWith:@""];
     relaySN = relay;
     relayName = name;
-    static int seqId;
-    strcpy(authCode_nonce, "3F2504E08D64C20A");
-//    memcpy(authCode_nonce, [GPhoneConfig.sharedManager.authCode_nonce cStringUsingEncoding:NSASCIIStringEncoding], 2*[GPhoneConfig.sharedManager.authCode_nonce length]);
-    
+    int seqId = rand();
+    strcpy(authCode_nonce, [GPhoneHandel authCode]);
     memcpy(pushTokenVoIP, [GPhoneConfig.sharedManager.pushKitToken cStringUsingEncoding:NSASCIIStringEncoding], 2*[GPhoneConfig.sharedManager.pushKitToken length]);
     memcpy(pushToken, [GPhoneConfig.sharedManager.pushToken cStringUsingEncoding:NSASCIIStringEncoding], 2*[GPhoneConfig.sharedManager.pushToken length]);
 //    strcpy(pushTokenVoIP, pushToken); //实际应用中，由Apple分配，并保存在flash中。
-    galaxy_relayLoginReq(seqId++, relaySN, [relayName UTF8String], 1, pushToken, pushTokenVoIP, authCode_nonce);
+    galaxy_relayLoginReq(seqId, relaySN, [relayName UTF8String], 1, pushToken, pushTokenVoIP, authCode_nonce);
 }
 
 - (void)dialWith:(ContactModel *)contactModel {
@@ -93,6 +94,19 @@
         NSLog(@"galaxy_callInRelease failed, gerror=%s", galaxy_error(gerror));
     }else {
         
+    }
+}
+
+- (void)sendMsgWith:(NSString*)text {
+    int messageId = rand();
+    //在实际应用中，必须启动定时器，具体参考galaxy_messageNonceReq函数的注释。
+    relaySN = [[NSNumber numberWithInteger:[GPhoneConfig.sharedManager relaySN].integerValue] unsignedIntValue];
+    if(!galaxy_messageNonceReq(messageId,  relaySN)) {
+        char gerror[32];
+        NSLog(@"galaxy_messageNonceReq failed, gerror=%s", galaxy_error(gerror));
+    }
+    else {
+        NSLog(@"send sms succ");
     }
 }
 
@@ -258,9 +272,7 @@ static void OutCallReleased_Callback(void *inUserData, int errorCode) {
     else result = [NSString stringWithFormat: @"Call released with error code %d", errorCode];
     [self hiddenWith: result];
     NSLog(@"uuid == %@", _uuid);
-    [ADCallKitManager.sharedInstance endCall: _uuid completion:^(NSError * _Nullable error) {
-        
-    }];
+    
 }
 
 static void VersionCheckRsp_Callback(void *inUserData, int result) {
@@ -273,6 +285,103 @@ static void VersionCheckRsp_Callback(void *inUserData, int result) {
     if ([_delegate respondsToSelector:@selector(versionStatusWith:)]) {
         [_delegate versionStatusWith:result];
     }
+}
+#pragma mark - Message
+static void MessageNonceRsp_Callback(void *inUserData, int messageId, unsigned int relaySN, const char *nonce, int errorCode){
+    [STRONGSELF handleMessageNonceRspCallBackWithMessageId:messageId relaySN:relaySN nonce:nonce errorCode:errorCode];
+}
+
+- (void) handleMessageNonceRspCallBackWithMessageId: (int) messageId relaySN: (unsigned int)relaySN nonce: (const char*)nonce errorCode: (int)errorCode
+{
+    if(errorCode) {
+        NSString *result = [NSString stringWithFormat: @"messageNonceRsp got with error code %d", errorCode];
+        [self performSelectorOnMainThread:@selector(displayText:) withObject:result waitUntilDone:NO];
+        return;
+    }
+    
+    if(nonce) {
+        if(strlen(nonce) != 8) {
+            [self performSelectorOnMainThread:@selector(displayText:) withObject:@"size of nonce in sessionConfirm not 8" waitUntilDone:NO];
+            return;
+        }
+        strcpy(authCode_nonce_message + 16, nonce);
+        CC_MD5(authCode_nonce_message, (CC_LONG)strlen(authCode_nonce_message), callMD5);
+        //在实际应用中，必须启动定时器，具体参考galaxy_messageSubmitReq函数的注释。
+        //NSString *sm = @"abcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyz";
+        //NSString *sm = @"月落乌啼霜满天，江枫渔火对愁眠；姑苏城外寒山寺，夜半钟声到客船。月落乌啼霜满天，江枫渔火对愁眠；姑苏城外寒山寺，夜半钟声到客船。月落乌啼霜满天，江枫渔火对愁眠；姑苏城外寒山寺，夜半钟声到客船。";
+        //if(!galaxy_messageSubmitReq(messageId, relaySN, callMD5, calledNumber.text.UTF8String, sm.UTF8String))
+        if(!galaxy_messageSubmitReq(messageId, relaySN, callMD5, @"18016388248".UTF8String, @"hello".UTF8String))
+        {
+            char gerror[32];
+            NSLog(@"galaxy_messageSubmitReq failed, gerror=%s", galaxy_error(gerror));
+        }
+    }
+    else {
+        NSString *result = [NSString stringWithFormat: @"messageNonceRsp got without nonce"];
+        [self showWith:result];
+        return;
+    }
+    
+}
+
+static void MessageSubmitRsp_Callback(void *inUserData, int messageId, unsigned int relaySN, int errorCode){
+    [STRONGSELF handleMessageSubmitRspCallBackWithMessageId:messageId relaySN:relaySN errorCode:errorCode];
+}
+
+- (void) handleMessageSubmitRspCallBackWithMessageId: (int) messageId relaySN: (unsigned int)relaySN errorCode: (int)errorCode
+{
+    if(errorCode) {
+        NSString *result = [NSString stringWithFormat: @"messageSubmitRsp got with error code %d", errorCode];
+        [self showWith:result];
+        return;
+    }
+    else {
+        NSString *result = [NSString stringWithFormat: @"sms send succ"];
+        [self performSelectorOnMainThread:@selector(displayText:) withObject:result waitUntilDone:NO];
+        return;
+    }
+}
+
+static void MessageInHelloAck_Callback(void *inUserData, int seqId, unsigned int relaySN){
+    [STRONGSELF handleMessageInHelloAckCallBackWithSeqId:seqId relaySN:relaySN];
+}
+
+- (void) handleMessageInHelloAckCallBackWithSeqId: (int) seqId relaySN: (unsigned int)relaySN{
+    NSString *result = [NSString stringWithFormat: @"messageInHelloAck got with seqId %d", seqId];
+    [self performSelectorOnMainThread:@selector(displayText:) withObject:result waitUntilDone:NO];
+    //实际应用中，需要停止messageInHello重发定时器。
+    return;
+}
+static void MessageDeliverReq_Callback(void *inUserData, int messageId, unsigned int relaySN, const char *callingNumber, const char *content, const char *timestamp){
+    [STRONGSELF handleMessageDeliverReqCallBackWithMessageId:messageId relaySN:relaySN callingNumber:callingNumber content:content timestamp:timestamp];
+}
+
+- (void) handleMessageDeliverReqCallBackWithMessageId: (int) messageId relaySN: (unsigned int)relaySN callingNumber: (const char*)callingNumber content: (const char*) content timestamp: (const char*)timestamp
+{
+    //实际应用中，要根据messageId检查是否是重复发送的短消息。
+    //timestamp转换为本地时区的时间
+    NSString *dateTime = [self formatTimestamp:[NSString stringWithFormat: @"%s", timestamp]];
+    NSString *sms = [NSString stringWithCString:content encoding:NSUTF8StringEncoding];
+    NSString *result = [NSString stringWithFormat: @"短信内容:[%@],来自号码:[%s],发送时间:[%@]",
+                        sms, callingNumber, dateTime];
+    NSLog(@"%@", result);
+    //实际应用中，需要停止messageInHello重发定时器。
+    return;
+}
+-(NSString *)formatTimestamp:(NSString *)timestamp
+{
+    NSDate *Date;
+    //新建一个Date格式类，
+    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    //设置为timeStr的日期格式
+    [dateFormatter setDateFormat:@"yyyyMMddHHmmssZ"];
+    //以timeStr的格式来得到Date
+    Date = [dateFormatter dateFromString:timestamp];
+    //设置日期格式为要转化的类型
+    [dateFormatter setDateFormat:@"yyyy-MM-dd HH:mm:ss"];
+    //将要转化的日期变为字符串
+    NSString *formatStr = [dateFormatter stringFromDate:Date];
+    return formatStr;
 }
 
 #pragma mark - RTCDelegate
