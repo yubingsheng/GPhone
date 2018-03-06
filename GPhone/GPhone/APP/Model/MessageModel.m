@@ -4,15 +4,14 @@
 
 @implementation MessageModel
 
-- (instancetype)initWithMsgId:(NSString *)msgId text:(NSString *)text date:(NSDate *)date msgType:(NSInteger)msgType mediaType:(NSInteger)medType img:(NSString *)img{
+- (instancetype)initWithMsgId:(int)msgId text:(NSString *)text date:(NSDate *)date msgType:(NSInteger)msgType phone:(NSString *)phone {
     self = [super init];
     if (self) {
         _msgId = msgId;
         _text = text;
         _date = date;
         _messageType = msgType;
-        _mediaType = medType;
-        _img = img;
+        _phone = phone;
     }
     return self;
 }

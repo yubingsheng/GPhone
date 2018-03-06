@@ -53,7 +53,6 @@
     update.hasVideo = NO;
     update.remoteHandle = [[CXHandle alloc] initWithType:CXHandleTypePhoneNumber value:callingNumber];
     
-    
     self.inCallUUID = [NSUUID UUID];
     [self.provider reportNewIncomingCallWithUUID:self.inCallUUID update:update completion:^(NSError * _Nullable error) {
         if (error) {
@@ -146,10 +145,10 @@
 }
 
 - (void) sessionInvite{
-    if(!galaxy_sessionInvite(calledNumberOutCall.UTF8String, 0, 0, 0, [[NSNumber numberWithInteger:[GPhoneConfig.sharedManager relaySN].integerValue] unsignedIntValue])) {
-        char gerror[32];
-        NSLog(@"galaxy_sessionInvite failed, gerror=%s", galaxy_error(gerror));
-    }
+//    if(!galaxy_sessionInvite(calledNumberOutCall.UTF8String, 0, 0, 0, [[NSNumber numberWithInteger:[GPhoneConfig.sharedManager relaySN].integerValue] unsignedIntValue])) {
+//        char gerror[32];
+//        NSLog(@"galaxy_sessionInvite failed, gerror=%s", galaxy_error(gerror));
+//    }
 }
 
 - (void)provider:(CXProvider *)provider didActivateAudioSession:(AVAudioSession *)audioSession{
@@ -159,8 +158,8 @@
     NSLog(@"session has activate");
     if(outCall) {
         NSLog(@"SHAY it's an out call, send sessionInvite");
-        [self sessionInvite];
-        [self performSelectorOnMainThread:@selector(startSessionInviteTimer) withObject:nil waitUntilDone:NO];
+//        [self sessionInvite];
+//        [self performSelectorOnMainThread:@selector(startSessionInviteTimer) withObject:nil waitUntilDone:NO];
     }
     else {  //incall
         NSLog(@"SHAY it's an in call, send callInAnswer");

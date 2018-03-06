@@ -9,14 +9,13 @@
 #import "MessageViewController.h"
 #import "MessageModel.h"
 
-@interface MessageViewController () <JSMessagesViewDelegate, JSMessagesViewDataSource, UIImagePickerControllerDelegate, UINavigationControllerDelegate,UIActionSheetDelegate>
+@interface MessageViewController () <JSMessagesViewDelegate, JSMessagesViewDataSource>
 
 @property (strong, nonatomic) NSMutableArray *messageArray;
 
 @end
 
 @implementation MessageViewController
-
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -25,13 +24,6 @@
     self.delegate = self;
     self.dataSource = self;
     self.messageArray = [NSMutableArray array];
-    MessageModel *message1 = [[MessageModel alloc] initWithMsgId:@"0001" text:@"第一条" date:[NSDate date] msgType:JSBubbleMessageTypeIncoming mediaType:JSBubbleMediaTypeText img:nil];
-    
-    [self.messageArray addObject:message1];
-    
-    MessageModel *message3 = [[MessageModel alloc] initWithMsgId:@"0002" text:@"第二条" date:[NSDate date] msgType:JSBubbleMessageTypeOutgoing mediaType:JSBubbleMediaTypeText img:nil];
-    
-    [self.messageArray addObject:message3];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -46,55 +38,14 @@
 }
 
 #pragma mark - Messages view delegate
-- (void)sendPressed:(UIButton *)sender withText:(NSString *)text
-{
-    int value = arc4random() % 1000;
-    NSString *msgId = [NSString stringWithFormat:@"%d",value];
-    
-    JSBubbleMessageType msgType;
-    if((self.messageArray.count - 1) % 2){
-        msgType = JSBubbleMessageTypeOutgoing;
-        [JSMessageSoundEffect playMessageSentSound];
-    }else{
-        msgType = JSBubbleMessageTypeIncoming;
-        [JSMessageSoundEffect playMessageReceivedSound];
-    }
-    
-    MessageModel *message = [[MessageModel alloc] initWithMsgId:msgId text:text date:[NSDate date] msgType:msgType mediaType:JSBubbleMediaTypeText img:nil];
-    
+- (void)sendPressed:(UIButton *)sender withText:(NSString *)text{
+    MessageModel *message = [[MessageModel alloc] initWithMsgId:0 text:text date:[NSDate date] msgType:JSBubbleMessageTypeOutgoing phone:@"18016388248"];
     [self.messageArray addObject:message];
-    
+    [GPhoneCallService.sharedManager sendMsgWith:message];
     [self finishSend:NO];
 }
 
-
-
 #pragma mark -- UIActionSheet Delegate
--(void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex{
-    switch (buttonIndex) {
-        case 0:
-        case 1:{
-            int value = arc4random() % 1000;
-            NSString *msgId = [NSString stringWithFormat:@"%d",value];
-            
-            JSBubbleMessageType msgType;
-            if((self.messageArray.count - 1) % 2){
-                msgType = JSBubbleMessageTypeOutgoing;
-                [JSMessageSoundEffect playMessageSentSound];
-            }else{
-                msgType = JSBubbleMessageTypeIncoming;
-                [JSMessageSoundEffect playMessageReceivedSound];
-            }
-            
-            MessageModel *message = [[MessageModel alloc] initWithMsgId:msgId text:nil date:[NSDate date] msgType:msgType mediaType:JSBubbleMediaTypeImage img:@"demo1.jpg"];
-            
-            [self.messageArray addObject:message];
-            
-            [self finishSend:YES];
-        }
-            break;
-    }
-}
 
 - (JSBubbleMessageType)messageTypeForRowAtIndexPath:(NSIndexPath *)indexPath
 {
@@ -108,9 +59,7 @@
 }
 
 - (JSBubbleMediaType)messageMediaTypeForRowAtIndexPath:(NSIndexPath *)indexPath{
-    
-    MessageModel *message = self.messageArray[indexPath.row];
-    return message.mediaType;
+    return 0;
 }
 
 - (UIButton *)sendButton
@@ -211,9 +160,7 @@
 }
 
 - (id)dataForRowAtIndexPath:(NSIndexPath *)indexPath{
-    
-    MessageModel *message = self.messageArray[indexPath.row];
-    return [UIImage imageNamed:message.img];
+    return nil;
 }
 
 @end

@@ -51,7 +51,7 @@
 /*
  sms
  */
-- (void)sendMsgWith:(NSString*)text;
+- (void)sendMsgWith:(MessageModel*)text;
 #pragma mark - HUD
 /*
  hud

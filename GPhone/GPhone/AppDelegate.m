@@ -9,8 +9,11 @@
 #import "AppDelegate.h"
 #import "GPhoneConfig.h"
 #import "GPhoneCacheManager.h"
-@interface AppDelegate ()<PKPushRegistryDelegate,ProviderDelegate>
-@property (nonatomic, strong) CallKitHandel* callKitHandel;
+#import <UserNotifications/UserNotifications.h>
+#import <Intents/Intents.h>
+
+@interface AppDelegate ()<PKPushRegistryDelegate>
+
 @end
 
 @implementation AppDelegate
@@ -55,7 +58,10 @@
     // Set the push type to VoIP
     voipRegistry.desiredPushTypes = [NSSet setWithObject:PKPushTypeVoIP];
 }
-
+- (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo {
+    // TODO: 收到推送短信
+    NSLog(@"%@", userInfo);
+}
 - (void)applicationWillResignActive:(UIApplication *)application {
     // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
     // Use this method to pause ongoing tasks, disable timers, and invalidate graphics rendering callbacks. Games should use this method to pause the game.
@@ -73,6 +79,13 @@
 
 - (void)applicationDidBecomeActive:(UIApplication *)application {
     // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
+    //实际应用中，galaxy_messageInHello必须按照API文档的说明，使用定时器重发
+    int seqId = rand();
+    if(!galaxy_messageInHello(seqId, [[NSNumber numberWithInteger:[GPhoneConfig.sharedManager relaySN].integerValue] unsignedIntValue])) {
+        //display.text = @"messageInHello failed";
+        char gerror[32];
+        NSLog(@"galaxy_messageInHello failed, gerror=%s", galaxy_error(gerror));
+    }
 }
 
 
@@ -80,6 +93,19 @@
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
 }
 - (BOOL)application:(UIApplication *)app openURL:(NSURL *)url options:(NSDictionary<UIApplicationOpenURLOptionsKey,id> *)options {
+    return YES;
+}
+- (BOOL)application:(UIApplication *)application continueUserActivity:(NSUserActivity *)userActivity restorationHandler:(void (^)(NSArray *restorableObjects))restorationHandler {
+    INInteraction *interaction = [userActivity interaction];
+    INIntent *intent = interaction.intent;
+    if ([intent isKindOfClass:[INStartAudioCallIntent class]])  {
+        INStartAudioCallIntent *audioIntent = (INStartAudioCallIntent *)intent;
+        INPerson *person = audioIntent.contacts.firstObject;
+        NSString *phoneNum = person.personHandle.value;
+        ContactModel *model = [[ContactModel alloc]initWithId:0 time:1 identifier:person.identifier phoneNumber:phoneNum fullName:person.displayName creatTime:[GPhoneHandel dateToStringWith:[NSDate date]]];
+        [GPhoneHandel callHistoryContainWith:model];
+        [GPhoneCallService.sharedManager dialWith:model];
+    }
     return YES;
 }
 #pragma mark - PKPushRegistryDelegate
@@ -113,8 +139,5 @@
   
     completion();
 }
-#pragma mark - ProviderDelegate
-- (void)endCall {
-    
-}
+
 @end
