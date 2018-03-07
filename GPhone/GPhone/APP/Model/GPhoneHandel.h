@@ -30,5 +30,5 @@
 /*
  authCode
  */
-+ (const char*)authCode;
++ (const char)authCode;
 @end

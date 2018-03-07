@@ -116,15 +116,12 @@
 //
 
 #pragma mark - Messages view data source
-- (NSString *)textForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    
+- (NSString *)textForRowAtIndexPath:(NSIndexPath *)indexPath{
     MessageModel *message = self.messageArray[indexPath.row];
     return message.text;
 }
 
-- (NSDate *)timestampForRowAtIndexPath:(NSIndexPath *)indexPath
-{
+- (NSDate *)timestampForRowAtIndexPath:(NSIndexPath *)indexPath{
     MessageModel *message = self.messageArray[indexPath.row];
     return message.date;
 }

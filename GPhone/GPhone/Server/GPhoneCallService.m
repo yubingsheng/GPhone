@@ -65,7 +65,8 @@
     relaySN = relay;
     relayName = name;
     int seqId = rand();
-    strcpy(authCode_nonce, "3F2504E08D64C20A");//[GPhoneHandel authCode]
+    strcpy(authCode_nonce, [GPhoneHandel authCode]);
+    NSLog(@"%@",authCode_nonce);
     memcpy(pushTokenVoIP, [GPhoneConfig.sharedManager.pushKitToken cStringUsingEncoding:NSASCIIStringEncoding], 2*[GPhoneConfig.sharedManager.pushKitToken length]);
     memcpy(pushToken, [GPhoneConfig.sharedManager.pushToken cStringUsingEncoding:NSASCIIStringEncoding], 2*[GPhoneConfig.sharedManager.pushToken length]);
 //    strcpy(pushTokenVoIP, pushToken); //实际应用中，由Apple分配，并保存在flash中。
@@ -76,7 +77,7 @@
     contactModel.phoneNumber = [contactModel.phoneNumber stringByReplacingOccurrencesOfString:@"-" withString:@""];
     [GPhoneHandel callHistoryContainWith:contactModel];
     const char *asciiCode = [contactModel.phoneNumber UTF8String]; //65
-    galaxy_sessionInvite(asciiCode, 0, 0, 0, relaySN);
+    galaxy_sessionInvite(asciiCode, 0, 0, 0, relaySN);// TODO: callkit 唤起后，didActivateAudioSession
     _callingView = [[RTCView alloc] initWithNumber:contactModel.phoneNumber nickName:contactModel.fullName byRelay:[GPhoneConfig.sharedManager relaySN]];
     _callingView.delegate = self;
     [_callingView show];

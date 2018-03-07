@@ -24,7 +24,7 @@
                           completionHandler:^(BOOL granted, NSError * _Nullable error) {
                               // Enable or disable features based on authorization.
                           }];
-    
+    srand(time(0));
     // Register for remote notifications.
     [[UIApplication sharedApplication] registerForRemoteNotifications];
     
@@ -44,7 +44,7 @@
     //[self enableRemoteNotificationFeatures];
     //[self forwardTokenToServer:devTokenBytes];
     NSString * tokenString = [[[[devToken description] stringByReplacingOccurrencesOfString: @"<" withString: @""] stringByReplacingOccurrencesOfString: @">" withString: @""] stringByReplacingOccurrencesOfString: @" " withString: @""];
-     [GPhoneCacheManager.sharedManager store:tokenString withKey:PUSHTOKEN];
+    [GPhoneCacheManager.sharedManager store:tokenString withKey:PUSHTOKEN];
     NSLog(@"device token: %@", tokenString);
 }
 
@@ -69,7 +69,7 @@
 
 
 - (void)applicationDidEnterBackground:(UIApplication *)application {
-     [GPhoneCacheManager.sharedManager archiveObject:GPhoneConfig.sharedManager.callHistoryArray forKey:CALLHISTORY];
+    [GPhoneCacheManager.sharedManager archiveObject:GPhoneConfig.sharedManager.callHistoryArray forKey:CALLHISTORY];
 }
 
 - (void)applicationWillEnterForeground:(UIApplication *)application {
@@ -136,7 +136,7 @@
         return;
     }
     [_callKitHandel reportIncomingCallWithCallId:callId relaysn:relaysn callingNumber:callingNumber];
-  
+    
     completion();
 }
 

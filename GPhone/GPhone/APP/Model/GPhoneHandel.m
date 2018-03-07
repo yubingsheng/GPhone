@@ -120,19 +120,17 @@
             [dateFormatter setDateFormat:@"yyyy-MM-dd HH:mm"];
         }else {
             [dateFormatter setDateFormat:@"MM-dd HH:mm"];
-            
         }
         _timestamp = [dateFormatter stringFromDate:dt];
     }
     return _timestamp;
 }
 
-+ (const char*)authCode {
++ (const char)authCode {
     int a = rand();
     int b = rand();
     const char authcode[25];
     sprintf(authcode, "%08x%08x", a, b);
-    srand(time(0));
     return authcode;
 }
 
