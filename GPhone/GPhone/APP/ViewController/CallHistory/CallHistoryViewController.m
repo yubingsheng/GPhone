@@ -27,7 +27,7 @@
 }
 - (void)viewDidLoad {
     [super viewDidLoad];
-
+    
     _tableView.delegate = self;
     _tableView.dataSource = self;
     _tableView.tableFooterView = [UIView new];
@@ -58,13 +58,13 @@
                 NSLog(@"转换完的数字为：%@",relaySN);
                 [GPhoneCallService.sharedManager relayLoginWith:[relaySN unsignedIntValue] relayName:alert.textFields[1].text];
             }
-            }]];
+        }]];
         [self.navigationController presentViewController:alert animated:YES completion:nil];
         //0x11223344 287454020
     }else {
-//        NSNumber *relaySN = [NSNumber numberWithInteger:[GPhoneConfig.sharedManager relaySN].integerValue];
-//        NSLog(@"relaySn：%@ name: %@",relaySN,[GPhoneConfig.sharedManager relayName]);
-//        [GPhoneCallService.sharedManager relayLoginWith:[relaySN unsignedIntValue] relayName:[GPhoneConfig.sharedManager relayName]];
+        //        NSNumber *relaySN = [NSNumber numberWithInteger:[GPhoneConfig.sharedManager relaySN].integerValue];
+        //        NSLog(@"relaySn：%@ name: %@",relaySN,[GPhoneConfig.sharedManager relayName]);
+        //        [GPhoneCallService.sharedManager relayLoginWith:[relaySN unsignedIntValue] relayName:[GPhoneConfig.sharedManager relayName]];
     }
 }
 
@@ -115,7 +115,8 @@
     CNContact *contact = contactProperty.contact;
     NSString *name = [CNContactFormatter stringFromContact:contact style:CNContactFormatterStyleFullName];
     CNPhoneNumber *phoneValue= contactProperty.value;
-    NSString *phoneNumber = phoneValue.stringValue;
+    NSString *phoneNumber = [phoneValue.stringValue stringByReplacingOccurrencesOfString:@"-" withString:@""];
+    phoneNumber = [[phoneNumber componentsSeparatedByCharactersInSet:[NSCharacterSet whitespaceCharacterSet]] componentsJoinedByString:@""];
     [self dismissViewControllerAnimated:YES completion:^{
         ContactModel *model = [[ContactModel alloc]initWithId:0 time:1 identifier:contact.identifier phoneNumber:phoneNumber fullName:name creatTime:[GPhoneHandel dateToStringWith:[NSDate date]]];
         [self dialingWith:model];
@@ -136,7 +137,7 @@
         [alert addAction:[UIAlertAction actionWithTitle:@"立即升级" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
             
         }]];
-    } 
+    }
     if (alert) {
         [self.navigationController presentViewController:alert animated:YES completion:nil];
     }

@@ -216,9 +216,7 @@
 
 - (void)setTimestamp:(NSDate *)date
 {
-    self.timestampLabel.text = [NSDateFormatter localizedStringFromDate:date
-                                                              dateStyle:NSDateFormatterMediumStyle
-                                                              timeStyle:NSDateFormatterShortStyle];
+    self.timestampLabel.text = [GPhoneHandel dateToStringWith:date];
 }
 
 - (void)setAvatarImage:(UIImage *)image

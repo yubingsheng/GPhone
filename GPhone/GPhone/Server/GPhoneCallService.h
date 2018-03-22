@@ -11,6 +11,8 @@
 #import "RTCView.h"
 #import "RelayStatusModel.h"
 
+typedef void (^MessageBlock)(BOOL succeed); //普通block
+
 @protocol GPhoneCallServiceDelegate<NSObject>
 @optional
 - (void)relayStatusWith:(RelayStatusModel*) statusModel;
@@ -22,6 +24,9 @@
 @property (assign, nonatomic) id<GPhoneCallServiceDelegate> delegate;
 @property (strong, nonatomic) MBProgressHUD *hud;
 @property (strong, nonatomic) NSUUID *uuid;
+
+@property (copy, nonatomic) MessageBlock messageBlock;
+
 +(GPhoneCallService *)sharedManager;
 
 /*

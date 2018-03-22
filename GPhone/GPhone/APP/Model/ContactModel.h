@@ -7,7 +7,6 @@
 //
 
 #import "GPhoneBaseModel.h"
-#import <Contacts/Contacts.h>
 
 @interface ContactModel : GPhoneBaseModel
 
@@ -19,6 +18,8 @@
 @property (strong, nonatomic) NSString *creatTime;
 @property (strong, nonatomic) NSString *relayName;
 @property (strong, nonatomic) NSString *relaySN;
+@property (strong, nonatomic) NSMutableArray *messageList;
+@property (assign, nonatomic) int unread;
 
 - (instancetype)initWithId:(int)id time:(int)time identifier:(NSString*)identifier phoneNumber:(NSString *)phoneNumber fullName:(NSString*)fullName creatTime:(NSString *)creatTime;
 

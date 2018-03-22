@@ -9,5 +9,5 @@
 #import "BaseViewController.h"
 
 @interface MessageListViewController : BaseViewController
-
+- (void)reloadData;
 @end

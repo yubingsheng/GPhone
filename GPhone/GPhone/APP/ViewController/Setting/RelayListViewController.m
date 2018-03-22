@@ -23,7 +23,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.title = @"RelayStatus";
+    self.title = @"GMobile列表";
     _tableView.tableFooterView = [UIView new];
     _gphoneCallService = GPhoneCallService.sharedManager;
     _gphoneCallService.delegate = self;

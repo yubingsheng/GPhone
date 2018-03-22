@@ -21,6 +21,7 @@
 #define PUSHKITTOKEN @"pushKitToken"
 #define PUSHTOKEN @"pushToken"
 #define AUTHCODE @"authCode_nonce"
+#define MESSAGECOUNT @"messsagecount"
 
 #pragma mark - APPCnfig
 @property (strong, nonatomic) NSString *relaySN;
@@ -31,4 +32,5 @@
 @property (strong, nonatomic) NSString* pushKitToken;
 @property (strong, nonatomic) NSString* pushToken;
 @property (strong, nonatomic) NSString* authCode_nonce;
+@property (strong, nonatomic) NSString *messageNumber;
 @end

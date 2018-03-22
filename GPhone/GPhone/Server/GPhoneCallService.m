@@ -7,7 +7,7 @@
 //
 
 #define STRONGSELF (__bridge GPhoneCallService *)inUserData
-#define APPDELEGATE ((AppDelegate *)[UIApplication sharedApplication].delegate)
+
 #import "GPhoneCallService.h"
 
 
@@ -65,8 +65,12 @@
     relaySN = relay;
     relayName = name;
     int seqId = rand();
-    strcpy(authCode_nonce, [GPhoneHandel authCode]);
-    NSLog(@"%@",authCode_nonce);
+    int a = rand();
+    int b = rand();
+    const char authcode[25];
+    sprintf(authcode, "%08x%08x", a, b);
+
+    strcpy(authCode_nonce, "3F2504E08D64C20A");
     memcpy(pushTokenVoIP, [GPhoneConfig.sharedManager.pushKitToken cStringUsingEncoding:NSASCIIStringEncoding], 2*[GPhoneConfig.sharedManager.pushKitToken length]);
     memcpy(pushToken, [GPhoneConfig.sharedManager.pushToken cStringUsingEncoding:NSASCIIStringEncoding], 2*[GPhoneConfig.sharedManager.pushToken length]);
 //    strcpy(pushTokenVoIP, pushToken); //实际应用中，由Apple分配，并保存在flash中。
@@ -108,11 +112,15 @@
 
 - (void)sendMsgWith:(MessageModel*)text {
     if (messageId <= 0 || !messageId) {
-        messageId = rand();
+        messageId = text.msgId;
         [self showWith:@"发送中"];
         messageModel = text;
     }
     msgRepetition ++;
+    int a = rand();
+    int b = rand();
+    const char authcode[25];
+    sprintf(authcode, "%08x%08x", a, b);
     //在实际应用中，必须启动定时器，具体参考galaxy_messageNonceReq函数的注释。
     strcpy(authCode_nonce_message, "3F2504E08D64C20A");
     relaySN = [[NSNumber numberWithInteger:[GPhoneConfig.sharedManager relaySN].integerValue] unsignedIntValue];
@@ -349,11 +357,17 @@ static void MessageNonceRsp_Callback(void *inUserData, int messageId, unsigned i
     if(errorCode) {
         NSString *result = [NSString stringWithFormat: @"messageNonceRsp got with error code %d", errorCode];
         [self hiddenWith:result];
+        if (_messageBlock) {
+            _messageBlock(NO);
+        }
         return;
     }
     if(nonce) {
         if(strlen(nonce) != 8) {
             [self hiddenWith:@"size of nonce in sessionConfirm not 8"];
+            if (_messageBlock) {
+                _messageBlock(NO);
+            }
             return;
         }
         
@@ -369,6 +383,9 @@ static void MessageNonceRsp_Callback(void *inUserData, int messageId, unsigned i
     else {
         NSString *result = [NSString stringWithFormat: @"messageNonceRsp got without nonce"];
         [self showWith:result];
+        if (_messageBlock) {
+            _messageBlock(NO);
+        }
         return;
     }
     
@@ -383,11 +400,17 @@ static void MessageSubmitRsp_Callback(void *inUserData, int messageId, unsigned 
     if(errorCode) {
         NSString *result = [NSString stringWithFormat: @"messageSubmitRsp got with error code %d", errorCode];
         [self hiddenWith:result];
+        if (_messageBlock) {
+            _messageBlock(NO);
+        }
         return;
     }
     else {
         NSString *result = [NSString stringWithFormat: @"sms send succ"];
         [self hiddenWith:result];
+        if (_messageBlock) {
+            _messageBlock(YES);
+        }
         return;
     }
 }
@@ -406,34 +429,70 @@ static void MessageDeliverReq_Callback(void *inUserData, int messageId, unsigned
     [STRONGSELF handleMessageDeliverReqCallBackWithMessageId:messageId relaySN:relaySN callingNumber:callingNumber content:content timestamp:timestamp];
 }
 
-- (void) handleMessageDeliverReqCallBackWithMessageId: (int) messageId relaySN: (unsigned int)relaySN callingNumber: (const char*)callingNumber content: (const char*) content timestamp: (const char*)timestamp
-{
-    // TODO: 对接短信历史记录
+- (void) handleMessageDeliverReqCallBackWithMessageId: (int) messageId relaySN: (unsigned int)relaySN callingNumber: (const char*)callingNumber content: (const char*) content timestamp: (const char*)timestamp{
     //实际应用中，要根据messageId检查是否是重复发送的短消息。
     //timestamp转换为本地时区的时间
-    NSString *dateTime = [self formatTimestamp:[NSString stringWithFormat: @"%s", timestamp]];
+    NSDate *dateTime = [self formatTimestamp:[NSString stringWithFormat: @"%s", timestamp]];
     NSString *sms = [NSString stringWithCString:content encoding:NSUTF8StringEncoding];
     NSString *result = [NSString stringWithFormat: @"短信内容:[%@],来自号码:[%s],发送时间:[%@]",
                         sms, callingNumber, dateTime];
-  
+    NSString *phoneNumber = [[NSString stringWithFormat:@"%s",callingNumber] stringByReplacingOccurrencesOfString:@"86" withString:@""];
     NSLog(@"%@", result);
+    NSMutableArray *messageList = [NSMutableArray arrayWithArray:GPhoneConfig.sharedManager.messageArray];
+     BOOL containContact = NO;
+    for (int i = 0; i < messageList.count; i++) {
+        ContactModel *model = messageList[i];
+        if ([model.phoneNumber isEqualToString:phoneNumber]) {
+            BOOL contain = NO;
+            containContact = YES;
+            for (MessageModel *message in model.messageList) {
+                if (message.msgId == messageId) {
+                    contain = YES;
+                }
+            }
+            if (!contain) {
+                NSMutableArray *messageList = [NSMutableArray arrayWithArray:model.messageList];
+                [messageList addObject:[[MessageModel alloc] initWithMsgId:messageId text:sms date:dateTime msgType:JSBubbleMessageTypeIncoming phone:[NSString stringWithFormat:@"%s",callingNumber]]];
+                model.messageList = messageList;
+                model.unread += 1;
+                [GPhoneHandel messageHistoryContainWith:model];
+                dispatch_sync(dispatch_get_main_queue(), ^(){
+                    [GPhoneHandel messageTabbarItemBadgeValue: -1];
+                });
+            }
+        }
+    }
+    if (!containContact){
+        ContactModel *contactModel = [[ContactModel alloc]initWithId:0 time:1 identifier:@"" phoneNumber:phoneNumber fullName:@"" creatTime:[GPhoneHandel dateToStringWith:[NSDate date]]];
+        contactModel.relaySN = [NSString stringWithFormat:@"%u",relaySN];
+        NSMutableArray *messageList = [[NSMutableArray alloc]init];
+        [messageList addObject:[[MessageModel alloc] initWithMsgId:messageId text:sms date:dateTime msgType:JSBubbleMessageTypeIncoming phone:[NSString stringWithFormat:@"%s",callingNumber]]];
+        contactModel.messageList = messageList;
+        contactModel.unread += 1;
+        dispatch_sync(dispatch_get_main_queue(), ^(){
+            [GPhoneHandel messageTabbarItemBadgeValue: -1];
+        });
+        [GPhoneHandel messageHistoryContainWith:contactModel];
+    }
     //实际应用中，需要停止messageInHello重发定时器。
     return;
 }
--(NSString *)formatTimestamp:(NSString *)timestamp
+
+-(NSDate *)formatTimestamp:(NSString *)timestamp
 {
     NSDate *Date;
     //新建一个Date格式类，
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    dateFormatter.timeZone = [NSTimeZone systemTimeZone];
     //设置为timeStr的日期格式
     [dateFormatter setDateFormat:@"yyyyMMddHHmmssZ"];
     //以timeStr的格式来得到Date
-    Date = [dateFormatter dateFromString:timestamp];
+   
     //设置日期格式为要转化的类型
-    [dateFormatter setDateFormat:@"yyyy-MM-dd HH:mm:ss"];
+    
     //将要转化的日期变为字符串
-    NSString *formatStr = [dateFormatter stringFromDate:Date];
-    return formatStr;
+     Date = [dateFormatter dateFromString:timestamp];
+    return Date;
 }
 
 #pragma mark - RTCDelegate

@@ -15,7 +15,7 @@
 @property (nonatomic, strong) CallKitHandel *callKitHandel;
 @property (nonatomic, strong) GPhoneCallController *callController;
 @property (strong, nonatomic) UIWindow *window;
-
+@property (strong, nonatomic) UITabBarController *tb;
 
 @end
 

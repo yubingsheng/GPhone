@@ -50,7 +50,9 @@
     }
     return array;
 }
-
+- (NSString *)messageNumber {
+     return [GPhoneCacheManager.sharedManager restoreWithkey:MESSAGECOUNT];
+}
 - (NSMutableArray*)messageArray {
     return [GPhoneCacheManager.sharedManager unarchiveObjectforKey:MESSAGES];
 }
@@ -70,6 +72,9 @@
     return [NSString stringWithFormat:@"%d",arc4random() % 101];
 }
 // setter
+- (void)setMessageNumber:(NSString *)messageNumber {
+    [GPhoneCacheManager.sharedManager store:messageNumber withKey:MESSAGECOUNT];
+}
 - (void)setCallHistoryArray:(NSMutableArray *)callHistoryArray {
     [GPhoneCacheManager.sharedManager archiveObject:callHistoryArray forKey:CALLHISTORY];
 }

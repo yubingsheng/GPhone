@@ -20,7 +20,7 @@
 }
 
 - (void)showToastWith:(NSString*)text {
-    [[[[iToast makeText:text] setGravity:iToastGravityCenter] setDuration:iToastDurationShort] show];
+    [[[[iToast makeText:text] setGravity:iToastGravityCenter] setDuration:iToastDurationNormal] show];
 }
 
 - (void)didReceiveMemoryWarning {

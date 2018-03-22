@@ -38,6 +38,46 @@
     return history;
 }
 
++ (NSMutableArray *)messageHistoryContainWith:(ContactModel *)contactModel {
+    BOOL contain = NO;
+    if (contactModel.fullName.length == 0) {
+        contactModel.fullName = contactModel.phoneNumber;
+    }
+    contactModel.relaySN = GPhoneConfig.sharedManager.relaySN;
+    contactModel.relayName = GPhoneConfig.sharedManager.relayName;
+    NSMutableArray * history =  [NSMutableArray arrayWithArray:GPhoneConfig.sharedManager.messageArray];
+    for (NSInteger i = 0; i < history.count; i++) {
+        ContactModel * tmpContact = history[i];
+        if ([contactModel.phoneNumber isEqualToString:tmpContact.phoneNumber]) {
+            contain = YES;
+            tmpContact.time ++;
+            tmpContact.messageList = contactModel.messageList;
+            tmpContact.unread = contactModel.unread;
+            contactModel = tmpContact;
+            [history removeObjectAtIndex:i];
+            i = history.count - 1;
+        }
+    }
+    if (contain) {
+        contactModel.creatTime = [GPhoneHandel dateToStringWith:[NSDate date]];
+    }
+    [history insertObject:contactModel atIndex:0];
+    GPhoneConfig.sharedManager.messageArray = history;
+    return history;
+}
++ (void) messageTabbarItemBadgeValue:(NSInteger)num {
+    NSInteger count = GPhoneConfig.sharedManager.messageNumber.integerValue;
+    count -= num;
+    GPhoneConfig.sharedManager.messageNumber = [NSString stringWithFormat:@"%ld",count];
+    [APPDELEGATE.tb.tabBar.items objectAtIndex:1].badgeValue = GPhoneConfig.sharedManager.messageNumber;
+    if (count <= 0) {
+        GPhoneConfig.sharedManager.messageNumber = @"";
+        [APPDELEGATE.tb.tabBar.items objectAtIndex:1].badgeValue = nil;
+    }
+    UINavigationController *nvi = APPDELEGATE.tb.childViewControllers[1];
+    [(MessageListViewController*)nvi.viewControllers[0] reloadData];
+}
+
 #pragma mark - NSDate helpHandel
 
 + (NSString *)dateToStringWith:(NSDate *)date {
@@ -55,7 +95,7 @@
     if (dateFormatter == nil) {
         dateFormatter = [[NSDateFormatter alloc] init];
         [dateFormatter setDateFormat:@"yyyy-MM-dd HH:mm:ss"];
-        dateFormatter.timeZone = [NSTimeZone timeZoneWithAbbreviation:@"GMT+0800"];
+        dateFormatter.timeZone = [NSTimeZone systemTimeZone];
     }
     NSDate *date = [dateFormatter dateFromString:datetime];
     //1460710590 (7)

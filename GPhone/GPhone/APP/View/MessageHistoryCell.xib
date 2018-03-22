@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="messageHistory" rowHeight="66" id="KGk-i7-Jjw" customClass="MessageHistoryCell">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="66"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
+                <rect key="frame" x="0.0" y="0.0" width="320" height="65.5"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="郁兵生" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="44" translatesAutoresizingMaskIntoConstraints="NO" id="65b-xq-GHv">
+                        <rect key="frame" x="25" y="10" width="49" height="19.5"/>
+                        <fontDescription key="fontDescription" type="system" weight="medium" pointSize="16"/>
+                        <nil key="textColor"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="星期五" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rjC-H8-B14">
+                        <rect key="frame" x="246" y="10" width="43" height="17"/>
+                        <fontDescription key="fontDescription" type="system" weight="light" pointSize="14"/>
+                        <color key="textColor" red="0.49803921569999998" green="0.49803921569999998" blue="0.49803921569999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="特邀您参加我们公司的办卡送汽车的服务，预订请回复#YD，退订#TD" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Tpl-7q-U0f">
+                        <rect key="frame" x="26" y="31.5" width="279" height="16"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                        <color key="textColor" white="0.55780707465277779" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="DisclosureIndicator" translatesAutoresizingMaskIntoConstraints="NO" id="HB7-UO-nJZ">
+                        <rect key="frame" x="297" y="12" width="8" height="13"/>
+                    </imageView>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="L4X-3o-Dje">
+                        <rect key="frame" x="7.5" y="27" width="12" height="12"/>
+                        <color key="backgroundColor" red="0.0" green="0.58980089430000004" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="12" id="JIA-Fl-3j1"/>
+                            <constraint firstAttribute="width" constant="12" id="cOU-xe-h13"/>
+                        </constraints>
+                        <userDefinedRuntimeAttributes>
+                            <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                <integer key="value" value="6"/>
+                            </userDefinedRuntimeAttribute>
+                        </userDefinedRuntimeAttributes>
+                    </view>
+                </subviews>
+                <constraints>
+                    <constraint firstItem="L4X-3o-Dje" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="7o2-Cp-n83"/>
+                    <constraint firstAttribute="trailing" secondItem="HB7-UO-nJZ" secondAttribute="trailing" constant="15" id="OSu-0a-Brj"/>
+                    <constraint firstItem="Tpl-7q-U0f" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="26" id="Rdc-GA-PoX"/>
+                    <constraint firstItem="65b-xq-GHv" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="25" id="VFR-Aj-Hhe"/>
+                    <constraint firstItem="rjC-H8-B14" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="10" id="Y0Z-QS-4qn"/>
+                    <constraint firstItem="HB7-UO-nJZ" firstAttribute="leading" secondItem="rjC-H8-B14" secondAttribute="trailing" constant="8" id="dh7-pl-f5h"/>
+                    <constraint firstAttribute="trailing" secondItem="Tpl-7q-U0f" secondAttribute="trailing" constant="15" id="hmz-da-9bP"/>
+                    <constraint firstItem="65b-xq-GHv" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="10" id="pqf-kb-It5"/>
+                    <constraint firstItem="Tpl-7q-U0f" firstAttribute="top" secondItem="65b-xq-GHv" secondAttribute="bottom" constant="2" id="ra0-Ja-rKx"/>
+                    <constraint firstItem="HB7-UO-nJZ" firstAttribute="centerY" secondItem="rjC-H8-B14" secondAttribute="centerY" id="wXk-2U-qis"/>
+                    <constraint firstItem="Tpl-7q-U0f" firstAttribute="leading" secondItem="L4X-3o-Dje" secondAttribute="trailing" constant="6.5" id="xs5-17-j3V"/>
+                </constraints>
+            </tableViewCellContentView>
+            <viewLayoutGuide key="safeArea" id="aW0-zy-SZf"/>
+            <connections>
+                <outlet property="messageLabel" destination="Tpl-7q-U0f" id="ffn-db-k5A"/>
+                <outlet property="nameLabel" destination="65b-xq-GHv" id="pLF-2F-fsz"/>
+                <outlet property="timeLabel" destination="rjC-H8-B14" id="VML-4p-5vX"/>
+                <outlet property="unreadView" destination="L4X-3o-Dje" id="cqy-kr-fm3"/>
+            </connections>
+        </tableViewCell>
+    </objects>
+    <resources>
+        <image name="DisclosureIndicator" width="8" height="13"/>
+    </resources>
+</document>

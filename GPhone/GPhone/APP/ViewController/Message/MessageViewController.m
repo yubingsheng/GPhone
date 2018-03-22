@@ -20,29 +20,48 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor redColor];
-    self.title = @"ChatMessage";
+    self.title = _contactModel.fullName;
     self.delegate = self;
     self.dataSource = self;
-    self.messageArray = [NSMutableArray array];
+    _messageArray = [NSMutableArray arrayWithArray:_contactModel.messageList];
+    [GPhoneHandel messageTabbarItemBadgeValue:_contactModel.unread];
+    _contactModel.unread = 0;
+    self.tabBarController.tabBar.hidden = YES;
 }
-
+-(void)viewWillDisappear:(BOOL)animated {
+    [super viewWillDisappear:animated];
+    _contactModel.messageList = _messageArray;
+    
+    if (_messageBlock) {
+        _messageBlock(_contactModel);
+    }
+}
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
 
 #pragma mark - Table view data source
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
-{
-    return self.messageArray.count;
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
+    return _messageArray.count;
 }
 
 #pragma mark - Messages view delegate
 - (void)sendPressed:(UIButton *)sender withText:(NSString *)text{
-    MessageModel *message = [[MessageModel alloc] initWithMsgId:0 text:text date:[NSDate date] msgType:JSBubbleMessageTypeOutgoing phone:@"18016388248"];
-    [self.messageArray addObject:message];
+    MessageModel *message = [[MessageModel alloc] initWithMsgId:rand() text:text date:[NSDate date] msgType:JSBubbleMessageTypeOutgoing phone:_contactModel.phoneNumber];
+    __block MessageViewController *vc = self;
     [GPhoneCallService.sharedManager sendMsgWith:message];
-    [self finishSend:NO];
+    GPhoneCallService.sharedManager.messageBlock = ^(BOOL succeed){
+        dispatch_sync(dispatch_get_main_queue(), ^(){
+            if (succeed) {
+                [vc.messageArray addObject:message];
+            }else {
+                [[[[iToast makeText:@"发送失败，重新发送！"] setGravity:iToastGravityCenter] setDuration:iToastDurationNormal] show];
+            }
+             [vc finishSend:!succeed];
+        });
+    };
+   
 }
 
 #pragma mark -- UIActionSheet Delegate

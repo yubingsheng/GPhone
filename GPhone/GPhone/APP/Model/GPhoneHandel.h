@@ -16,7 +16,14 @@
  通话记录缓存
  */
 + (NSMutableArray *)callHistoryContainWith:(ContactModel *)contactModel;
-
+/*
+ 短信记录缓存
+ */
++ (NSMutableArray *)messageHistoryContainWith:(ContactModel *)contactModel;
+/*
+ 短信未读数
+ */
++ (void) messageTabbarItemBadgeValue:(NSInteger)num;
 /*
  时间格式
  */

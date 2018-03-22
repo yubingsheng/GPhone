@@ -25,6 +25,7 @@
                               // Enable or disable features based on authorization.
                           }];
     srand(time(0));
+    _tb = self.window.rootViewController;
     // Register for remote notifications.
     [[UIApplication sharedApplication] registerForRemoteNotifications];
     
@@ -35,6 +36,7 @@
     _callKitHandel = [[CallKitHandel alloc] init];
     NSLog(@"SHAY application started");
     // 13255030725
+    
     return YES;
 }
 
@@ -59,8 +61,9 @@
     voipRegistry.desiredPushTypes = [NSSet setWithObject:PKPushTypeVoIP];
 }
 - (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo {
-    // TODO: 收到推送短信
-    NSLog(@"%@", userInfo);
+    [UIApplication sharedApplication].applicationIconBadgeNumber = 0;
+    _tb.selectedIndex = 1;
+    NSLog(@"%@", userInfo[@"aps"][@"alert"]);
 }
 - (void)applicationWillResignActive:(UIApplication *)application {
     // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
@@ -70,6 +73,7 @@
 
 - (void)applicationDidEnterBackground:(UIApplication *)application {
     [GPhoneCacheManager.sharedManager archiveObject:GPhoneConfig.sharedManager.callHistoryArray forKey:CALLHISTORY];
+    [GPhoneCacheManager.sharedManager archiveObject:GPhoneConfig.sharedManager.messageArray forKey:MESSAGES];
 }
 
 - (void)applicationWillEnterForeground:(UIApplication *)application {
@@ -79,7 +83,6 @@
 
 - (void)applicationDidBecomeActive:(UIApplication *)application {
     // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
-    //实际应用中，galaxy_messageInHello必须按照API文档的说明，使用定时器重发
     int seqId = rand();
     if(!galaxy_messageInHello(seqId, [[NSNumber numberWithInteger:[GPhoneConfig.sharedManager relaySN].integerValue] unsignedIntValue])) {
         //display.text = @"messageInHello failed";

@@ -57,15 +57,8 @@
     [self fixFrame];
 }
 
-- (void)fixFrame
-{
+- (void)fixFrame{
     CGRect frame = [UIScreen mainScreen].bounds;
-    if (OSVersionIsAtLeastiOS7 == YES) {
-        self.edgesForExtendedLayout = UIRectEdgeNone;
-    }else{
-        frame.size.height -= 20 + 44;
-    }
-    
     self.view.frame = frame;
     self.view.bounds = frame;
 }
@@ -83,7 +76,7 @@
 	
     CGRect tableFrame = self.view.bounds;
 	self.tableView = [[UITableView alloc] initWithFrame:tableFrame style:UITableViewStylePlain];
-	self.tableView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+	self.tableView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleTopMargin;
 	self.tableView.dataSource = self;
 	self.tableView.delegate = self; 
 	[self.view addSubview:self.tableView]; 
@@ -93,7 +86,7 @@
 	{
 		// set up the image and button frame
 		UIImage* image = [UIImage imageNamed:@"PhotoIcon"];
-		CGRect frame = CGRectMake(4, 0, image.size.width, image.size.height);
+		CGRect frame = CGRectMake(4, 0, 0, 0);
 		CGFloat yHeight = (INPUT_HEIGHT - frame.size.height) / 2.0f;
 		frame.origin.y = yHeight;
 		
@@ -116,7 +109,7 @@
     
     UIButton *sendButton = [self sendButton];
     sendButton.enabled = NO;
-    sendButton.frame = CGRectMake(self.inputToolBarView.frame.size.width - 65.0f, 8.0f, 59.0f, 26.0f);
+    sendButton.frame = CGRectMake(self.inputToolBarView.frame.size.width - 65.0f, 10.0f, 59.0f, 26.0f);
     [sendButton addTarget:self
                    action:@selector(sendPressed:)
          forControlEvents:UIControlEventTouchUpInside];
@@ -158,6 +151,7 @@
 {
     [super viewDidLoad];
     [self setup];
+    [_inputToolBarView.textView becomeFirstResponder];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -382,7 +376,7 @@
 
 - (void)setBackgroundColor:(UIColor *)color
 {
-    self.view.backgroundColor = color;
+    self.view.backgroundColor = [UIColor redColor];
     self.tableView.backgroundColor = color;
     self.tableView.separatorColor = color;
 }
@@ -520,10 +514,10 @@
                                                                   inputViewFrame.size.height);
                          
                          UIEdgeInsets insets = self.originalTableViewContentInset;
-                         insets.bottom = self.view.frame.size.height - self.inputToolBarView.frame.origin.y - inputViewFrame.size.height;
-                         
+                         insets.bottom = 306 * keyboardRect.size.width / 375;
                          self.tableView.contentInset = insets;
                          self.tableView.scrollIndicatorInsets = insets;
+                         [self.tableView reloadData];
                      }
                      completion:^(BOOL finished) {
                      }];

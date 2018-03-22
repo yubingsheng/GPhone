@@ -8,6 +8,7 @@
 
 #ifndef GPhone_pch
 #define GPhone_pch
+#define APPDELEGATE ((AppDelegate *)[UIApplication sharedApplication].delegate)
 #import <AVFoundation/AVFAudio.h>
 #import "MessageModel.h"
 #import "AppDelegate.h"
@@ -26,5 +27,6 @@
 #import "RelayModel.h"
 #import "iToast.h"
 #import "GPhoneCallController.h"
-
+#import "MessageViewController.h"
+#import "MessageListViewController.h"
 #endif /* GPhone_pch */

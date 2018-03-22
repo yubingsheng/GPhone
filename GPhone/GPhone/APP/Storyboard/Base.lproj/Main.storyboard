@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13529" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="org-ss-1bf">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="org-ss-1bf">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13527"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -82,20 +82,30 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fc7-HX-AFa">
-                                <rect key="frame" x="156" y="204" width="62" height="30"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <color key="backgroundColor" red="0.1019607843" green="0.1019607843" blue="0.10980392160000001" alpha="1" colorSpace="calibratedRGB"/>
-                                <state key="normal" title="message"/>
-                                <connections>
-                                    <segue destination="x6E-ew-mFb" kind="show" id="3eB-2w-vM1"/>
-                                </connections>
-                            </button>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="8YP-8p-WlW">
+                                <rect key="frame" x="0.0" y="64" width="375" height="554"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            </tableView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="NjG-FO-uqE" firstAttribute="bottom" secondItem="8YP-8p-WlW" secondAttribute="bottom" id="40Z-gS-YIU"/>
+                            <constraint firstItem="NjG-FO-uqE" firstAttribute="trailing" secondItem="8YP-8p-WlW" secondAttribute="trailing" id="4q8-OW-A6j"/>
+                            <constraint firstItem="8YP-8p-WlW" firstAttribute="top" secondItem="NjG-FO-uqE" secondAttribute="top" id="Kis-CX-OCL"/>
+                            <constraint firstItem="8YP-8p-WlW" firstAttribute="leading" secondItem="NjG-FO-uqE" secondAttribute="leading" id="uKJ-pa-o7C"/>
+                        </constraints>
                         <viewLayoutGuide key="safeArea" id="NjG-FO-uqE"/>
                     </view>
-                    <navigationItem key="navigationItem" title="短信" id="HNZ-BV-hwn"/>
+                    <navigationItem key="navigationItem" title="短信" id="HNZ-BV-hwn">
+                        <barButtonItem key="rightBarButtonItem" title="新建" width="59" id="EuP-MO-BrN">
+                            <connections>
+                                <action selector="newConstructionMessageAction:" destination="uMn-GM-Tog" id="YUw-C4-DtO"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
+                    <connections>
+                        <outlet property="tableView" destination="8YP-8p-WlW" id="fBx-9C-DpM"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Yxp-R8-8A3" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -119,7 +129,7 @@
         <!--Tab Bar Controller-->
         <scene sceneID="DnW-zI-9uV">
             <objects>
-                <tabBarController id="org-ss-1bf" sceneMemberID="viewController">
+                <tabBarController storyboardIdentifier="tabbarVC" useStoryboardIdentifierAsRestorationIdentifier="YES" id="org-ss-1bf" sceneMemberID="viewController">
                     <tabBar key="tabBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="wVM-98-upY">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="49"/>
                         <autoresizingMask key="autoresizingMask"/>

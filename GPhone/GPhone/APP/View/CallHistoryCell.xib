@@ -38,14 +38,14 @@
                         <nil key="highlightedColor"/>
                     </label>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Relay" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6JP-4c-iW5">
-                        <rect key="frame" x="84" y="10" width="39.5" height="19.5"/>
-                        <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                        <rect key="frame" x="84" y="13" width="35" height="17"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
                         <nil key="textColor"/>
                         <nil key="highlightedColor"/>
                     </label>
                 </subviews>
                 <constraints>
-                    <constraint firstItem="6JP-4c-iW5" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="10" id="Fnl-Sp-kZY"/>
+                    <constraint firstItem="6JP-4c-iW5" firstAttribute="centerY" secondItem="YMV-MT-G71" secondAttribute="centerY" id="Ky9-Ex-6xh"/>
                     <constraint firstAttribute="trailing" secondItem="Ktq-e9-tf1" secondAttribute="trailing" constant="15" id="LJ8-mk-r9N"/>
                     <constraint firstItem="YMV-MT-G71" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="15" id="Mln-QV-hdX"/>
                     <constraint firstItem="Ktq-e9-tf1" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="NkT-RD-ZWa"/>
