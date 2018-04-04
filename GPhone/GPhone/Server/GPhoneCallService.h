@@ -11,7 +11,7 @@
 #import "RTCView.h"
 #import "RelayStatusModel.h"
 
-typedef void (^MessageBlock)(BOOL succeed); //普通block
+typedef void (^RequestStatusBlock)(BOOL succeed); //普通block
 
 @protocol GPhoneCallServiceDelegate<NSObject>
 @optional
@@ -25,7 +25,8 @@ typedef void (^MessageBlock)(BOOL succeed); //普通block
 @property (strong, nonatomic) MBProgressHUD *hud;
 @property (strong, nonatomic) NSUUID *uuid;
 
-@property (copy, nonatomic) MessageBlock messageBlock;
+@property (copy, nonatomic) RequestStatusBlock messageBlock;
+@property (copy, nonatomic) RequestStatusBlock loginBlock;
 
 +(GPhoneCallService *)sharedManager;
 
@@ -49,6 +50,18 @@ typedef void (^MessageBlock)(BOOL succeed); //普通block
  主动挂断
  */
 - (void)hangup;
+/*
+ 响铃
+ */
+- (void)callInAlertingWith:(NSString*)callId relaySN:(NSString*)relaySN;
+/*
+ callRelease
+ */
+- (void)callRelease;
+/*
+ 应答
+ */
+- (void)callInAnswer;
 /*
  版本检查
  */

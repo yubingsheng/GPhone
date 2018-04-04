@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="13196" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14109" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13174"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -39,6 +39,13 @@
                             <constraint firstAttribute="width" constant="25" id="IJR-uH-AwL"/>
                         </constraints>
                     </view>
+                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="当前使用  " textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="H14-R1-eCe">
+                        <rect key="frame" x="62" y="15" width="47" height="12"/>
+                        <color key="backgroundColor" red="1" green="0.74509803919999995" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="10"/>
+                        <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <nil key="highlightedColor"/>
+                    </label>
                 </subviews>
                 <constraints>
                     <constraint firstItem="qG9-Di-GqU" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="6Fw-B0-hYm"/>
@@ -46,6 +53,8 @@
                     <constraint firstItem="yop-ti-ttt" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="12" id="HaK-94-Z7d"/>
                     <constraint firstAttribute="trailing" secondItem="yop-ti-ttt" secondAttribute="trailing" constant="15" id="K0U-km-DnQ"/>
                     <constraint firstItem="r9r-Rk-Irx" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="Yew-gQ-u5w"/>
+                    <constraint firstItem="H14-R1-eCe" firstAttribute="leading" secondItem="r9r-Rk-Irx" secondAttribute="trailing" constant="8" id="i8B-a2-XAZ"/>
+                    <constraint firstItem="H14-R1-eCe" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="jUn-g6-Oyu"/>
                     <constraint firstItem="r9r-Rk-Irx" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="15" id="tvj-It-IBT"/>
                 </constraints>
             </tableViewCellContentView>
@@ -54,8 +63,9 @@
                 <outlet property="netWorkLabel" destination="qG9-Di-GqU" id="Onz-YF-5ZJ"/>
                 <outlet property="relayNameLabel" destination="r9r-Rk-Irx" id="goh-vc-a3K"/>
                 <outlet property="signalStrengthBGView" destination="yop-ti-ttt" id="BoP-E6-yVB"/>
+                <outlet property="usedView" destination="H14-R1-eCe" id="wAP-8U-edW"/>
             </connections>
-            <point key="canvasLocation" x="-127" y="-6"/>
+            <point key="canvasLocation" x="15" y="-25"/>
         </tableViewCell>
     </objects>
 </document>

@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="org-ss-1bf">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14109" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="org-ss-1bf">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -30,7 +30,7 @@
         <scene sceneID="RFw-Cf-aZ9">
             <objects>
                 <navigationController id="3BG-mV-vLw" customClass="BaseNavigationController" customModule="GPhone" customModuleProvider="target" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="通话" id="bJW-0B-Kot"/>
+                    <tabBarItem key="tabBarItem" title="通话" image="icon_tonghua" id="bJW-0B-Kot"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="ROl-hn-x43">
                         <rect key="frame" x="0.0" y="20" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
@@ -192,7 +192,7 @@
         <scene sceneID="syP-VQ-7TD">
             <objects>
                 <navigationController id="vPN-bs-QCc" customClass="BaseNavigationController" customModule="GPhone" customModuleProvider="target" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="短信" id="WHc-Ap-IeF"/>
+                    <tabBarItem key="tabBarItem" title="短信" image="icon_duanxin" id="WHc-Ap-IeF"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="8I9-eE-ZV4">
                         <rect key="frame" x="0.0" y="20" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
@@ -209,7 +209,7 @@
         <scene sceneID="Vu5-di-LWW">
             <objects>
                 <navigationController id="oGC-6i-AVs" customClass="BaseNavigationController" customModule="GPhone" customModuleProvider="target" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="拨号键盘" id="O7V-Af-g2r"/>
+                    <tabBarItem key="tabBarItem" title="拨号键盘" image="icon_jianpan" id="O7V-Af-g2r"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="dD7-At-5eA">
                         <rect key="frame" x="0.0" y="20" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
@@ -226,7 +226,7 @@
         <scene sceneID="deA-dw-S8F">
             <objects>
                 <navigationController id="6ZO-AY-Qkq" customClass="BaseNavigationController" customModule="GPhone" customModuleProvider="target" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="设置" id="sZY-Rw-T02"/>
+                    <tabBarItem key="tabBarItem" title="设置" image="icon_shezhi" id="sZY-Rw-T02"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="VfW-K0-oq7">
                         <rect key="frame" x="0.0" y="20" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
@@ -240,4 +240,10 @@
             <point key="canvasLocation" x="-490" y="1858"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="icon_duanxin" width="22" height="22"/>
+        <image name="icon_jianpan" width="22" height="22"/>
+        <image name="icon_shezhi" width="22" height="22"/>
+        <image name="icon_tonghua" width="22" height="22"/>
+    </resources>
 </document>

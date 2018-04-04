@@ -14,12 +14,13 @@
 
 + (id)loadNib {
     return [[[NSBundle mainBundle] loadNibNamed:@"RelayListTableViewCell" owner:nil options:nil]lastObject];
-}
+} 
 
 
 - (void)awakeFromNib {
     
     [self.signalStrengthBGView addSubview:self.phoneSignalView];
+    _usedView.layer.cornerRadius = 6;
     [super awakeFromNib];
 }
 

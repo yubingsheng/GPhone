@@ -17,6 +17,8 @@
     NSTimer *timerCallSetup;
     NSTimer *timerSMSInHello;
     NSTimer *timerMessageNonce;
+    NSTimer *timerCallInAlerting;
+    NSTimer *timerCallAnswer;
     
     int loginSeqId;
     unsigned int relaySN;
@@ -146,6 +148,10 @@
     }
 }
 
+-(void)sendMsg:(NSTimer*)timer {
+    [self sendMsgWith:timer.userInfo];
+}
+
 - (void)messageInHello:(NSNumber*)seqId {
     if (messageInHelloRepetition < 1 || !messageInHelloRepetition){
         messageInHelloRepetition = 1;
@@ -166,6 +172,10 @@
             timerSMSInHello = [NSTimer scheduledTimerWithTimeInterval:5 target:self selector:@selector(messageInHello:) userInfo:seqId repeats:YES];
         }
     }
+}
+
+- (void)messageInHelloWiht:(NSTimer*)timer {
+    [self messageInHello:timer.userInfo];
 }
 
 - (void)versionCheck {
@@ -189,6 +199,47 @@
     }
 }
 
+- (void)callInAlertingWith:(NSString*)callId relaySN:(NSString*)relaySN {
+    if(!galaxy_callInAlerting([callId intValue], [relaySN intValue])) {
+        char gerror[32];
+        NSLog(@"galaxy_callInAlerting failed, gerror=%s", galaxy_error(gerror));
+        [self showToastWith:[NSString stringWithFormat:@"galaxy_callInAlerting failed, gerror=%s", galaxy_error(gerror)]];
+    }else {
+        if (!timerCallInAlerting) {
+            timerCallInAlerting = [NSTimer scheduledTimerWithTimeInterval:3.0 target:self selector:@selector(callInAnswer) userInfo:@{@"callid":callId, @"relaysn":relaySN} repeats:YES];
+        }
+    }
+}
+
+- (void)callInAlerting:(NSTimer*)timer {
+    NSDictionary *dic = timer.userInfo;
+    [self callInAlertingWith:[dic valueForKey:@"callid"] relaySN:[dic valueForKey:@"relaysn"]];
+}
+
+// 应答
+- (void)callInAnswer {
+    if(!galaxy_callInAnswer()) {
+        char gerror[32];
+        NSLog(@"galaxy_callInAnswer failed, gerror=%s", galaxy_error(gerror));
+        [self showToastWith:[NSString stringWithFormat:@"galaxy_callInAnswer failed, gerror=%s", galaxy_error(gerror)]];
+    }
+    else {
+        if(!timerCallAnswer){
+            timerCallAnswer = [NSTimer scheduledTimerWithTimeInterval:3.0 target:self selector:@selector(callInAnswer) userInfo:nil repeats:YES];
+        }
+    }
+}
+
+- (void)callRelease {
+    if(!galaxy_callRelease()) {
+        char gerror[32];
+        NSLog(@"galaxy_callInRelease failed, gerror=%s", galaxy_error(gerror));
+        [self showToastWith:[NSString stringWithFormat:@"galaxy_callInRelease failed, gerror=%s", galaxy_error(gerror)]];
+    }
+    else {
+        NSLog(@"SHAY galaxy_callInRelease sent");
+    }
+}
 #pragma mark - Delegate
 
 static void CallInAlertingAck_Callback(void *inUserData, int callId, unsigned int relaySN) {
@@ -197,8 +248,8 @@ static void CallInAlertingAck_Callback(void *inUserData, int callId, unsigned in
 
 - (void) handleCallInAlertingAckWithCallId: (int)callId relaySN: (unsigned int)relaySN
 {
-    //TODO stop callInAlerting timer
-    NSLog(@"SHAY callInAlertingAck got");
+    // stop callInAlerting timer
+    [timerCallInAlerting invalidate];
 }
 
 
@@ -225,6 +276,9 @@ static void RelayLoginRsp_Callback(void *inUserData, int seqId, unsigned int rel
 - (void) handleRelayLoginRspWithRelaySN: (unsigned int)relaySN SeqId: (int)seqId ErrorCode: (int)errorCode
 {
     NSString *result;
+    if (_loginBlock) {
+        _loginBlock(errorCode==0);
+    }
     if(errorCode == 0) {
         //实际应用中，登录成功后，需要将relay、pushToken和authCode写入flash保存，APP启动时，首先读取已经保存的这些数据
         [GPhoneCacheManager.sharedManager store:[NSString stringWithFormat:@"%u",relaySN] withKey:RELAYSN];
@@ -301,6 +355,7 @@ static void CallAnswer_Callback(void *inUserData) {
 }
 
 - (void) handleCallAnswerCallBack {
+    [timerCallInAlerting invalidate];
     [_callingView connected];
 }
 
@@ -500,6 +555,11 @@ static void MessageDeliverReq_Callback(void *inUserData, int messageId, unsigned
     [self hangup];
 }
 #pragma mark - HUD
+
+- (void)showToastWith:(NSString *)message {
+    [[[[iToast makeText:message] setGravity:iToastGravityCenter] setDuration:iToastDurationNormal] show];
+}
+
 - (void)showWith:(NSString *)title {
         self.hud.label.text = title;
         _hud.mode = MBProgressHUDModeIndeterminate;

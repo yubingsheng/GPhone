@@ -17,6 +17,7 @@
 @property (strong, nonatomic) NSMutableArray *relayArray;
 @property (strong, nonatomic) NSString *relaySN;
 @property (strong, nonatomic) NSString *relayName;
+@property (assign, nonatomic) NSInteger isUsed;
 @end
 
 @implementation RelayListViewController
@@ -103,7 +104,16 @@
 #pragma mark - TableViewDelegate
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    [_tableView reloadData];
+    
+    __block RelayStatusModel * model = [_relayArray objectAtIndex:indexPath.row];
+//    [GPhoneCallService.sharedManager relayLoginWith:model.relaySN relayName:model.relayName];
+    __block RelayListViewController *weakSelf = self;
+    _isUsed = indexPath.row;
+    [weakSelf.tableView reloadData];
+    
+//    GPhoneCallService.sharedManager.loginBlock = ^(BOOL succeed) {
+//        [weakSelf.tableView reloadData];
+//    };
 }
 
 #pragma mark - TableViewDataSource

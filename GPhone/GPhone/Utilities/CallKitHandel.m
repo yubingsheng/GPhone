@@ -59,12 +59,7 @@
             NSLog(@"report error");
         }
         else {
-            //实际应用中，要启动定时器重发galaxy_callInAlerting
-            if(!galaxy_callInAlerting([callId intValue], [relaysn intValue])) {
-                char gerror[32];
-                NSLog(@"galaxy_callInAlerting failed, gerror=%s", galaxy_error(gerror));
-            }
-            NSLog(@"SHAY galaxy_callInAlerting sent");
+            [GPhoneCallService.sharedManager callInAlertingWith:callId relaySN:relaysn];
         }
     }];
     NSLog(@"SHAY after report NewIncomingCall");
@@ -162,15 +157,7 @@
 //        [self performSelectorOnMainThread:@selector(startSessionInviteTimer) withObject:nil waitUntilDone:NO];
     }
     else {  //incall
-        NSLog(@"SHAY it's an in call, send callInAnswer");
-        //实际应用中，要启动定时器重发galaxy_callInAnswer
-        if(!galaxy_callInAnswer()) {
-            char gerror[32];
-            NSLog(@"galaxy_callInAnswer failed, gerror=%s", galaxy_error(gerror));
-        }
-        else {
-            NSLog(@"SHAY galaxy_callInAnswer sent");
-        }
+        [GPhoneCallService.sharedManager callInAnswer];
     }
     
 }

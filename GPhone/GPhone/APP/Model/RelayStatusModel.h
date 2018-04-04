@@ -15,4 +15,5 @@
 @property (assign, nonatomic) int netWorkStatus;
 @property (assign, nonatomic) int signalStrength;
 
+
 @end

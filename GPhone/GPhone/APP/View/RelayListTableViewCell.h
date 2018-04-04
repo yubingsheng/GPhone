@@ -13,6 +13,7 @@
 @property (weak, nonatomic) IBOutlet UILabel *relayNameLabel;
 @property (weak, nonatomic) IBOutlet UILabel *netWorkLabel;
 @property (weak, nonatomic) IBOutlet UIView *signalStrengthBGView;
+@property (weak, nonatomic) IBOutlet UILabel *usedView;
 
 @property (nonatomic,strong)PhoneSignalView* phoneSignalView;
 
