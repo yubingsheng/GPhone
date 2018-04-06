@@ -61,7 +61,7 @@
     [self addSubview:self.contentView];
     
     self.deleteButton = [UIButton buttonWithType:UIButtonTypeCustom];
-//    [self.deleteButton setBackgroundColor:[UIColor lightGrayColor]];
+    //    [self.deleteButton setBackgroundColor:[UIColor lightGrayColor]];
     [self.deleteButton addTarget:self action:@selector(didTapDeleteButton:) forControlEvents:UIControlEventTouchUpInside];
     self.deleteButton.titleLabel.font = [UIFont systemFontOfSize:28.0];
     [self.deleteButton setTitle:@"◀︎" forState:UIControlStateNormal];
@@ -74,21 +74,21 @@
     self.phoneButton = [UIButton buttonWithType:UIButtonTypeCustom];
     [self.phoneButton addTarget:self action:@selector(phoneAction:) forControlEvents:UIControlEventTouchUpInside];
     self.phoneButton.titleLabel.font = [UIFont systemFontOfSize:16.0];
-//    [self.phoneButton setTitle:@"打电话" forState:UIControlStateNormal];
+    //    [self.phoneButton setTitle:@"打电话" forState:UIControlStateNormal];
     [self.phoneButton setBackgroundImage:[UIImage imageNamed:@"answer.png"] forState:UIControlStateNormal];
     [self.phoneButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
     
     
     self.digitsTextField = [UITextField new];
     self.digitsTextField.font = IS_IOS6_OR_LOWER
-                                ? [UIFont fontWithName:@"HelveticaNeue" size:38.0]
-                                : [UIFont fontWithName:@"HelveticaNeue-Thin" size:38.0];
+    ? [UIFont fontWithName:@"HelveticaNeue" size:38.0]
+    : [UIFont fontWithName:@"HelveticaNeue-Thin" size:38.0];
     self.digitsTextField.adjustsFontSizeToFitWidth = YES;
     self.digitsTextField.enabled = NO;
     self.digitsTextField.textAlignment = NSTextAlignmentCenter;
     self.digitsTextField.contentVerticalAlignment = UIViewContentModeCenter;
     self.digitsTextField.borderStyle = UITextBorderStyleNone;
-//    self.digitsTextField.textColor = [self.mainColor colorWithAlphaComponent:0.9];
+    //    self.digitsTextField.textColor = [self.mainColor colorWithAlphaComponent:0.9];
     self.digitsTextField.textColor = [UIColor blackColor];
     
     self.formatTextToPhoneNumber = YES;
@@ -126,8 +126,8 @@
     NSArray *mains = @[@"1", @"2",   @"3",   @"4",   @"5",   @"6",   @"7",    @"8",   @"9",    @"✳︎", @"0", @"＃",@"", @"", @""];
     NSArray *subs  = @[@"",  @"ABC", @"DEF", @"GHI", @"JKL", @"MNO", @"PQRS", @"TUV", @"WXYZ", @"",  @"+", @"",@"", @"", @""];
     
-//    NSArray *mains = @[@"1", @"2",   @"3",   @"4",   @"5",   @"6",   @"7",    @"8",   @"9",    @"✳︎", @"0", @"＃"];
-//    NSArray *subs  = @[@"",  @"ABC", @"DEF", @"GHI", @"JKL", @"MNO", @"PQRS", @"TUV", @"WXYZ", @"",  @"+", @""];
+    //    NSArray *mains = @[@"1", @"2",   @"3",   @"4",   @"5",   @"6",   @"7",    @"8",   @"9",    @"✳︎", @"0", @"＃"];
+    //    NSArray *subs  = @[@"",  @"ABC", @"DEF", @"GHI", @"JKL", @"MNO", @"PQRS", @"TUV", @"WXYZ", @"",  @"+", @""];
     
     
     NSMutableArray *ret = [NSMutableArray array];
@@ -148,30 +148,30 @@
 
 - (void)setBackgroundView:(UIView *)backgroundView
 {
-	[_backgroundView removeFromSuperview];
-	_backgroundView = backgroundView;
-
-	if(_backgroundView == nil) {
-		[self.backgroundBlurringView setHidden:YES];
-	} else {
-		if(self.backgroundBlurringView == nil) {
-			if (IS_IOS6_OR_LOWER) {
+    [_backgroundView removeFromSuperview];
+    _backgroundView = backgroundView;
+    
+    if(_backgroundView == nil) {
+        [self.backgroundBlurringView setHidden:YES];
+    } else {
+        if(self.backgroundBlurringView == nil) {
+            if (IS_IOS6_OR_LOWER) {
                 self.backgroundBlurringView = [[UIView alloc] initWithFrame:self.bounds];
-				self.backgroundBlurringView.backgroundColor = [UIColor colorWithWhite:0.0f alpha:0.75f];
-			} else {
-				self.backgroundBlurringView = [[UINavigationBar alloc] initWithFrame:self.bounds];
-				[(UINavigationBar*)self.backgroundBlurringView setBarStyle: UIBarStyleBlack];
-			}
-			self.backgroundBlurringView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-			[self insertSubview:self.backgroundBlurringView belowSubview:self.contentView];
-		}
-		
-		[self.backgroundBlurringView setHidden:NO];
-
-		[_backgroundView setFrame:self.bounds];
-		[_backgroundView setAutoresizingMask:UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight];
-		[self insertSubview:_backgroundView belowSubview:self.backgroundBlurringView];
-	}
+                self.backgroundBlurringView.backgroundColor = [UIColor colorWithWhite:0.0f alpha:0.75f];
+            } else {
+                self.backgroundBlurringView = [[UINavigationBar alloc] initWithFrame:self.bounds];
+                [(UINavigationBar*)self.backgroundBlurringView setBarStyle: UIBarStyleBlack];
+            }
+            self.backgroundBlurringView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+            [self insertSubview:self.backgroundBlurringView belowSubview:self.contentView];
+        }
+        
+        [self.backgroundBlurringView setHidden:NO];
+        
+        [_backgroundView setFrame:self.bounds];
+        [_backgroundView setAutoresizingMask:UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight];
+        [self insertSubview:_backgroundView belowSubview:self.backgroundBlurringView];
+    }
 }
 
 #pragma mark - buttonAction
@@ -191,24 +191,16 @@
 
 #pragma mark - phoneButtonAction
 - (void)phoneAction:(UIButton *)sender {
-    if (_isDialing) {
-        if ([self.delegate respondsToSelector:@selector(dialingWith:)]){
-            [self.phoneButton setBackgroundImage:[UIImage imageNamed:@"接电话"] forState:UIControlStateNormal];
-            [_delegate dialingWith:_rawText];
-        }
-    }else {
-        if ([self.delegate respondsToSelector:@selector(hangUp)]) {
-            [_delegate hangUp];
-            [self.phoneButton setBackgroundImage:[UIImage imageNamed:@"挂电话"] forState:UIControlStateNormal];
-        }
+    if ([self.delegate respondsToSelector:@selector(dialingWith:)]){
+        [self.phoneButton setBackgroundImage:[UIImage imageNamed:@"接电话"] forState:UIControlStateNormal];
+        [_delegate dialingWith:_rawText];
     }
-    _isDialing = !_isDialing;
 }
 
 
 - (void)setRawText:(NSString *)rawText
 {
-//    self.numFormatter = [[NBAsYouTypeFormatter alloc] initWithRegionCode:@"US"];
+    //    self.numFormatter = [[NBAsYouTypeFormatter alloc] initWithRegionCode:@"US"];
     _rawText = @"";
     self.digitsTextField.text = @"";
     for (int i = 0; i < rawText.length; ++i) {
@@ -233,10 +225,10 @@
     if (text.length) {
         _rawText = [self.rawText stringByAppendingString:text];
         NSString *formatted = self.rawText;
-//        if (self.formatTextToPhoneNumber) {
-//            [self.numFormatter inputDigit:text];
-//            formatted = [self.numFormatter description];
-//        }
+        //        if (self.formatTextToPhoneNumber) {
+        //            [self.numFormatter inputDigit:text];
+        //            formatted = [self.numFormatter description];
+        //        }
         self.digitsTextField.text = formatted;
         
         [self toggleDeleteButtonVisible:YES animated:YES];
@@ -250,10 +242,10 @@
     
     _rawText = [self.rawText substringToIndex:self.rawText.length - 1];
     NSString *formatted = self.rawText;
-//    if (self.formatTextToPhoneNumber) {
-//        [self.numFormatter removeLastDigit];
-//        formatted = [self.numFormatter description];
-//    }
+    //    if (self.formatTextToPhoneNumber) {
+    //        [self.numFormatter removeLastDigit];
+    //        formatted = [self.numFormatter description];
+    //    }
     self.digitsTextField.text = formatted;
     if (!self.rawText.length) {
         [self toggleDeleteButtonVisible:NO animated:YES];
@@ -275,16 +267,16 @@
 - (void)layoutTitleArea
 {
     CGFloat top = 22;
-	
-	if(IS_IPHONE5) {
-		top = 35;
-	} else if (IS_IPAD) {
+    
+    if(IS_IPHONE5) {
+        top = 35;
+    } else if (IS_IPAD) {
         top = 60;
     }
     if (IS_IOS6_OR_LOWER) {
         top -= 20;
     }
-	
+    
     CGFloat textFieldWidth = 250;
     self.digitsTextField.frame = CGRectMake((self.correctWidth / 2.0) - (textFieldWidth / 2.0), top, textFieldWidth, 40);
     if (!_isTint) {
@@ -298,11 +290,11 @@
 {
     NSInteger count                       = self.buttons.count;
     NSInteger numRows                     = DIV_ROUND_UP(count, 3);
-
+    
     const CGFloat bottomSpace             = IS_IOS6_OR_LOWER ? 36 : 60; //Leave room for tab bar if necessary
     CGFloat highestTopAllowed             = self.digitsTextField.bottom + 4;
     CGFloat maxButtonAreaHeight           = self.height - highestTopAllowed - bottomSpace;
-
+    
     const CGFloat horizontalButtonPadding = 20;
     CGFloat totalButtonHeight             = numRows * JCPadButtonHeight;
     CGFloat maxTotalPaddingHeight         = maxButtonAreaHeight - totalButtonHeight;
@@ -387,7 +379,7 @@
 #pragma mark - Orientation height helpers
 - (CGFloat)correctWidth
 {
-	return self.contentView.bounds.size.width;
+    return self.contentView.bounds.size.width;
 }
 
 - (CGFloat)correctHeight

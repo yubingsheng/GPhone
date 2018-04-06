@@ -104,16 +104,16 @@
 #pragma mark - TableViewDelegate
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
     __block RelayStatusModel * model = [_relayArray objectAtIndex:indexPath.row];
-//    [GPhoneCallService.sharedManager relayLoginWith:model.relaySN relayName:model.relayName];
+    [GPhoneCallService.sharedManager relayLoginWith:model.relaySN relayName:model.relayName];
     __block RelayListViewController *weakSelf = self;
-    _isUsed = indexPath.row;
-    [weakSelf.tableView reloadData];
-    
-//    GPhoneCallService.sharedManager.loginBlock = ^(BOOL succeed) {
-//        [weakSelf.tableView reloadData];
-//    };
+    GPhoneCallService.sharedManager.loginBlock = ^(BOOL succeed) {
+        weakSelf.isUsed = indexPath.row;
+        dispatch_sync(dispatch_get_main_queue(), ^(){
+            [weakSelf.tableView reloadData];
+        });
+    };
 }
 
 #pragma mark - TableViewDataSource

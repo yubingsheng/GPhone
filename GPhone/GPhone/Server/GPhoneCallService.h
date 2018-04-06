@@ -39,6 +39,10 @@ typedef void (^RequestStatusBlock)(BOOL succeed); //普通block
  */
 - (void) relayLoginWith:(unsigned int)relay relayName:(NSString*)name;
 /*
+ sessionInvite
+ */
+- (void)sessionInviteWith:(NSString*)phoneNumber;
+/*
  呼出
  */
 - (void)dialWith:(ContactModel *)contactModel;
@@ -75,4 +79,9 @@ typedef void (^RequestStatusBlock)(BOOL succeed); //普通block
  hud
  */
 - (void)hiddenWith:(NSString*)title;
+
+#error 网络运营商改变调用Galax api
+#error message优化
+#error 电话模式：通话时手机放耳边，屏幕暗掉，离开常亮
+#error Relay下线提示（errorcode == 8）
 @end

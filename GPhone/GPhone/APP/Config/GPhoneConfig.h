@@ -20,7 +20,7 @@
 #define CALLHISTORY @"callhistory"
 #define PUSHKITTOKEN @"pushKitToken"
 #define PUSHTOKEN @"pushToken"
-#define AUTHCODE @"authCode_nonce"
+#define AUTHCODE @"authCode"
 #define MESSAGECOUNT @"messsagecount"
 
 #pragma mark - APPCnfig
@@ -31,6 +31,6 @@
 @property (strong, nonatomic) NSMutableArray *messageArray;
 @property (strong, nonatomic) NSString* pushKitToken;
 @property (strong, nonatomic) NSString* pushToken;
-@property (strong, nonatomic) NSString* authCode_nonce;
+@property (strong, nonatomic) NSString* authCode;
 @property (strong, nonatomic) NSString *messageNumber;
 @end

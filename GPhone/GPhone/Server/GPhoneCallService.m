@@ -27,7 +27,6 @@
     char authCode_nonce[25];  //authCode(8) + nonce(8) + 0
     char pushTokenVoIP[128];
     unsigned char callMD5[16];
-    char authCode_nonce_message[25];
     int msgRepetition;
     int messageId;
     int messageInHelloRepetition;
@@ -40,8 +39,14 @@
     dispatch_once(&predicate, ^{
         gPhoneCallService = [[GPhoneCallService alloc] init];
         [gPhoneCallService initGalaxy];
+        [gPhoneCallService initProperty];
     });
     return gPhoneCallService;
+}
+- (void)initProperty {
+    relaySN = [[NSNumber numberWithInteger:[GPhoneConfig.sharedManager relaySN].integerValue] unsignedIntValue];
+    relayName = GPhoneConfig.sharedManager.relayName;
+    memcpy(authCode_nonce, [GPhoneConfig.sharedManager.authCode cStringUsingEncoding:NSASCIIStringEncoding], GPhoneConfig.sharedManager.authCode.length * 2);
 }
 - (void) initGalaxy {
     if(!galaxy_init()) {
@@ -71,19 +76,33 @@
     int b = rand();
     const char authcode[25];
     sprintf(authcode, "%08x%08x", a, b);
-
-    strcpy(authCode_nonce, "3F2504E08D64C20A");
+//"3F2504E08D64C20A"
+    strcpy(authCode_nonce, authcode);
     memcpy(pushTokenVoIP, [GPhoneConfig.sharedManager.pushKitToken cStringUsingEncoding:NSASCIIStringEncoding], 2*[GPhoneConfig.sharedManager.pushKitToken length]);
     memcpy(pushToken, [GPhoneConfig.sharedManager.pushToken cStringUsingEncoding:NSASCIIStringEncoding], 2*[GPhoneConfig.sharedManager.pushToken length]);
 //    strcpy(pushTokenVoIP, pushToken); //实际应用中，由Apple分配，并保存在flash中。
     galaxy_relayLoginReq(seqId, relaySN, [relayName UTF8String], 1, pushToken, pushTokenVoIP, authCode_nonce);
 }
 
+- (void)sessionInviteWith:(NSString*)phoneNumber {
+    if(!galaxy_sessionInvite(phoneNumber.UTF8String, 0, 0, 0, relaySN)) {
+        char gerror[32];
+        NSLog(@"galaxy_sessionInvite failed, gerror=%s", galaxy_error(gerror));
+        [self showToastWith:[NSString stringWithFormat:@"galaxy_sessionInvite failed, gerror=%s", galaxy_error(gerror)]];
+    }else {
+        if (!timerSessionInvite) {
+            timerSessionInvite = [NSTimer scheduledTimerWithTimeInterval:3.0 target:self selector:@selector(sessionInvite:) userInfo:phoneNumber repeats:YES];
+
+        }
+    }
+}
+- (void)sessionInvite:(NSTimer*)timer {
+    [self sessionInviteWith:timer.userInfo];
+}
+
 - (void)dialWith:(ContactModel *)contactModel {
     contactModel.phoneNumber = [contactModel.phoneNumber stringByReplacingOccurrencesOfString:@"-" withString:@""];
     [GPhoneHandel callHistoryContainWith:contactModel];
-    const char *asciiCode = [contactModel.phoneNumber UTF8String]; //65
-    galaxy_sessionInvite(asciiCode, 0, 0, 0, relaySN);// TODO: callkit 唤起后，didActivateAudioSession
     _callingView = [[RTCView alloc] initWithNumber:contactModel.phoneNumber nickName:contactModel.fullName byRelay:[GPhoneConfig.sharedManager relaySN]];
     _callingView.delegate = self;
     [_callingView show];
@@ -104,8 +123,8 @@
     if(!galaxy_callRelease()) {
         char gerror[32];
         NSLog(@"galaxy_callInRelease failed, gerror=%s", galaxy_error(gerror));
+        [self showToastWith:[NSString stringWithFormat:@"galaxy_callInRelease failed, gerror=%s", galaxy_error(gerror)]];
     }else {
-        [APPDELEGATE.callKitHandel.timerSessionInvite invalidate];
         [timerCallSetup invalidate];
         [timerSessionInvite invalidate];
         [APPDELEGATE.callController endCall];
@@ -119,13 +138,6 @@
         messageModel = text;
     }
     msgRepetition ++;
-    int a = rand();
-    int b = rand();
-    const char authcode[25];
-    sprintf(authcode, "%08x%08x", a, b);
-    //在实际应用中，必须启动定时器，具体参考galaxy_messageNonceReq函数的注释。
-    strcpy(authCode_nonce_message, "3F2504E08D64C20A");
-    relaySN = [[NSNumber numberWithInteger:[GPhoneConfig.sharedManager relaySN].integerValue] unsignedIntValue];
     if(!galaxy_messageNonceReq(messageId,  relaySN)) {
         char gerror[32];
         NSLog(@"galaxy_messageNonceReq failed, gerror=%s", galaxy_error(gerror));
@@ -283,9 +295,12 @@ static void RelayLoginRsp_Callback(void *inUserData, int seqId, unsigned int rel
         //实际应用中，登录成功后，需要将relay、pushToken和authCode写入flash保存，APP启动时，首先读取已经保存的这些数据
         [GPhoneCacheManager.sharedManager store:[NSString stringWithFormat:@"%u",relaySN] withKey:RELAYSN];
         [GPhoneCacheManager.sharedManager store:relayName withKey:RELAYNAME];
+        GPhoneConfig.sharedManager.authCode =  [NSString stringWithFormat:@"%s",authCode_nonce];
+        [self initProperty];
         RelayModel *model = [RelayModel alloc];
         model.relayName = relayName;
         model.relaySN = relaySN;
+        model.authCode = [NSString stringWithFormat:@"%s",authCode_nonce];
         NSMutableArray *relayArray = [NSMutableArray arrayWithArray:GPhoneConfig.sharedManager.relaysNArray];
         [relayArray addObject:model];
         GPhoneConfig.sharedManager.relaysNArray = relayArray;
@@ -426,8 +441,8 @@ static void MessageNonceRsp_Callback(void *inUserData, int messageId, unsigned i
             return;
         }
         
-        strcpy(authCode_nonce_message + 16, nonce);
-        CC_MD5(authCode_nonce_message, (CC_LONG)strlen(authCode_nonce_message), callMD5);
+        strcpy(authCode_nonce + 16, nonce);
+        CC_MD5(authCode_nonce, (CC_LONG)strlen(authCode_nonce), callMD5);
         //在实际应用中，必须启动定时器，具体参考galaxy_messageSubmitReq函数的注释。
         //NSString *sm = @"月落乌啼霜满天，江枫渔火对愁眠；姑苏城外寒山寺，夜半钟声到客船。月落乌啼霜满天，江枫渔火对愁眠；姑苏城外寒山寺，夜半钟声到客船。月落乌啼霜满天，江枫渔火对愁眠；姑苏城外寒山寺，夜半钟声到客船。";
         if(!galaxy_messageSubmitReq(msgId, relaySN, callMD5, messageModel.phone.UTF8String, messageModel.text.UTF8String)){
@@ -557,7 +572,7 @@ static void MessageDeliverReq_Callback(void *inUserData, int messageId, unsigned
 #pragma mark - HUD
 
 - (void)showToastWith:(NSString *)message {
-    [[[[iToast makeText:message] setGravity:iToastGravityCenter] setDuration:iToastDurationNormal] show];
+    [[[[iToast makeText:message] setGravity:iToastGravityCenter] setDuration:iToastDurationLong] show];
 }
 
 - (void)showWith:(NSString *)title {

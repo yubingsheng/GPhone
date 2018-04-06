@@ -25,7 +25,7 @@
                               // Enable or disable features based on authorization.
                           }];
     srand(time(0));
-    _tb = self.window.rootViewController;
+    _tb = (UITabBarController*)self.window.rootViewController;
     // Register for remote notifications.
     [[UIApplication sharedApplication] registerForRemoteNotifications];
     
@@ -34,12 +34,16 @@
     }];
     [self voipRegistration];
     _callKitHandel = [[CallKitHandel alloc] init];
-    NSLog(@"SHAY application started");
     // 13255030725
     
     return YES;
 }
-
+- (GPhoneCallController *)callController {
+    if (!_callController) {
+        _callController = [[GPhoneCallController alloc]init];
+    }
+    return _callController;
+}
 // Handle remote notification registration.
 - (void)application:(UIApplication *)app didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)devToken {
     // Forward the token to your provider, using a custom method.

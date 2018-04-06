@@ -9,6 +9,8 @@
 #import <Foundation/Foundation.h>
 
 @interface RelayModel : GPhoneBaseModel
+
 @property (assign, nonatomic) unsigned int relaySN;
 @property (strong, nonatomic) NSString *relayName;
+@property (strong, nonatomic) NSString *authCode;
 @end

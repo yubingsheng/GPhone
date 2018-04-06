@@ -39,7 +39,7 @@
                             <constraint firstAttribute="width" constant="25" id="IJR-uH-AwL"/>
                         </constraints>
                     </view>
-                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="当前使用  " textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="H14-R1-eCe">
+                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="默认使用  " textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="H14-R1-eCe">
                         <rect key="frame" x="62" y="15" width="47" height="12"/>
                         <color key="backgroundColor" red="1" green="0.74509803919999995" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                         <fontDescription key="fontDescription" type="system" pointSize="10"/>
@@ -50,11 +50,11 @@
                 <constraints>
                     <constraint firstItem="qG9-Di-GqU" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="6Fw-B0-hYm"/>
                     <constraint firstItem="qG9-Di-GqU" firstAttribute="centerX" secondItem="H2p-sc-9uM" secondAttribute="centerX" id="7eh-5F-BID"/>
-                    <constraint firstItem="yop-ti-ttt" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="12" id="HaK-94-Z7d"/>
                     <constraint firstAttribute="trailing" secondItem="yop-ti-ttt" secondAttribute="trailing" constant="15" id="K0U-km-DnQ"/>
                     <constraint firstItem="r9r-Rk-Irx" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="Yew-gQ-u5w"/>
                     <constraint firstItem="H14-R1-eCe" firstAttribute="leading" secondItem="r9r-Rk-Irx" secondAttribute="trailing" constant="8" id="i8B-a2-XAZ"/>
                     <constraint firstItem="H14-R1-eCe" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="jUn-g6-Oyu"/>
+                    <constraint firstItem="yop-ti-ttt" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="nJN-OC-VBz"/>
                     <constraint firstItem="r9r-Rk-Irx" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="15" id="tvj-It-IBT"/>
                 </constraints>
             </tableViewCellContentView>

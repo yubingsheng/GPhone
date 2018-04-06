@@ -68,8 +68,8 @@
 - (NSString *)pushToken {
      return [GPhoneCacheManager.sharedManager restoreWithkey:PUSHTOKEN];
 }
-- (NSString *)authCode_nonce {
-    return [NSString stringWithFormat:@"%d",arc4random() % 101];
+- (NSString *)authCode {
+    return [GPhoneCacheManager.sharedManager restoreWithkey:AUTHCODE];
 }
 // setter
 - (void)setMessageNumber:(NSString *)messageNumber {
@@ -84,5 +84,7 @@
 - (void)setMessageArray:(NSMutableArray *)messageArray {
     [GPhoneCacheManager.sharedManager archiveObject:messageArray forKey:MESSAGES];
 }
-
+- (void)setAuthCode:(NSString *)authCode {
+    [GPhoneCacheManager.sharedManager store:authCode withKey:AUTHCODE];
+}
 @end

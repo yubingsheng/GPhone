@@ -20,7 +20,6 @@
 
 - (CXProviderConfiguration *)config{
     static CXProviderConfiguration* configInternal = nil;
-    
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
         configInternal = [[CXProviderConfiguration alloc] initWithLocalizedName:@"gphone"];
@@ -135,16 +134,6 @@
     }
     
 }
-- (void) startSessionInviteTimer{
-    _timerSessionInvite = [NSTimer scheduledTimerWithTimeInterval:3.0 target:self selector:@selector(sessionInvite) userInfo:nil repeats:YES];
-}
-
-- (void) sessionInvite{
-//    if(!galaxy_sessionInvite(calledNumberOutCall.UTF8String, 0, 0, 0, [[NSNumber numberWithInteger:[GPhoneConfig.sharedManager relaySN].integerValue] unsignedIntValue])) {
-//        char gerror[32];
-//        NSLog(@"galaxy_sessionInvite failed, gerror=%s", galaxy_error(gerror));
-//    }
-}
 
 - (void)provider:(CXProvider *)provider didActivateAudioSession:(AVAudioSession *)audioSession{
     /*
@@ -153,8 +142,7 @@
     NSLog(@"session has activate");
     if(outCall) {
         NSLog(@"SHAY it's an out call, send sessionInvite");
-//        [self sessionInvite];
-//        [self performSelectorOnMainThread:@selector(startSessionInviteTimer) withObject:nil waitUntilDone:NO];
+        [GPhoneCallService.sharedManager sessionInviteWith:calledNumberOutCall];
     }
     else {  //incall
         [GPhoneCallService.sharedManager callInAnswer];
