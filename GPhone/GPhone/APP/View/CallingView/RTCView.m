@@ -346,6 +346,9 @@ NSString *const kVideoCaptureNotification = @"kVideoCaptureNotification";
         
     } completion:^(BOOL finished) {
         [self clearAllSubViews];
+        if ([self.delegate respondsToSelector:@selector(hangUp)]){
+            [_delegate hangUp];
+        }
         [self removeFromSuperview];
     }];
 }
@@ -488,23 +491,12 @@ NSString *const kVideoCaptureNotification = @"kVideoCaptureNotification";
     }
 }
 
-- (void)inviteClick
-{
-    
+- (void)inviteClick{
 }
 
-- (void)hangupClick
-{
-    if (self.isHanged) {
-        self.coverView.hidden = NO;
-        if ([self.delegate respondsToSelector:@selector(hangUp)]){
-            [_delegate hangUp];
-        }
-        [self performSelector:@selector(dismiss) withObject:nil afterDelay:0.0];
-    } else {
-        [self dismiss];
-    }
-    
+- (void)hangupClick {
+    self.coverView.hidden = NO;
+    [self dismiss];
     NSDictionary *dict = @{@"isVideo":@(self.isVideo),@"isCaller":@(!self.callee),@"answered":@(self.answered)};
     [[NSNotificationCenter defaultCenter] postNotificationName:kHangUpNotification object:dict];
 }

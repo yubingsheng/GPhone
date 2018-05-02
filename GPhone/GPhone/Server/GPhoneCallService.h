@@ -27,6 +27,7 @@ typedef void (^RequestStatusBlock)(BOOL succeed); //普通block
 
 @property (copy, nonatomic) RequestStatusBlock messageBlock;
 @property (copy, nonatomic) RequestStatusBlock loginBlock;
+@property (copy, nonatomic) RequestStatusBlock relayStatusBlock;
 
 +(GPhoneCallService *)sharedManager;
 
@@ -80,8 +81,8 @@ typedef void (^RequestStatusBlock)(BOOL succeed); //普通block
  */
 - (void)hiddenWith:(NSString*)title;
 
-#error 网络运营商改变调用Galax api
-#error message优化
-#error 电话模式：通话时手机放耳边，屏幕暗掉，离开常亮
-#error Relay下线提示（errorcode == 8）
+//#error 网络运营商改变调用Galaxy api (down)
+//#error message优化
+//#error 电话模式：通话时手机放耳边，屏幕暗掉，离开常亮 (down)
+//#error Relay下线提示（errorcode == 8）
 @end

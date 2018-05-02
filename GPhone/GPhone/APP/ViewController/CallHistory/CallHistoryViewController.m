@@ -36,23 +36,24 @@
     GPhoneCallService.sharedManager.delegate = self;
     [GPhoneCallService.sharedManager versionCheck];
     if (!GPhoneConfig.sharedManager.relaySN) {
-        UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"提示" message:@"添加GMobile" preferredStyle:UIAlertControllerStyleAlert];
+        UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"提示" message:@"添加gMobile" preferredStyle:UIAlertControllerStyleAlert];
         [alert addTextFieldWithConfigurationHandler:^(UITextField * _Nonnull textField) {
             
         }];
-        alert.textFields[0].placeholder = @"GMobile";
+        alert.textFields[0].placeholder = @"请输入gMobile的序列号";
+        
         [alert addTextFieldWithConfigurationHandler:^(UITextField * _Nonnull textField) {
             
         }];
-        alert.textFields[1].placeholder = @"昵称";
+        alert.textFields[1].placeholder = @"请为此gMobile起一个昵称";
         [alert addAction:[UIAlertAction actionWithTitle:@"以后添加" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
             
         }]];
         [alert addAction:[UIAlertAction actionWithTitle:@"添加" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
             if (alert.textFields[0].text.length ==0) {
-                [self showToastWith:@"GMobile不能为空！"];
+                [self showToastWith:@"gMobile不能为空！"];
             }else if (alert.textFields[1].text.length ==0) {
-                [self showToastWith:@"GMobile的昵称不能为空！"];
+                [self showToastWith:@"gMobile的昵称不能为空！"];
             }else {
                 NSNumber *relaySN = [NSNumber numberWithInteger:alert.textFields[0].text.integerValue];
                 NSLog(@"转换完的数字为：%@",relaySN);
@@ -83,9 +84,26 @@
 }
 - (void)dialingWith:(ContactModel *)contact {
     UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"拨号" message:[NSString stringWithFormat:@"呼叫：%@ \n %@",contact.fullName,contact.phoneNumber] preferredStyle:UIAlertControllerStyleAlert];
+    __weak CallHistoryViewController * weakSelf = self;
+    __block ContactModel *tmpContact = contact;
     [alert addAction:[UIAlertAction actionWithTitle:@"拨打" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
         [GPhoneCallService.sharedManager dialWith:contact];
-        [self viewWillAppear:NO];
+        GPhoneCallService.sharedManager.relayStatusBlock = ^(BOOL succeed) {
+           
+                UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"提示" message:[NSString stringWithFormat:@"gMobil'%@'已下线，需要重新登录",GPhoneConfig.sharedManager.relayName] preferredStyle:UIAlertControllerStyleAlert];
+                [alert addAction:[UIAlertAction actionWithTitle:@"登录" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+                    NSNumber *relaySN = [NSNumber numberWithInteger:GPhoneConfig.sharedManager.relaySN.integerValue];
+                    [GPhoneCallService.sharedManager relayLoginWith:[relaySN unsignedIntValue] relayName:GPhoneConfig.sharedManager.relayName];
+                    [weakSelf dialingWith:tmpContact];
+                    [weakSelf viewWillAppear:NO];
+                    [weakSelf dismissViewControllerAnimated:YES completion:nil];
+                }]];
+                [alert addAction:[UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+                    [weakSelf dismissViewControllerAnimated:YES completion:nil];
+                }]];
+                [weakSelf.navigationController presentViewController:alert animated:YES completion:nil];
+            
+        };
         [self dismissViewControllerAnimated:YES completion:nil];
     }]];
     [alert addAction:[UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {

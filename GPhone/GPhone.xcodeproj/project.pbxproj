@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		B820A0BD2019C8940061445D /* RelayListTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B820A0BB2019C8940061445D /* RelayListTableViewCell.m */; };
 		B820A0BE2019C8940061445D /* RelayListTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = B820A0BC2019C8940061445D /* RelayListTableViewCell.xib */; };
+		B84260D620999664004A5D46 /* GMobileTextFieldViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B84260D420999664004A5D46 /* GMobileTextFieldViewController.m */; };
+		B84260D720999664004A5D46 /* GMobileTextFieldViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = B84260D520999664004A5D46 /* GMobileTextFieldViewController.xib */; };
 		B880E4731FEB8808002625CF /* libgalaxy7.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B880E4721FEB8808002625CF /* libgalaxy7.a */; };
 		B880E4761FEB887C002625CF /* GPhoneBaseModel.m in Sources */ = {isa = PBXBuildFile; fileRef = B880E4751FEB887C002625CF /* GPhoneBaseModel.m */; };
 		B880E4791FEB8E09002625CF /* GPhoneCacheManager.m in Sources */ = {isa = PBXBuildFile; fileRef = B880E4781FEB8E09002625CF /* GPhoneCacheManager.m */; };
@@ -184,6 +186,9 @@
 		B820A0BA2019C8940061445D /* RelayListTableViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RelayListTableViewCell.h; sourceTree = "<group>"; };
 		B820A0BB2019C8940061445D /* RelayListTableViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RelayListTableViewCell.m; sourceTree = "<group>"; };
 		B820A0BC2019C8940061445D /* RelayListTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = RelayListTableViewCell.xib; sourceTree = "<group>"; };
+		B84260D320999664004A5D46 /* GMobileTextFieldViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GMobileTextFieldViewController.h; sourceTree = "<group>"; };
+		B84260D420999664004A5D46 /* GMobileTextFieldViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GMobileTextFieldViewController.m; sourceTree = "<group>"; };
+		B84260D520999664004A5D46 /* GMobileTextFieldViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = GMobileTextFieldViewController.xib; sourceTree = "<group>"; };
 		B880E4721FEB8808002625CF /* libgalaxy7.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libgalaxy7.a; sourceTree = "<group>"; };
 		B880E4741FEB887C002625CF /* GPhoneBaseModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GPhoneBaseModel.h; sourceTree = "<group>"; };
 		B880E4751FEB887C002625CF /* GPhoneBaseModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GPhoneBaseModel.m; sourceTree = "<group>"; };
@@ -221,7 +226,7 @@
 		B8A467181FB186BD007EFB09 /* GPhoneUITests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GPhoneUITests.m; sourceTree = "<group>"; };
 		B8A4671A1FB186BD007EFB09 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		B8ABB5481FDA5FE200F4E68E /* CallHistoryViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CallHistoryViewController.h; sourceTree = "<group>"; };
-		B8ABB5491FDA5FE200F4E68E /* CallHistoryViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CallHistoryViewController.m; sourceTree = "<group>"; };
+		B8ABB5491FDA5FE200F4E68E /* CallHistoryViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CallHistoryViewController.m; sourceTree = "<group>"; wrapsLines = 0; };
 		B8ABB54B1FDA699500F4E68E /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
 		B8B155C5201B0F4A0018EE22 /* GPhoneHandel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = GPhoneHandel.h; path = GPhone/APP/Model/GPhoneHandel.h; sourceTree = SOURCE_ROOT; };
 		B8B155C6201B0F4A0018EE22 /* GPhoneHandel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = GPhoneHandel.m; path = GPhone/APP/Model/GPhoneHandel.m; sourceTree = SOURCE_ROOT; };
@@ -453,6 +458,16 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		B84260D220999619004A5D46 /* GMobileTextField */ = {
+			isa = PBXGroup;
+			children = (
+				B84260D320999664004A5D46 /* GMobileTextFieldViewController.h */,
+				B84260D420999664004A5D46 /* GMobileTextFieldViewController.m */,
+				B84260D520999664004A5D46 /* GMobileTextFieldViewController.xib */,
+			);
+			path = GMobileTextField;
+			sourceTree = "<group>";
+		};
 		B89A77E21FD52650000A079A /* include */ = {
 			isa = PBXGroup;
 			children = (
@@ -551,6 +566,7 @@
 				B8CAAE1F2060E22A004BC268 /* MessageHistoryCell.h */,
 				B8CAAE202060E22A004BC268 /* MessageHistoryCell.m */,
 				B8CAAE212060E22A004BC268 /* MessageHistoryCell.xib */,
+				B84260D220999619004A5D46 /* GMobileTextField */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -1047,6 +1063,7 @@
 				B8F17F611FC8015D0015B376 /* bubble-flat-incoming@2x.png in Resources */,
 				D6C3FACE1FFFBA6F00E2EDEB /* portrait@2x.png in Resources */,
 				B8F17F761FC8015D0015B376 /* input-field.png in Resources */,
+				B84260D720999664004A5D46 /* GMobileTextFieldViewController.xib in Resources */,
 				B8F17F7B1FC8015D0015B376 /* send-highlighted@2x.png in Resources */,
 				B8F17F7C1FC8015D0015B376 /* send.png in Resources */,
 				B8F17F571FC8015D0015B376 /* bubble-default-incoming@2x.png in Resources */,
@@ -1198,6 +1215,7 @@
 				FCBB17321FDA89A100639D3E /* UIView+FrameAccessor.m in Sources */,
 				B8A467041FB186BD007EFB09 /* main.m in Sources */,
 				B8F17F511FC8015D0015B376 /* NSString+JSMessagesView.m in Sources */,
+				B84260D620999664004A5D46 /* GMobileTextFieldViewController.m in Sources */,
 				B8F17F831FC8015D0015B376 /* UIView+AnimationOptionsForCurve.m in Sources */,
 				D6C3FAD01FFFBA6F00E2EDEB /* RTCButton.m in Sources */,
 				B880E4761FEB887C002625CF /* GPhoneBaseModel.m in Sources */,
@@ -1397,11 +1415,12 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = XF28H54YS2;
+				ENABLE_BITCODE = NO;
 				GCC_NO_COMMON_BLOCKS = NO;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "$(SRCROOT)/GPhone/APP/Config/GPhone.pch";
 				INFOPLIST_FILE = GPhone/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1411,7 +1430,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.zgot.gphone;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};
@@ -1425,11 +1444,12 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = XF28H54YS2;
+				ENABLE_BITCODE = NO;
 				GCC_NO_COMMON_BLOCKS = NO;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "$(SRCROOT)/GPhone/APP/Config/GPhone.pch";
 				INFOPLIST_FILE = GPhone/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1439,7 +1459,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.zgot.gphone;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
 		};

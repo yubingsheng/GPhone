@@ -24,7 +24,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.title = @"GMobile列表";
+    self.title = @"gMobile列表";
     _tableView.tableFooterView = [UIView new];
     _gphoneCallService = GPhoneCallService.sharedManager;
     _gphoneCallService.delegate = self;
@@ -39,17 +39,17 @@
 }
 
 - (void)addRelay {
-    UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"提示" message:@"添加GMobile" preferredStyle:UIAlertControllerStyleAlert];
+    UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"提示" message:@"添加gMobile" preferredStyle:UIAlertControllerStyleAlert];
     [alert addTextFieldWithConfigurationHandler:^(UITextField * _Nonnull textField) {
         textField.text = _relaySN;
     }];
-    alert.textFields[0].placeholder = @"GMobile";
+    alert.textFields[0].placeholder = @"请输入gMobile的序列号";
     alert.textFields[0].text = _relaySN;
     
     [alert addTextFieldWithConfigurationHandler:^(UITextField * _Nonnull textField) {
         textField.text = _relayName;
     }];
-    alert.textFields[1].placeholder = @"昵称";
+    alert.textFields[1].placeholder = @"请为此gMobile起一个昵称";
     alert.textFields[1].text = _relayName;
     [alert addAction:[UIAlertAction actionWithTitle:@"以后添加" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
         
@@ -58,9 +58,9 @@
         _relaySN = alert.textFields[0].text;
         _relayName = alert.textFields[1].text;
         if (_relaySN.length ==0) {
-            [self showToastWith:@"GMobil不能为空！"];
+            [self showToastWith:@"gMobil不能为空！"];
         }else if (_relayName.length ==0) {
-            [self showToastWith:@"GMobil的昵称不能为空！"];
+            [self showToastWith:@"gMobil的昵称不能为空！"];
         }else {
             NSNumber *relaySN = [NSNumber numberWithInteger:alert.textFields[0].text.integerValue];
             _relaySN = @"";
@@ -90,12 +90,10 @@
     [self.relayArray addObject:statusModel];
      [_gphoneCallService hiddenWith:@""];
     dispatch_sync(dispatch_get_main_queue(), ^(){
-       
         [_tableView reloadData];
         [self performSelector:@selector(delayMethod) withObject:nil afterDelay:0.1];
     });
     if (_relayArray.count == [GPhoneConfig.sharedManager.relaysNArray count]) {
-      
         
     }
     
@@ -130,11 +128,34 @@
     }
     RelayStatusModel * model = [_relayArray objectAtIndex:indexPath.row];
     cell.relayNameLabel.text = model.relayName;
-    cell.netWorkLabel.text = [NSString stringWithFormat:@"NetWork: %d", model.netWorkStatus];
-    //    cell.signalStrengthLabel.text = [NSString stringWithFormat:@"signal: %d", model.signalStrength];
-    cell.phoneSignalView.signalStrength = model.signalStrength;
+    if (model.netWorkStatus == 0) {
+          cell.phoneSignalView.signalStrength = 0;
+    }else {
+          cell.phoneSignalView.signalStrength = model.signalStrength;
+    }
     return cell;
 }
+
+#pragma mark - TableViewDelegate
+
+-(BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
+    return YES;
+}
+
+-(UITableViewCellEditingStyle)tableView:(UITableView *)tableView editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath {
+    return UITableViewCellEditingStyleDelete;
+}
+
+- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
+    if (editingStyle == UITableViewCellEditingStyleDelete) {
+        [_relayArray removeObjectAtIndex:indexPath.row];
+        NSMutableArray *tmpArray = [NSMutableArray arrayWithArray: GPhoneConfig.sharedManager.relaysNArray];
+        [tmpArray removeObjectAtIndex:indexPath.row];
+        GPhoneConfig.sharedManager.relaysNArray = tmpArray;
+        [_tableView reloadData];
+    }
+}
+
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     

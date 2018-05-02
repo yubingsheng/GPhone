@@ -9,6 +9,7 @@
 #import <Foundation/Foundation.h>
 #import <Contacts/Contacts.h>
 #import "ContactModel.h"
+#import "RelayModel.h"
 
 @interface GPhoneHandel : NSObject
 
@@ -24,6 +25,10 @@
  短信未读数
  */
 + (void) messageTabbarItemBadgeValue:(NSInteger)num;
+/*
+ relay
+ */
++ (void)relaysContainWith:(RelayModel *)model;
 /*
  时间格式
  */

@@ -12,10 +12,11 @@
 #import "GPhoneCallController.h"
 
 @interface AppDelegate : UIResponder <UIApplicationDelegate>
-@property (nonatomic, strong) CallKitHandel *callKitHandel;
-@property (nonatomic, strong) GPhoneCallController *callController;
+@property (strong, nonatomic) CallKitHandel *callKitHandel;
+@property (strong, nonatomic) GPhoneCallController *callController;
 @property (strong, nonatomic) UIWindow *window;
 @property (strong, nonatomic) UITabBarController *tb;
+@property (assign, nonatomic) BOOL isCalling;
 
 @end
 

@@ -78,7 +78,7 @@ UIKIT_EXTERN NSString *const kVideoCaptureNotification;
 - (void)connected;
 
 - (void)dismiss;
-
+- (void)hangupClick;
 
 
 @end

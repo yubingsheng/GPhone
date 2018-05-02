@@ -109,6 +109,7 @@
     NSLog(@"SHAY peformStartCallAction called");
     calledNumberOutCall = action.handle.value;
     outCall = YES;
+    APPDELEGATE.isCalling = YES;
     if([self configureAudioSession] == YES) [action fulfill];
     else [action fail];
 }
@@ -123,6 +124,7 @@
 // user end this call
 - (void)provider:(CXProvider *)provider performEndCallAction:(CXEndCallAction *)action{
     //在实际应用中，如果是incall，要停止针对callInAlerting和callInAnswer的重发定时器
+    APPDELEGATE.isCalling = NO;
     if(!galaxy_callRelease()) {
         char gerror[32];
         NSLog(@"galaxy_callInRelease failed, gerror=%s", galaxy_error(gerror));

@@ -103,10 +103,11 @@
 - (void)dialWith:(ContactModel *)contactModel {
     contactModel.phoneNumber = [contactModel.phoneNumber stringByReplacingOccurrencesOfString:@"-" withString:@""];
     [GPhoneHandel callHistoryContainWith:contactModel];
-    _callingView = [[RTCView alloc] initWithNumber:contactModel.phoneNumber nickName:contactModel.fullName byRelay:[GPhoneConfig.sharedManager relaySN]];
+    _callingView = [[RTCView alloc] initWithNumber:contactModel.phoneNumber nickName:contactModel.fullName byRelay:GPhoneConfig.sharedManager.relayName];
     _callingView.delegate = self;
     [_callingView show];
     [APPDELEGATE.callController startCallWithHandle:contactModel.phoneNumber];
+    [UIDevice currentDevice].proximityMonitoringEnabled = YES;
 }
 
 - (void)dialWith_dtmf:(NSString *)number {
@@ -128,6 +129,7 @@
         [timerCallSetup invalidate];
         [timerSessionInvite invalidate];
         [APPDELEGATE.callController endCall];
+        [UIDevice currentDevice].proximityMonitoringEnabled = NO;
     }
 }
 
@@ -205,9 +207,9 @@
     [self showWith:@""];
     relayName = name;
     if(!galaxy_relayStatusReq(relaySN)) {
-        [self hiddenWith:@"获取GMobil状态失败！"];
+        [self hiddenWith:@"获取gMobil状态失败！"];
     } else {
-        NSLog( @"get gmobile status");
+        NSLog( @"get gMobile status");
     }
 }
 
@@ -301,13 +303,11 @@ static void RelayLoginRsp_Callback(void *inUserData, int seqId, unsigned int rel
         model.relayName = relayName;
         model.relaySN = relaySN;
         model.authCode = [NSString stringWithFormat:@"%s",authCode_nonce];
-        NSMutableArray *relayArray = [NSMutableArray arrayWithArray:GPhoneConfig.sharedManager.relaysNArray];
-        [relayArray addObject:model];
-        GPhoneConfig.sharedManager.relaysNArray = relayArray;
+        [GPhoneHandel relaysContainWith:model];
         result = [NSString stringWithFormat:@"%@添加成功!",relayName];
     }
-    else if(errorCode == 3) result = @"gmobile登录失败，请先弹出SIM卡再重新尝试登陆";
-    else if(errorCode == 4) result = @"gmobile登录失败，gmobile不在线";
+    else if(errorCode == 3) result = @"gMobile登录失败，请先弹出SIM卡再重新尝试登陆";
+    else if(errorCode == 4) result = @"gMobile登录失败，gMobile不在线";
     else result = [NSString stringWithFormat: @"relay login failed with error code %d", errorCode];
     [self hiddenWith: result];
 }
@@ -381,7 +381,15 @@ static void CallReleased_Callback(void *inUserData, int errorCode) {
     [timerCallSetup invalidate];
     NSString *result;
     if(errorCode == 0) result = @"Call released normally";
-    else if(errorCode == 8) result = @"呼叫鉴权失败，请删除gmobile重新添加";
+    else if(errorCode == 8) {
+        result = @"呼叫鉴权失败，请删除gMobile重新添加";
+        dispatch_sync(dispatch_get_main_queue(), ^(){
+            [_callingView dismiss];
+            if (_relayStatusBlock) {
+                _relayStatusBlock(NO);
+                
+            }});
+    }
     else if(errorCode == 10) result = @"呼叫失败，请确认运营商服务是否正常，比如SIM卡是否欠费停机";
     else result = [NSString stringWithFormat: @"Call released with error code %d", errorCode];
     [self hiddenWith: result];
@@ -395,7 +403,7 @@ static void CallInReleased_Callback(void *inUserData, int errorCode) {
     [APPDELEGATE.callKitHandel.provider reportCallWithUUID:APPDELEGATE.callKitHandel.inCallUUID endedAtDate:nil reason:CXCallEndedReasonRemoteEnded];
     NSString *result;
     if(errorCode == 0) result = @"Call released normally";
-    else if(errorCode == 8) result = @"呼叫鉴权失败，请删除gmobile重新添加";
+    else if(errorCode == 8) result = @"呼叫鉴权失败，请删除gMobile重新添加";
     else if(errorCode == 10) result = @"呼叫失败，请确认运营商服务是否正常，比如SIM卡是否欠费停机";
     else result = [NSString stringWithFormat: @"Call released with error code %d", errorCode];
     [self hiddenWith: result];
@@ -426,7 +434,7 @@ static void MessageNonceRsp_Callback(void *inUserData, int messageId, unsigned i
     msgRepetition = 0;
     if(errorCode) {
         NSString *result = [NSString stringWithFormat: @"messageNonceRsp got with error code %d", errorCode];
-        [self hiddenWith:result];
+        [self showToastWith:result];
         if (_messageBlock) {
             _messageBlock(NO);
         }
@@ -491,7 +499,7 @@ static void MessageInHelloAck_Callback(void *inUserData, int seqId, unsigned int
 
 - (void) handleMessageInHelloAckCallBackWithSeqId: (int) seqId relaySN: (unsigned int)relaySN{
     NSString *result = [NSString stringWithFormat: @"messageInHelloAck got with seqId %d", seqId];
-    [self hiddenWith:result];
+//    [self hiddenWith:result];
     //实际应用中，需要停止messageInHello重发定时器。
     return;
 }
@@ -548,8 +556,7 @@ static void MessageDeliverReq_Callback(void *inUserData, int messageId, unsigned
     return;
 }
 
--(NSDate *)formatTimestamp:(NSString *)timestamp
-{
+-(NSDate *)formatTimestamp:(NSString *)timestamp{
     NSDate *Date;
     //新建一个Date格式类，
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
@@ -557,9 +564,7 @@ static void MessageDeliverReq_Callback(void *inUserData, int messageId, unsigned
     //设置为timeStr的日期格式
     [dateFormatter setDateFormat:@"yyyyMMddHHmmssZ"];
     //以timeStr的格式来得到Date
-   
     //设置日期格式为要转化的类型
-    
     //将要转化的日期变为字符串
      Date = [dateFormatter dateFromString:timestamp];
     return Date;

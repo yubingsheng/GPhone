@@ -28,14 +28,14 @@
     _tb = (UITabBarController*)self.window.rootViewController;
     // Register for remote notifications.
     [[UIApplication sharedApplication] registerForRemoteNotifications];
-    
+    _isCalling = NO;
     [[AVAudioSession sharedInstance] requestRecordPermission:^(BOOL granted) {
         
     }];
     [self voipRegistration];
     _callKitHandel = [[CallKitHandel alloc] init];
     // 13255030725
-    
+    [self reachability];
     return YES;
 }
 - (GPhoneCallController *)callController {
@@ -44,6 +44,41 @@
     }
     return _callController;
 }
+- (void)reachability { // 1.获得网络监控的管理者
+    AFNetworkReachabilityManager *mgr = [AFNetworkReachabilityManager sharedManager];
+    // 2.设置网络状态改变后的处理
+    [mgr setReachabilityStatusChangeBlock:^(AFNetworkReachabilityStatus status) {
+         // 当网络状态改变了, 就会调用这个block
+        if (_isCalling == NO) {
+            return ;
+        }else {
+            galaxy_callResetAudioStream();
+        }
+//        switch (status) {
+//            case AFNetworkReachabilityStatusUnknown:
+//                // 未知网络
+//                NSLog(@"未知网络");
+//                break;
+//            case AFNetworkReachabilityStatusNotReachable:
+//                // 没有网络(断网)
+//                NSLog(@"没有网络(断网)");
+//                break;
+//            case AFNetworkReachabilityStatusReachableViaWWAN:
+//                // 手机自带网络
+////
+//                break;
+//            case AFNetworkReachabilityStatusReachableViaWiFi:
+//                // WIFI
+//                NSLog(@"WIFI");
+//                break;
+//        }
+    }];
+    // 3.开始监控
+    [mgr startMonitoring];
+    
+}
+
+
 // Handle remote notification registration.
 - (void)application:(UIApplication *)app didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)devToken {
     // Forward the token to your provider, using a custom method.

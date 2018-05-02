@@ -78,6 +78,21 @@
     [(MessageListViewController*)nvi.viewControllers[0] reloadData];
 }
 
++ (void)relaysContainWith:(RelayModel *)model {
+     BOOL contain = NO;
+    NSMutableArray *relayArray = [NSMutableArray arrayWithArray:GPhoneConfig.sharedManager.relaysNArray];
+    for (int i = 0; i < relayArray.count; i++) {
+        RelayModel *tmpModel = relayArray[i];
+        if (tmpModel.relaySN == model.relaySN) {
+            contain = YES;
+            [relayArray replaceObjectAtIndex:i withObject:model];
+        }
+    }
+    if (!contain) {
+      [relayArray addObject:model];
+    }
+    GPhoneConfig.sharedManager.relaysNArray = relayArray;
+}
 #pragma mark - NSDate helpHandel
 
 + (NSString *)dateToStringWith:(NSDate *)date {

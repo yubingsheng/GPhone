@@ -14,7 +14,7 @@
 
 + (id)loadNib {
     return [[[NSBundle mainBundle] loadNibNamed:@"RelayListTableViewCell" owner:nil options:nil]lastObject];
-} 
+}
 
 
 - (void)awakeFromNib {

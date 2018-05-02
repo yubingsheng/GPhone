@@ -371,7 +371,7 @@
         [self textViewDidChange:self.inputToolBarView.textView];
     }
     [self.tableView reloadData];
-    [self scrollToBottomAnimated:YES];
+    [self scrollToBottomAnimated:NO];
 }
 
 - (void)setBackgroundColor:(UIColor *)color
@@ -384,12 +384,16 @@
 - (void)scrollToBottomAnimated:(BOOL)animated
 {
     NSInteger rows = [self.tableView numberOfRowsInSection:0];
-    
-    if(rows > 0) {
+    if (rows == 0) {
+        return;
+    }
+    double delayInSeconds = 0.0;
+    dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
+    dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
         [self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:rows - 1 inSection:0]
                               atScrollPosition:UITableViewScrollPositionBottom
                                       animated:animated];
-    }
+    });
 }
 
 

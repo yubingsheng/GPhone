@@ -10,6 +10,7 @@
 #define GPhone_pch
 #define APPDELEGATE ((AppDelegate *)[UIApplication sharedApplication].delegate)
 #import <AVFoundation/AVFAudio.h>
+#import <AFNetworking.h>
 #import "MessageModel.h"
 #import "AppDelegate.h"
 #import "MBProgressHUD.h"
