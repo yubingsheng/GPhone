@@ -10,6 +10,7 @@
 #import <Contacts/Contacts.h>
 #import <ContactsUI/ContactsUI.h>
 #import "CallHistoryCell.h"
+#import "GMobileTextFieldViewController.h"
 
 
 @interface CallHistoryViewController ()<CNContactPickerDelegate,UITableViewDelegate,UITableViewDataSource,GPhoneCallServiceDelegate>
@@ -114,16 +115,25 @@
 #pragma mark - Segment
 
 -(void)indexDidChangeForSegmentedControl:(UISegmentedControl *)sender {
-    if (sender.selectedSegmentIndex == 1) {
-        CNContactPickerViewController *contactPicker = [[CNContactPickerViewController alloc] init];
-        contactPicker.delegate = self;
-        contactPicker.displayedPropertyKeys = @[CNContactPhoneNumbersKey];
-        [self.navigationController presentViewController:contactPicker animated:YES completion:^{
-            _segmentedControl.selectedSegmentIndex = 0;
-        }];
-    }else {
-        
-    }
+//    if (sender.selectedSegmentIndex == 1) {
+//        CNContactPickerViewController *contactPicker = [[CNContactPickerViewController alloc] init];
+//        contactPicker.delegate = self;
+//        contactPicker.displayedPropertyKeys = @[CNContactPhoneNumbersKey];
+//        [self.navigationController presentViewController:contactPicker animated:YES completion:^{
+//            _segmentedControl.selectedSegmentIndex = 0;
+//        }];
+//    }else {
+//
+//    }
+    
+    
+    GMobileTextFieldViewController* vc = [[GMobileTextFieldViewController alloc]init];
+    [vc.view setBackgroundColor:[UIColor colorWithRed:0 green:0 blue:0 alpha:0.5f]];
+    vc.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+    vc.modalPresentationStyle = UIModalPresentationOverCurrentContext;
+    
+    
+    [self presentViewController:vc animated:YES completion:nil];
     
 }
 #pragma mark - CNContactViewControllerDelegate
