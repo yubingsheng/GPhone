@@ -30,4 +30,5 @@
 #import "GPhoneCallController.h"
 #import "MessageViewController.h"
 #import "MessageListViewController.h"
+#import "GMobileTextFieldViewController.h"
 #endif /* GPhone_pch */

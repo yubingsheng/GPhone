@@ -7,7 +7,8 @@
 //
 
 #import <UIKit/UIKit.h>
+typedef void (^ComfireBlock)(NSString *sn, NSString *name); //普通block
 
-@interface GMobileTextFieldViewController : UIViewController
-
+@interface GMobileTextFieldViewController : BaseViewController
+@property (copy,nonatomic) ComfireBlock comfireBlock;
 @end

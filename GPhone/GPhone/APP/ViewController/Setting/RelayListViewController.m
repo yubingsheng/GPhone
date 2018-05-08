@@ -28,46 +28,31 @@
     _tableView.tableFooterView = [UIView new];
     _gphoneCallService = GPhoneCallService.sharedManager;
     _gphoneCallService.delegate = self;
+    UIBarButtonItem *bar = [[UIBarButtonItem alloc] initWithTitle:@"添加" style:UIBarButtonItemStylePlain target:self action:@selector(addRelay)];
+    self.navigationItem.rightBarButtonItem = bar;
+    [self reloadRelaysStatus];
+    // Do any additional setup after loading the view from its nib.
+}
+
+- (void)reloadRelaysStatus {
     for (int i = 0; i < [GPhoneConfig.sharedManager.relaysNArray count] ; i++) {
         RelayModel *model = GPhoneConfig.sharedManager.relaysNArray[i];
         [_gphoneCallService relayStatus:model.relaySN relayName:model.relayName];
     }
-    UIBarButtonItem *bar = [[UIBarButtonItem alloc] initWithTitle:@"添加" style:UIBarButtonItemStylePlain target:self action:@selector(addRelay)];
-    self.navigationItem.rightBarButtonItem = bar;
-    
-    // Do any additional setup after loading the view from its nib.
 }
 
 - (void)addRelay {
-    UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"提示" message:@"添加gMobile" preferredStyle:UIAlertControllerStyleAlert];
-    [alert addTextFieldWithConfigurationHandler:^(UITextField * _Nonnull textField) {
-        textField.text = _relaySN;
-    }];
-    alert.textFields[0].placeholder = @"请输入gMobile的序列号";
-    alert.textFields[0].text = _relaySN;
-    
-    [alert addTextFieldWithConfigurationHandler:^(UITextField * _Nonnull textField) {
-        textField.text = _relayName;
-    }];
-    alert.textFields[1].placeholder = @"请为此gMobile起一个昵称";
-    alert.textFields[1].text = _relayName;
-    [alert addAction:[UIAlertAction actionWithTitle:@"以后添加" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-        
-    }]];
-    [alert addAction:[UIAlertAction actionWithTitle:@"添加" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-        _relaySN = alert.textFields[0].text;
-        _relayName = alert.textFields[1].text;
-        if (_relaySN.length ==0) {
-            [self showToastWith:@"gMobil不能为空！"];
-        }else if (_relayName.length ==0) {
-            [self showToastWith:@"gMobil的昵称不能为空！"];
-        }else {
-            NSNumber *relaySN = [NSNumber numberWithInteger:alert.textFields[0].text.integerValue];
-            _relaySN = @"";
-            _relayName = @"";
-            [GPhoneCallService.sharedManager relayLoginWith:[relaySN unsignedIntValue] relayName:alert.textFields[1].text];
-        }
-    }]];
+    GMobileTextFieldViewController *alert = [[GMobileTextFieldViewController alloc]initWithNibName:@"GMobileTextFieldViewController" bundle:nil];
+    alert.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+    alert.modalPresentationStyle= UIModalPresentationCustom;
+    __block RelayListViewController *vc = self;
+    alert.comfireBlock = ^(NSString *sn, NSString *name){
+        NSNumber *relaySN = [NSNumber numberWithInteger:sn.integerValue];
+        [GPhoneCallService.sharedManager relayLoginWith:[relaySN unsignedIntValue] relayName:name];
+        GPhoneCallService.sharedManager.addRelayBlock = ^(BOOL success){
+            [vc reloadRelaysStatus];
+        };
+    };
     [self.navigationController presentViewController:alert animated:YES completion:nil];
 }
 
@@ -88,7 +73,6 @@
 
 -(void)relayStatusWith:(RelayStatusModel *)statusModel {
     [self.relayArray addObject:statusModel];
-     [_gphoneCallService hiddenWith:@""];
     dispatch_sync(dispatch_get_main_queue(), ^(){
         [_tableView reloadData];
         [self performSelector:@selector(delayMethod) withObject:nil afterDelay:0.1];

@@ -37,30 +37,13 @@
     GPhoneCallService.sharedManager.delegate = self;
     [GPhoneCallService.sharedManager versionCheck];
     if (!GPhoneConfig.sharedManager.relaySN) {
-        UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"提示" message:@"添加gMobile" preferredStyle:UIAlertControllerStyleAlert];
-        [alert addTextFieldWithConfigurationHandler:^(UITextField * _Nonnull textField) {
-            
-        }];
-        alert.textFields[0].placeholder = @"请输入gMobile的序列号";
-        
-        [alert addTextFieldWithConfigurationHandler:^(UITextField * _Nonnull textField) {
-            
-        }];
-        alert.textFields[1].placeholder = @"请为此gMobile起一个昵称";
-        [alert addAction:[UIAlertAction actionWithTitle:@"以后添加" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-            
-        }]];
-        [alert addAction:[UIAlertAction actionWithTitle:@"添加" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-            if (alert.textFields[0].text.length ==0) {
-                [self showToastWith:@"gMobile不能为空！"];
-            }else if (alert.textFields[1].text.length ==0) {
-                [self showToastWith:@"gMobile的昵称不能为空！"];
-            }else {
-                NSNumber *relaySN = [NSNumber numberWithInteger:alert.textFields[0].text.integerValue];
-                NSLog(@"转换完的数字为：%@",relaySN);
-                [GPhoneCallService.sharedManager relayLoginWith:[relaySN unsignedIntValue] relayName:alert.textFields[1].text];
-            }
-        }]];
+        GMobileTextFieldViewController *alert = [[GMobileTextFieldViewController alloc]initWithNibName:@"GMobileTextFieldViewController" bundle:nil];
+        alert.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+        alert.modalPresentationStyle= UIModalPresentationCustom;
+        alert.comfireBlock = ^(NSString *sn, NSString *name){
+            NSNumber *relaySN = [NSNumber numberWithInteger:sn.integerValue];
+            [GPhoneCallService.sharedManager relayLoginWith:[relaySN unsignedIntValue] relayName:name];
+        };
         [self.navigationController presentViewController:alert animated:YES completion:nil];
         //0x11223344 287454020
     }else {
@@ -88,7 +71,7 @@
     __weak CallHistoryViewController * weakSelf = self;
     __block ContactModel *tmpContact = contact;
     [alert addAction:[UIAlertAction actionWithTitle:@"拨打" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-        [GPhoneCallService.sharedManager dialWith:contact];
+        [GPhoneCallService.sharedManager dialWith: contact];
         GPhoneCallService.sharedManager.relayStatusBlock = ^(BOOL succeed) {
            
                 UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"提示" message:[NSString stringWithFormat:@"gMobil'%@'已下线，需要重新登录",GPhoneConfig.sharedManager.relayName] preferredStyle:UIAlertControllerStyleAlert];

@@ -28,6 +28,7 @@ typedef void (^RequestStatusBlock)(BOOL succeed); //普通block
 @property (copy, nonatomic) RequestStatusBlock messageBlock;
 @property (copy, nonatomic) RequestStatusBlock loginBlock;
 @property (copy, nonatomic) RequestStatusBlock relayStatusBlock;
+@property (copy, nonatomic) RequestStatusBlock addRelayBlock;
 
 +(GPhoneCallService *)sharedManager;
 

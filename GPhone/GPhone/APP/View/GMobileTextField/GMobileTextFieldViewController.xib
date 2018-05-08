@@ -26,8 +26,12 @@
             <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
+                <view alpha="0.20000000000000001" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="O3b-iK-fLZ">
+                    <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                    <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                </view>
                 <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="uot-WO-TpG">
-                    <rect key="frame" x="60" y="238.5" width="255" height="210"/>
+                    <rect key="frame" x="60" y="178.5" width="255" height="210"/>
                     <subviews>
                         <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="line" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Nl6-R9-ufp">
                             <rect key="frame" x="20" y="85" width="215" height="30"/>
@@ -41,7 +45,7 @@
                         </textField>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="提示" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vgR-mX-7R9">
                             <rect key="frame" x="20" y="15" width="215" height="21"/>
-                            <fontDescription key="fontDescription" type="system" pointSize="18"/>
+                            <fontDescription key="fontDescription" type="system" weight="medium" pointSize="18"/>
                             <nil key="highlightedColor"/>
                         </label>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="提示" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xJl-7D-Nix">
@@ -131,9 +135,13 @@
             </subviews>
             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
             <constraints>
+                <constraint firstItem="O3b-iK-fLZ" firstAttribute="top" secondItem="Q5M-cg-NOt" secondAttribute="top" constant="-20" id="5Ie-9t-Mz4"/>
+                <constraint firstItem="O3b-iK-fLZ" firstAttribute="leading" secondItem="Q5M-cg-NOt" secondAttribute="leading" id="6ZU-v5-seT"/>
+                <constraint firstItem="Q5M-cg-NOt" firstAttribute="trailing" secondItem="O3b-iK-fLZ" secondAttribute="trailing" id="JCi-nI-7ew"/>
                 <constraint firstItem="Q5M-cg-NOt" firstAttribute="trailing" secondItem="uot-WO-TpG" secondAttribute="trailing" constant="60" id="MGG-XX-n0B"/>
                 <constraint firstItem="uot-WO-TpG" firstAttribute="leading" secondItem="Q5M-cg-NOt" secondAttribute="leading" constant="60" id="Rxz-u1-KZa"/>
-                <constraint firstItem="uot-WO-TpG" firstAttribute="centerY" secondItem="Q5M-cg-NOt" secondAttribute="centerY" id="d1j-Av-hKf"/>
+                <constraint firstItem="uot-WO-TpG" firstAttribute="centerY" secondItem="Q5M-cg-NOt" secondAttribute="centerY" constant="-60" id="d1j-Av-hKf"/>
+                <constraint firstItem="Q5M-cg-NOt" firstAttribute="bottom" secondItem="O3b-iK-fLZ" secondAttribute="bottom" id="rBR-xe-8wx"/>
             </constraints>
             <viewLayoutGuide key="safeArea" id="Q5M-cg-NOt"/>
             <point key="canvasLocation" x="33.5" y="53.5"/>

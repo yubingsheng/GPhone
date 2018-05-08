@@ -204,10 +204,9 @@
 }
 
 - (void)relayStatus:(unsigned int)relaySN relayName:(NSString*)name {
-    [self showWith:@""];
     relayName = name;
     if(!galaxy_relayStatusReq(relaySN)) {
-        [self hiddenWith:@"获取gMobil状态失败！"];
+        [self showToastWith:@"获取gMobil状态失败！"];
     } else {
         NSLog( @"get gMobile status");
     }
@@ -304,6 +303,9 @@ static void RelayLoginRsp_Callback(void *inUserData, int seqId, unsigned int rel
         model.relaySN = relaySN;
         model.authCode = [NSString stringWithFormat:@"%s",authCode_nonce];
         [GPhoneHandel relaysContainWith:model];
+        if (_addRelayBlock) {
+            _addRelayBlock(YES);
+        }
         result = [NSString stringWithFormat:@"%@添加成功!",relayName];
     }
     else if(errorCode == 3) result = @"gMobile登录失败，请先弹出SIM卡再重新尝试登陆";
