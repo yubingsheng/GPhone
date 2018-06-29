@@ -31,4 +31,6 @@
 #import "MessageViewController.h"
 #import "MessageListViewController.h"
 #import "GMobileTextFieldViewController.h"
+#import "NotificationManager.h"
+#import "PushkitManager.h"
 #endif /* GPhone_pch */
