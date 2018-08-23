@@ -86,6 +86,7 @@ static NotificationManager *instance = nil;
 		NSLog(@"SHAY galaxy_callInAlerting sent");
 		//这里APP需要呈现入呼叫振铃界面给用户，demo只是简单的做了log
     	NSLog(@"callin ringing");
+        [GPhoneCallService.sharedManager callingViewWithCallType:YES];
 	}
 	else {
    		NSLog(@"SHAY sms notification got");

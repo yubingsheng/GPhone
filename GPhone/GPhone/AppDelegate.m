@@ -115,8 +115,7 @@
         NSLog(@"SHAY call in DIALED state, galaxy_callInAlerting sent");
         
         //3, 再要呈现入呼叫振铃界面给用户，demo只是简单的做了log
-        
-        NSLog(@"callin ringing");
+        [GPhoneCallService.sharedManager callingViewWithCallType:YES];
     }
     else if(galaxy_get_call_state() == ALERTING && galaxy_get_call_direction() == INBOUND) {
         //下面的情况会导致程序进入这里：在振铃界面时，用户并未应答入呼叫，而是直接把APP切换到后台，之后又切换回前台。
@@ -134,8 +133,7 @@
         NSLog(@"SHAY call in ALERTING state, galaxy_callInAlerting sent");
         
         //2,
-        //呈现入呼叫振铃界面给用户，demo只是简单的做了log
-        NSLog(@"callin ringing");
+        [GPhoneCallService.sharedManager callingViewWithCallType:YES];
     }
     /*
      else if(galaxy_get_call_state() == ANSWERED && galaxy_get_call_direction() == INBOUND) {

@@ -121,7 +121,9 @@ NSLog(@"SHAY udp socket closed in viberateWithCompletionHandler");
 			NSLog(@"galaxy_callInSetup failed");
 			return;
 		}
-
+        
+        ContactModel *contactModel = [[ContactModel alloc]initWithId:[dic[@"callid"] intValue] time:1 identifier:@"" phoneNumber:dic[@"number"] fullName:@"" creatTime:[GPhoneHandel dateToStringWith:[NSDate date]]];
+        GPhoneCallService.sharedManager.currentContactModel = contactModel;
 		/*
 		//实际应用中，要启动定时器重发galaxy_callInAlerting
 		if(!galaxy_callInAlerting([callId intValue], [relaysn intValue])) {

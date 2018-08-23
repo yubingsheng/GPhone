@@ -23,12 +23,20 @@
 
 - (void)viewWillAppear:(BOOL)animated {
     [super  viewWillAppear:animated];
+    [self reload];
+    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(reload) name:@"reload" object:nil];
+}
+-(void)viewDidDisappear:(BOOL)animated {
+    [super viewDidDisappear:animated];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:@"reload" object:self];
+}
+//实现监听方法
+-(void)reload {
     _callHistoryArray = GPhoneConfig.sharedManager.callHistoryArray;
     [_tableView reloadData];
 }
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
     _tableView.delegate = self;
     _tableView.dataSource = self;
     _tableView.tableFooterView = [UIView new];

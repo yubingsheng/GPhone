@@ -98,13 +98,12 @@ NSString *const kVideoCaptureNotification = @"kVideoCaptureNotification";
 
 @implementation RTCView
 
-- (instancetype)initWithNumber:(NSString *)number nickName:(NSString *)name byRelay:(NSString *)relay
-{
+- (instancetype)initWithNumber:(NSString *)number nickName:(NSString *)name byRelay:(NSString *)relay in_outCall:(BOOL)call {
     self = [super initWithFrame:[UIScreen mainScreen].bounds];
 
     if (self) {
         self.isVideo = NO;
-        self.callee = NO;
+        self.callee = call;
         self.isHanged = YES;
         self.clipsToBounds = YES;
         [self setupUI];
@@ -229,14 +228,6 @@ NSString *const kVideoCaptureNotification = @"kVideoCaptureNotification";
     
     self.answerBtn.frame = CGRectMake(paddingX * 2 + btnW, kContainerH - btnH - 5, btnW, btnH);
     [self.btnContainerView addSubview:_answerBtn];
-    
-    CGFloat replyW = 110 * kRTCRate;
-    CGFloat replyH = 45 * kRTCRate;
-    
-    CGFloat centerX = self.center.x;
-    self.msgReplyBtn.frame = CGRectMake(centerX - replyW * 0.5, 20, replyW, replyH);
-    [self.btnContainerView addSubview:_msgReplyBtn];
-    
     self.coverView.frame = self.frame;
     self.coverView.hidden = YES;
     [self addSubview:_coverView];
@@ -603,15 +594,15 @@ NSString *const kVideoCaptureNotification = @"kVideoCaptureNotification";
             self.btnContainerView.alpha = 0;
         } completion:^(BOOL finished) {
             [self clearAllSubViews];
-            
             [self initUIForAudioCaller];
+            // FIXEDME: 记录通话时长
             self.connectLabel.text = @"正在通话中...";
-            
+            [GPhoneCallService.sharedManager callInAnswer];
             [self connected];
         }];
         dict = @{@"isVideo":@(NO),@"audioAccept":@(YES)};
     }
-    
+
     [[NSNotificationCenter defaultCenter] postNotificationName:kAcceptNotification object:dict];
 }
 

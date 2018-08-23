@@ -63,9 +63,7 @@
     self.deleteButton = [UIButton buttonWithType:UIButtonTypeCustom];
     //    [self.deleteButton setBackgroundColor:[UIColor lightGrayColor]];
     [self.deleteButton addTarget:self action:@selector(didTapDeleteButton:) forControlEvents:UIControlEventTouchUpInside];
-    self.deleteButton.titleLabel.font = [UIFont systemFontOfSize:28.0];
-    [self.deleteButton setTitle:@"◀︎" forState:UIControlStateNormal];
-    [self.deleteButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+    [self.deleteButton setImage:[UIImage imageNamed:@"退格键"] forState:UIControlStateNormal];
     self.deleteButton.hidden = YES;
     UIGestureRecognizer *holdRec = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(didHoldDeleteButton:)];
     [self.deleteButton addGestureRecognizer:holdRec];

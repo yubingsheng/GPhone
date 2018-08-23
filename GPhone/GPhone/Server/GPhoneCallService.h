@@ -24,6 +24,7 @@ typedef void (^RequestStatusBlock)(BOOL succeed); //普通block
 @property (assign, nonatomic) id<GPhoneCallServiceDelegate> delegate;
 @property (strong, nonatomic) MBProgressHUD *hud;
 @property (strong, nonatomic) NSUUID *uuid;
+@property (strong, nonatomic) ContactModel *currentContactModel;
 
 @property (copy, nonatomic) RequestStatusBlock messageBlock;
 @property (copy, nonatomic) RequestStatusBlock loginBlock;
@@ -76,6 +77,10 @@ typedef void (^RequestStatusBlock)(BOOL succeed); //普通block
  sms
  */
 - (void)sendMsgWith:(MessageModel*)text;
+/*
+ App内的通话界面
+ */
+- (void)callingViewWithCallType:(BOOL)isIn;
 #pragma mark - HUD
 /*
  hud

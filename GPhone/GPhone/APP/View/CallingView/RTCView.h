@@ -71,7 +71,7 @@ UIKIT_EXTERN NSString *const kVideoCaptureNotification;
 @property (assign, nonatomic) id<RTCDelegate> delegate;
 
 #pragma mark - method
-- (instancetype)initWithNumber:(NSString *)number nickName:(NSString *)name byRelay:(NSString *)relay;
+- (instancetype)initWithNumber:(NSString *)number nickName:(NSString *)name byRelay:(NSString *)relay in_outCall:(BOOL)call;
 
 - (void)show;
 
