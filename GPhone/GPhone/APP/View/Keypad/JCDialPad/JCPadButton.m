@@ -189,5 +189,5 @@
 
 @end
 
-CGFloat const JCPadButtonHeight = 65.0;
-CGFloat const JCPadButtonWidth = 65.0;
+CGFloat const JCPadButtonHeight = 75.0;
+CGFloat const JCPadButtonWidth = 75.0;

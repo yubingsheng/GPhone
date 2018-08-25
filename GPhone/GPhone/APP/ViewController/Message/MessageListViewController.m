@@ -54,12 +54,33 @@
 #pragma mark - Action
 
 - (IBAction)newConstructionMessageAction:(UIBarButtonItem *)sender {
-    CNContactPickerViewController *contactPicker = [[CNContactPickerViewController alloc] init];
-    contactPicker.delegate = self;
-    contactPicker.displayedPropertyKeys = @[CNContactPhoneNumbersKey];
-    [self.navigationController presentViewController:contactPicker animated:YES completion:^{
+
+    UIAlertController *actionSheet = [UIAlertController alertControllerWithTitle:nil message:nil preferredStyle:UIAlertControllerStyleActionSheet];
+    UIAlertAction *action1 = [UIAlertAction actionWithTitle:@"通讯录" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        CNContactPickerViewController *contactPicker = [[CNContactPickerViewController alloc] init];
+        contactPicker.delegate = self;
+        contactPicker.displayedPropertyKeys = @[CNContactPhoneNumbersKey];
+        [self.navigationController presentViewController:contactPicker animated:YES completion:^{
+            
+        }];
+
+    }];
+    UIAlertAction *action3 = [UIAlertAction actionWithTitle:@"输入手机号" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        
         
     }];
+    UIAlertAction *action2 = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+        NSLog(@"点击了取消");
+    }];
+    
+    
+    //把action添加到actionSheet里
+    [actionSheet addAction:action1];
+    [actionSheet addAction:action2];
+    [actionSheet addAction:action3];
+    
+    //相当于之前的[actionSheet show];
+    [self presentViewController:actionSheet animated:YES completion:nil];
 }
 #pragma mark - CNContactViewControllerDelegate
 // 选择某个联系人时调用
