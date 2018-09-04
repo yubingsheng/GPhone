@@ -13,6 +13,8 @@
 
 @property (strong, nonatomic) NSMutableArray *messageArray;
 
+@property (strong, nonatomic) UITextField* phoneTextField;
+
 @end
 
 @implementation MessageViewController
@@ -20,13 +22,15 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor redColor];
-    self.title = _contactModel.fullName;
+    self.title = _contactModel.fullName ? _contactModel.fullName : @"新消息";
     self.delegate = self;
     self.dataSource = self;
     _messageArray = [NSMutableArray arrayWithArray:_contactModel.messageList];
     [GPhoneHandel messageTabbarItemBadgeValue:_contactModel.unread];
     _contactModel.unread = 0;
     self.tabBarController.tabBar.hidden = YES;
+    
+    [self inputPhoneNumber];
 }
 -(void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
@@ -40,6 +44,23 @@
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
+- (void)inputPhoneNumber {
+    UIView* inputView = [[UIView alloc]initWithFrame:CGRectMake(0, 64, [UIScreen mainScreen].bounds.size.width, 44)];
+    [inputView setBackgroundColor:[UIColor colorWithRed:0.95f green:0.95f blue:0.95f alpha:1.0f]];
+    [self.view addSubview:inputView];
+    
+    UILabel* label = [[UILabel alloc]initWithFrame:CGRectMake(0, 0, 80, 44)];
+    label.text = @"手机号：";
+    label.font = [UIFont systemFontOfSize:16];
+    label.textColor =[UIColor colorWithRed:0.6f green:0.6f blue:0.6f alpha:1.0f];
+    label.textAlignment = NSTextAlignmentCenter;
+    [inputView addSubview:label];
+    
+    _phoneTextField = [[UITextField alloc]initWithFrame:CGRectMake(80, 0, [UIScreen mainScreen].bounds.size.width - 80, 44)];
+    _phoneTextField.text=_contactModel.phoneNumber;
+    [inputView addSubview:_phoneTextField];
+}
+
 
 #pragma mark - Table view data source
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
@@ -48,7 +69,10 @@
 
 #pragma mark - Messages view delegate
 - (void)sendPressed:(UIButton *)sender withText:(NSString *)text{
-    MessageModel *message = [[MessageModel alloc] initWithMsgId:rand() text:text date:[NSDate date] msgType:JSBubbleMessageTypeOutgoing phone:_contactModel.phoneNumber];
+    
+    NSString* phoneNumber = _contactModel.phoneNumber ? _contactModel.phoneNumber : _phoneTextField.text;
+    
+    MessageModel *message = [[MessageModel alloc] initWithMsgId:rand() text:text date:[NSDate date] msgType:JSBubbleMessageTypeOutgoing phone:phoneNumber];
     __block MessageViewController *vc = self;
     [GPhoneCallService.sharedManager sendMsgWith:message];
     GPhoneCallService.sharedManager.messageBlock = ^(BOOL succeed){
