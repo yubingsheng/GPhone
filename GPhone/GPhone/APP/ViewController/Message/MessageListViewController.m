@@ -66,11 +66,10 @@
 
     }];
     UIAlertAction *action3 = [UIAlertAction actionWithTitle:@"输入手机号" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-
             ContactModel *model = [[ContactModel alloc]init];
-            [GPhoneHandel messageHistoryContainWith:model];
             MessageViewController *vc = [[MessageViewController alloc]init];
             vc.contactModel = model;
+        vc.isNew = YES;
             [self.navigationController pushViewController:vc animated:YES];
         
     }];
@@ -103,6 +102,7 @@
         [GPhoneHandel messageHistoryContainWith:model];
         MessageViewController *vc = [[MessageViewController alloc]init];
         vc.contactModel = model;
+        vc.isNew = NO;
         [self.navigationController pushViewController:vc animated:YES];
     }];
 }

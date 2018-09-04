@@ -62,7 +62,16 @@
     self.view.frame = frame;
     self.view.bounds = frame;
 }
-
+- (UITableView*)tableView {
+    if (!_tableView) {
+        CGRect tableFrame = self.view.bounds;
+        _tableView = [[UITableView alloc] initWithFrame:tableFrame style:UITableViewStylePlain];
+        _tableView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleTopMargin;
+        _tableView.dataSource = self;
+        _tableView.delegate = self;
+    }
+    return  _tableView;
+}
 
 #pragma mark - Initialization
 - (void)setup
@@ -73,12 +82,6 @@
     }
     
     CGSize size = self.view.frame.size;
-	
-    CGRect tableFrame = self.view.bounds;
-	self.tableView = [[UITableView alloc] initWithFrame:tableFrame style:UITableViewStylePlain];
-	self.tableView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleTopMargin;
-	self.tableView.dataSource = self;
-	self.tableView.delegate = self; 
 	[self.view addSubview:self.tableView]; 
 	
 	UIButton* mediaButton = nil;
@@ -144,6 +147,15 @@
 - (UIButton *)sendButton
 {
     return [UIButton defaultSendButton];
+}
+
+- (UITextField*)phoneTextField {
+    if (!_phoneTextField) {
+        _phoneTextField = [[UITextField alloc]initWithFrame:CGRectMake(80, 0, [UIScreen mainScreen].bounds.size.width - 80, 44)];
+        _phoneTextField.placeholder = @"请输入正确手机号";
+        _phoneTextField.keyboardType = UIKeyboardTypeNumberPad;
+    }
+    return _phoneTextField;
 }
 
 #pragma mark - View lifecycle
@@ -235,6 +247,23 @@
     return 1;
 }
 
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
+    return 44;
+}
+- (UIView*)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
+    UIView* inputView = [[UIView alloc]initWithFrame:CGRectMake(0, 64, [UIScreen mainScreen].bounds.size.width, 44)];
+    [inputView setBackgroundColor:[UIColor colorWithRed:0.95f green:0.95f blue:0.95f alpha:1.0f]];
+    //    [self.view addSubview:inputView];
+    self.tableView.tableHeaderView = inputView;
+    UILabel* label = [[UILabel alloc]initWithFrame:CGRectMake(0, 0, 80, 44)];
+    label.text = @"手机号：";
+    label.font = [UIFont systemFontOfSize:16];
+    label.textColor =[UIColor colorWithRed:0.6f green:0.6f blue:0.6f alpha:1.0f];
+    label.textAlignment = NSTextAlignmentCenter;
+    [inputView addSubview:label];
+    [inputView addSubview:self.phoneTextField];
+    return inputView;
+}
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     return 0;

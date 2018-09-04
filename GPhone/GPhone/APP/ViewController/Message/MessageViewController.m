@@ -29,8 +29,11 @@
     [GPhoneHandel messageTabbarItemBadgeValue:_contactModel.unread];
     _contactModel.unread = 0;
     self.tabBarController.tabBar.hidden = YES;
-    
-    [self inputPhoneNumber];
+    if (_isNew) {
+        [self.phoneTextField becomeFirstResponder];
+    }
+    self.phoneTextField.userInteractionEnabled = _isNew;
+    self.phoneTextField.text = _contactModel.phoneNumber;
 }
 -(void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
@@ -44,22 +47,7 @@
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
-- (void)inputPhoneNumber {
-    UIView* inputView = [[UIView alloc]initWithFrame:CGRectMake(0, 64, [UIScreen mainScreen].bounds.size.width, 44)];
-    [inputView setBackgroundColor:[UIColor colorWithRed:0.95f green:0.95f blue:0.95f alpha:1.0f]];
-    [self.view addSubview:inputView];
-    
-    UILabel* label = [[UILabel alloc]initWithFrame:CGRectMake(0, 0, 80, 44)];
-    label.text = @"手机号：";
-    label.font = [UIFont systemFontOfSize:16];
-    label.textColor =[UIColor colorWithRed:0.6f green:0.6f blue:0.6f alpha:1.0f];
-    label.textAlignment = NSTextAlignmentCenter;
-    [inputView addSubview:label];
-    
-    _phoneTextField = [[UITextField alloc]initWithFrame:CGRectMake(80, 0, [UIScreen mainScreen].bounds.size.width - 80, 44)];
-    _phoneTextField.text=_contactModel.phoneNumber;
-    [inputView addSubview:_phoneTextField];
-}
+
 
 
 #pragma mark - Table view data source
@@ -69,16 +57,23 @@
 
 #pragma mark - Messages view delegate
 - (void)sendPressed:(UIButton *)sender withText:(NSString *)text{
-    
-    NSString* phoneNumber = _contactModel.phoneNumber ? _contactModel.phoneNumber : _phoneTextField.text;
-    
+    _contactModel.phoneNumber = self.phoneTextField.text;
+    NSString* phoneNumber = _contactModel.phoneNumber;
+    if (phoneNumber.length <= 0) {
+        [[[[iToast makeText:@"请输入正确手机号"] setGravity:iToastGravityCenter] setDuration:iToastDurationNormal] show];
+        return;
+    }
     MessageModel *message = [[MessageModel alloc] initWithMsgId:rand() text:text date:[NSDate date] msgType:JSBubbleMessageTypeOutgoing phone:phoneNumber];
     __block MessageViewController *vc = self;
     [GPhoneCallService.sharedManager sendMsgWith:message];
+    
     GPhoneCallService.sharedManager.messageBlock = ^(BOOL succeed){
         dispatch_sync(dispatch_get_main_queue(), ^(){
             if (succeed) {
                 [vc.messageArray addObject:message];
+                vc.contactModel.messageList = vc.messageArray;
+                vc.contactModel.creatTime = [GPhoneHandel dateToStringWith:[NSDate date]];
+                [GPhoneHandel mergeMessageArrayContainWith:vc.contactModel];
             }else {
                 [[[[iToast makeText:@"发送失败，重新发送！"] setGravity:iToastGravityCenter] setDuration:iToastDurationNormal] show];
             }

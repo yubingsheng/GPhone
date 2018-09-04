@@ -65,6 +65,29 @@
     GPhoneConfig.sharedManager.messageArray = history;
     return history;
 }
++ (void)mergeMessageArrayContainWith:(ContactModel *)contactModel {
+     BOOL contain = NO;
+     NSMutableArray * history =  [NSMutableArray arrayWithArray:GPhoneConfig.sharedManager.messageArray];
+    if (contactModel.fullName.length == 0) {
+        contactModel.fullName = contactModel.phoneNumber;
+    }
+    for (NSInteger i = 0; i < history.count; i++) {
+        ContactModel * tmpContact = history[i];
+        if ([contactModel.phoneNumber isEqualToString:tmpContact.phoneNumber]) {
+            contain = YES;
+            tmpContact.time ++;
+            [tmpContact.messageList addObjectsFromArray:contactModel.messageList];
+            contactModel = tmpContact;
+            [history removeObjectAtIndex:i];
+            i = history.count - 1;
+        }
+    }
+    if (contain) {
+        contactModel.creatTime = contactModel.creatTime;
+    }
+     [history insertObject:contactModel atIndex:0];
+     GPhoneConfig.sharedManager.messageArray = history;
+}
 + (void) messageTabbarItemBadgeValue:(NSInteger)num {
     NSInteger count = GPhoneConfig.sharedManager.messageNumber.integerValue;
     count -= num;

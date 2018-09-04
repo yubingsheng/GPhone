@@ -26,6 +26,10 @@
  */
 + (void) messageTabbarItemBadgeValue:(NSInteger)num;
 /*
+ 合并短信
+ */
++ (void)mergeMessageArrayContainWith:(ContactModel *)contactModel;
+/*
  relay
  */
 + (void)relaysContainWith:(RelayModel *)model;

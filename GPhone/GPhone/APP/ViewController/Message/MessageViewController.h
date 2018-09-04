@@ -13,4 +13,5 @@ typedef void (^CommonBlock)(ContactModel *object); //普通block
 @interface MessageViewController : JSMessagesViewController
 @property (strong, nonatomic) ContactModel *contactModel;
 @property (copy, nonatomic) CommonBlock messageBlock;
+@property (assign, nonatomic) BOOL isNew;
 @end

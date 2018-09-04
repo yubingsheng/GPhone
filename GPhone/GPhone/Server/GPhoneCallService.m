@@ -535,8 +535,7 @@ static void MessageSubmitRsp_Callback(void *inUserData, int messageId, unsigned 
         return;
     }
     else {
-        NSString *result = [NSString stringWithFormat: @"sms send succ"];
-        [self hiddenWith:result];
+        [self hiddenWith:@""];
         if (_messageBlock) {
             _messageBlock(YES);
         }
@@ -642,6 +641,13 @@ static void MessageDeliverReq_Callback(void *inUserData, int messageId, unsigned
         self.hud.label.text = title;
         _hud.mode = MBProgressHUDModeText;
         [_hud hideAnimated:YES afterDelay:0.5];
+    });
+    
+}
+- (void)hidden {
+    dispatch_sync(dispatch_get_main_queue(), ^(){
+        _hud.mode = MBProgressHUDModeText;
+        [_hud hideAnimated:YES afterDelay:0.0];
     });
     
 }
