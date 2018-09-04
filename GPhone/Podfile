@@ -1,7 +1,8 @@
-platform :ios, '7.0'
+platform :ios, '9.0'
 target 'GPhone' do
     pod 'AFNetworking', '~> 3.1.0'
     pod 'MBProgressHUD', '~> 1.0.0'
     pod 'MJRefresh', '~> 3.1.15.3'
     pod 'iToast’, '~> 0.0.1'
+    pod 'LJContactManager', '~> 1.0.5'
 end

@@ -940,7 +940,6 @@
 				B8A466ED1FB186BD007EFB09 /* Sources */,
 				B8A466EE1FB186BD007EFB09 /* Frameworks */,
 				B8A466EF1FB186BD007EFB09 /* Resources */,
-				9AD5BF13B1165C8197DEBA7F /* [CP] Embed Pods Frameworks */,
 				869680F230BECDFF1517A02B /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
@@ -1193,21 +1192,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-GPhone/Pods-GPhone-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		9AD5BF13B1165C8197DEBA7F /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-GPhone/Pods-GPhone-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */

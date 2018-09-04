@@ -15,21 +15,32 @@ PODS:
   - AFNetworking/UIKit (3.1.0):
     - AFNetworking/NSURLSession
   - iToast (0.0.1)
+  - LJContactManager (1.0.5)
   - MBProgressHUD (1.0.0)
-  - MJRefresh (3.1.15.3)
+  - MJRefresh (3.1.15.6)
 
 DEPENDENCIES:
   - AFNetworking (~> 3.1.0)
   - iToast (~> 0.0.1)
+  - LJContactManager (~> 1.0.5)
   - MBProgressHUD (~> 1.0.0)
   - MJRefresh (~> 3.1.15.3)
+
+SPEC REPOS:
+  https://github.com/cocoapods/specs.git:
+    - AFNetworking
+    - iToast
+    - LJContactManager
+    - MBProgressHUD
+    - MJRefresh
 
 SPEC CHECKSUMS:
   AFNetworking: 5e0e199f73d8626b11e79750991f5d173d1f8b67
   iToast: df147188215cc3293bd4366822833f2862fec451
+  LJContactManager: e9e836be32e7e4c971aef8696f45af732e4010eb
   MBProgressHUD: 4890f671c94e8a0f3cf959aa731e9de2f036d71a
-  MJRefresh: b48380ae2b927b46c4ef000de9adb8dc748e1df7
+  MJRefresh: 0efa19656679d70a0f47cbe76e56c2271fe53a97
 
-PODFILE CHECKSUM: 7137d4ac9b4a757450d67b810982c6904ac95b24
+PODFILE CHECKSUM: f71b9fa6d3221a37a0efd4678a92d5747267c10a
 
-COCOAPODS: 1.4.0
+COCOAPODS: 1.5.3
