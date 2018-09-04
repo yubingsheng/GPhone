@@ -61,7 +61,7 @@
     galaxy_setSessionCallbacks(SessionConfirm_Callback, (__bridge void *)(self));
     galaxy_setCallOutCallbacks(CallTrying_Callback,0, CallAlerting_Callback, CallAnswer_Callback, CallReleased_Callback,(__bridge void *)(self));
     //实际应用中，callIn的每个callback必须有，且必须要做相应的处理，比如定时器的停止。尤其对于callInRelease_Callback，要在callkit做相应的结束呼叫的处理。
-    galaxy_setCallInCallbacks(CallInAlertingAck_Callback,CallInAnswerAck_Callback,CallInRelease_Callback, (__bridge void *)(self));
+    galaxy_setCallInCallbacks(CallInAlertingAck_Callback,CallInAnswerAck_Callback,CallInReleased_Callback, (__bridge void *)(self));
     
     galaxy_setMessageCallbacks(MessageNonceRsp_Callback, MessageSubmitRsp_Callback, MessageInHelloAck_Callback, MessageDeliverReq_Callback, (__bridge void *)(self));
 }
@@ -137,6 +137,7 @@
     }else {
         [timerCallSetup invalidate];
         [timerSessionInvite invalidate];
+        interface_viberate = 0;
         //        [APPDELEGATE.callController endCall];
         //        [UIDevice currentDevice].proximityMonitoringEnabled = NO;
     }
@@ -263,26 +264,31 @@
     }
 }
 #pragma mark - Delegate
-static void CallInRelease_Callback(void *inUserData, int errorCode) {
+static void CallInReleased_Callback(void *inUserData, int errorCode) {
     [STRONGSELF handleCallInReleaseCallBackWithErrorCode:errorCode];
 }
-
 - (void) handleCallInReleaseCallBackWithErrorCode: (int)errorCode {
     NSLog(@"SHAY callInReleaseCallback called");
     interface_viberate = 0;
     [timerCallAnswer invalidate];
     if (_callingView) {
         dispatch_sync(dispatch_get_main_queue(), ^(){
-            [_callingView dismiss];
+            if(_callingView.frame.size.width <= 100) [_callingView microClick];
+            
+            dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.8 * NSEC_PER_SEC));
+            dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+                [_callingView dismiss];
+                _callingView = nil;
+            });
             if (_relayStatusBlock) {
                 _relayStatusBlock(NO);
                 
             }});
-    }
+        }
     //实际应用中，要停止callInAlerting和callInAnswer重发定时器
     //[appDelegate.providerDelegate.provider reportCallWithUUID:appDelegate.providerDelegate.inCallUUID endedAtDate:nil reason:CXCallEndedReasonRemoteEnded];
     NSString *result;
-    if(errorCode == 0) result = @"Call released normally";
+    if(errorCode == 0) return;
     else if(errorCode == 8) result = @"呼叫鉴权失败，请删除gmobile重新添加";
     else if(errorCode == 10) result = @"呼叫失败，请确认运营商服务是否正常，比如SIM卡是否欠费停机";
     else result = [NSString stringWithFormat: @"Call released with error code %d", errorCode];
@@ -296,7 +302,8 @@ static void CallInAnswerAck_Callback(void *inUserData) {
     //galaxy_relayStatusReq(relaySN);
     //实际应用中，要停止callInAnswer重发定时器
     NSLog(@"SHAY callInAnswerAck got");
-    NSString *result = @"Call Answered";;
+    NSString *result = @"Call Answered";
+    
     [timerCallAnswer invalidate];
 }
 static void CallInAlertingAck_Callback(void *inUserData) {
@@ -416,6 +423,10 @@ static void CallAnswer_Callback(void *inUserData) {
 
 - (void) handleCallAnswerCallBack {
     [timerCallInAlerting invalidate];
+    dispatch_sync(dispatch_get_main_queue(), ^(){
+      [APPDELEGATE shake];
+        });
+    
     [_callingView connected];
 }
 
@@ -424,36 +435,31 @@ static void CallReleased_Callback(void *inUserData, int errorCode) {
 }
 - (void) handleCallReleasedCallBackWithErrorCode: (int)errorCode {
     [timerCallSetup invalidate];
+    interface_viberate = 0;
     NSString *result;
-    if(errorCode == 0) result = @"Call released normally";
+    if (_callingView) {
+        dispatch_sync(dispatch_get_main_queue(), ^(){
+            if(_callingView.frame.size.width <= 100) [_callingView microClick];
+            
+            dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.8 * NSEC_PER_SEC));
+            dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+                [_callingView dismiss];
+                _callingView = nil;
+            });
+        });
+    }
+    
+    if(errorCode == 0) return;
     else if(errorCode == 8) {
         result = @"呼叫鉴权失败，请删除gMobile重新添加";
-        dispatch_sync(dispatch_get_main_queue(), ^(){
-            [_callingView dismiss];
-            if (_relayStatusBlock) {
-                _relayStatusBlock(NO);
-                
-            }});
+        if (_relayStatusBlock) {
+            _relayStatusBlock(NO);
+            
+        }
     }
     else if(errorCode == 10) result = @"呼叫失败，请确认运营商服务是否正常，比如SIM卡是否欠费停机";
     else result = [NSString stringWithFormat: @"Call released with error code %d", errorCode];
     [self hiddenWith: result];
-}
-
-static void CallInReleased_Callback(void *inUserData, int errorCode) {
-    [STRONGSELF handleCallReleasedCallBackWithErrorCodee:errorCode];
-}
-- (void) handleCallReleasedCallBackWithErrorCodee: (int)errorCode {
-    [timerCallSetup invalidate];
-    [APPDELEGATE.callKitHandel.provider reportCallWithUUID:APPDELEGATE.callKitHandel.inCallUUID endedAtDate:nil reason:CXCallEndedReasonRemoteEnded];
-    NSString *result;
-    if(errorCode == 0) result = @"Call released normally";
-    else if(errorCode == 8) result = @"呼叫鉴权失败，请删除gMobile重新添加";
-    else if(errorCode == 10) result = @"呼叫失败，请确认运营商服务是否正常，比如SIM卡是否欠费停机";
-    else result = [NSString stringWithFormat: @"Call released with error code %d", errorCode];
-    [self hiddenWith: result];
-    NSLog(@"uuid == %@", _uuid);
-    
 }
 
 static void VersionCheckRsp_Callback(void *inUserData, int result) {

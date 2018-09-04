@@ -252,14 +252,14 @@ NSString *const kVideoCaptureNotification = @"kVideoCaptureNotification";
     //        _pad.backgroundColor = [UIColor redColor];
     [self addSubview:_pad];
     CGFloat portraitW = 130 * kRTCRate;
-    self.portraitImageView.frame = CGRectMake(0, 0, portraitW, 0);
-    self.portraitImageView.center = CGPointMake(centerX, 0);
+    self.portraitImageView.frame = CGRectMake(0, 0, portraitW, portraitW);
+    self.portraitImageView.center = CGPointMake(centerX, portraitW);
     self.portraitImageView.layer.cornerRadius = portraitW * 0.5;
     self.portraitImageView.layer.masksToBounds = YES;
-    [self addSubview:_portraitImageView];
+//    [self addSubview:_portraitImageView];
     
     self.nickNameLabel.frame = CGRectMake(0, 0, kRTCWidth, 30);
-    self.nickNameLabel.center = CGPointMake(centerX, CGRectGetMaxY(self.portraitImageView.frame) + 60);
+    self.nickNameLabel.center = CGPointMake(centerX, CGRectGetMaxY(self.portraitImageView.frame) + 60 - portraitW*1.5);
     self.nickNameLabel.text = self.nickName ? :@"未知号码";
     [self addSubview:_nickNameLabel];
     
@@ -337,9 +337,7 @@ NSString *const kVideoCaptureNotification = @"kVideoCaptureNotification";
         
     } completion:^(BOOL finished) {
         [self clearAllSubViews];
-        if ([self.delegate respondsToSelector:@selector(hangUp)]){
-            [_delegate hangUp];
-        }
+
         [self removeFromSuperview];
     }];
 }
@@ -352,7 +350,7 @@ NSString *const kVideoCaptureNotification = @"kVideoCaptureNotification";
         self.loudspeakerBtn.selected = YES;
         self.cameraBtn.selected = YES;
         self.inviteBtn.enabled = YES;
-        [UIView animateWithDuration:0.5 animations:^{
+        [UIView animateWithDuration:0.3 animations:^{
             self.ownImageView.frame = CGRectMake(kRTCWidth - kMicVideoW - 5 , kRTCHeight - kContainerH - kMicVideoH - 5, kMicVideoW, kMicVideoH);
         } completion:^(BOOL finished) {
             
@@ -487,7 +485,11 @@ NSString *const kVideoCaptureNotification = @"kVideoCaptureNotification";
 
 - (void)hangupClick {
     self.coverView.hidden = NO;
+    if ([self.delegate respondsToSelector:@selector(hangUp)]){
+        [_delegate hangUp];
+    }
     [self dismiss];
+    
     NSDictionary *dict = @{@"isVideo":@(self.isVideo),@"isCaller":@(!self.callee),@"answered":@(self.answered)};
     [[NSNotificationCenter defaultCenter] postNotificationName:kHangUpNotification object:dict];
 }
@@ -515,7 +517,7 @@ NSString *const kVideoCaptureNotification = @"kVideoCaptureNotification";
         CABasicAnimation *pathAnimation = [CABasicAnimation animationWithKeyPath:@"path"];
         pathAnimation.fromValue = (id)startPath.CGPath;
         pathAnimation.toValue = (id)endPath.CGPath;
-        pathAnimation.duration = 0.5;
+        pathAnimation.duration = 0.4;
         pathAnimation.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
         pathAnimation.delegate = self;
         pathAnimation.removedOnCompletion = NO;
@@ -530,7 +532,7 @@ NSString *const kVideoCaptureNotification = @"kVideoCaptureNotification";
         _btnContainerView.transform = CGAffineTransformMakeTranslation(0, kContainerH);
         
         if (self.answered) {
-            [UIView animateWithDuration:0.5 animations:^{
+            [UIView animateWithDuration:0.6 animations:^{
                 self.frame = CGRectMake(kRTCWidth - kMicVideoW - 10 , 74, kMicVideoW, kMicVideoH);
                 if (self.oppositeCamera && self.localCamera) {
                     _ownImageView.hidden = YES;
@@ -590,7 +592,7 @@ NSString *const kVideoCaptureNotification = @"kVideoCaptureNotification";
         _localCamera = NO;
         _oppositeCamera = NO;
         
-        [UIView animateWithDuration:1 animations:^{
+        [UIView animateWithDuration:0.5 animations:^{
             self.btnContainerView.alpha = 0;
         } completion:^(BOOL finished) {
             [self clearAllSubViews];
@@ -633,7 +635,7 @@ NSString *const kVideoCaptureNotification = @"kVideoCaptureNotification";
     [self.microBtn removeFromSuperview];
     self.microBtn = nil;
     
-    [UIView animateWithDuration:1.0 animations:^{
+    [UIView animateWithDuration:0.4 animations:^{
         self.center = self.portraitImageView.center;
         self.transform = CGAffineTransformIdentity;
     } completion:^(BOOL finished) {
@@ -658,7 +660,7 @@ NSString *const kVideoCaptureNotification = @"kVideoCaptureNotification";
         CABasicAnimation *pathAnimation = [CABasicAnimation animationWithKeyPath:@"path"];
         pathAnimation.fromValue = (id)startPath.CGPath;
         pathAnimation.toValue = (id)endPath.CGPath;
-        pathAnimation.duration = 0.5;
+        pathAnimation.duration = 0.4;
         pathAnimation.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
         pathAnimation.delegate = self;
         pathAnimation.removedOnCompletion = NO;
@@ -715,7 +717,7 @@ NSString *const kVideoCaptureNotification = @"kVideoCaptureNotification";
         rect.size = self.portraitImageView.frame.size;
         self.frame = rect;
         
-        [UIView animateWithDuration:1.0 animations:^{
+        [UIView animateWithDuration:0.3 animations:^{
             self.center = CGPointMake(kRTCWidth - 60, kRTCHeight - 80);
             self.transform = CGAffineTransformMakeScale(0.5, 0.5);
             
@@ -939,7 +941,7 @@ NSString *const kVideoCaptureNotification = @"kVideoCaptureNotification";
         _microBtn = [[RTCButton alloc] initWithTitle:@"等待中" noHandleImageName:@"icon_av_audio_micro_normal"];
         [_microBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
         _microBtn.titleLabel.font = [UIFont systemFontOfSize:12.0f];
-        _microBtn.backgroundColor = [UIColor orangeColor];
+        _microBtn.backgroundColor = [UIColor colorWithRed:55/255.0 green:162/255.0 blue:49/255.0 alpha:1];
         [_microBtn addTarget:self action:@selector(microClick) forControlEvents:UIControlEventTouchUpInside];
     }
     

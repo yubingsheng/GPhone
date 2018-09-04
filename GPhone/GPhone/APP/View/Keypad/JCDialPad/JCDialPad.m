@@ -73,7 +73,7 @@
     [self.phoneButton addTarget:self action:@selector(phoneAction:) forControlEvents:UIControlEventTouchUpInside];
     self.phoneButton.titleLabel.font = [UIFont systemFontOfSize:16.0];
     //    [self.phoneButton setTitle:@"打电话" forState:UIControlStateNormal];
-    [self.phoneButton setBackgroundImage:[UIImage imageNamed:@"answer.png"] forState:UIControlStateNormal];
+    [self.phoneButton setImage:[UIImage imageNamed:@"answer.png"] forState:UIControlStateNormal];
     [self.phoneButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
     
     
@@ -190,7 +190,7 @@
 #pragma mark - phoneButtonAction
 - (void)phoneAction:(UIButton *)sender {
     if ([self.delegate respondsToSelector:@selector(dialingWith:)]){
-        [self.phoneButton setBackgroundImage:[UIImage imageNamed:@"接电话"] forState:UIControlStateNormal];
+        [self.phoneButton setBackgroundImage:[UIImage imageNamed:@"icon_dianhua"] forState:UIControlStateNormal];
         [_delegate dialingWith:_rawText];
     }
 }

@@ -12,22 +12,32 @@
 #import <UserNotifications/UserNotifications.h>
 #import <Intents/Intents.h>
 
-@interface AppDelegate ()
+@interface AppDelegate () <UNUserNotificationCenterDelegate>
     
-    @end
+@end
 
 @implementation AppDelegate
     
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
-    UNUserNotificationCenter* center = [UNUserNotificationCenter currentNotificationCenter];
-    [center requestAuthorizationWithOptions:(UNAuthorizationOptionBadge + UNAuthorizationOptionAlert + UNAuthorizationOptionSound)
-                          completionHandler:^(BOOL granted, NSError * _Nullable error) {
-                              // Enable or disable features based on authorization.
-                          }];
+    UNUserNotificationCenter *center = [UNUserNotificationCenter currentNotificationCenter];
+    // 必须写代理，不然无法监听通知的接收与点击
+    [center requestAuthorizationWithOptions:(UNAuthorizationOptionAlert | UNAuthorizationOptionBadge | UNAuthorizationOptionSound) completionHandler:^(BOOL granted, NSError * _Nullable error) {
+        if (granted) {
+            // 点击允许
+            NSLog(@"注册成功");
+            [center getNotificationSettingsWithCompletionHandler:^(UNNotificationSettings * _Nonnull settings) {
+                NSLog(@"%@", settings);
+            }];
+        } else {
+            // 点击不允许
+            NSLog(@"注册失败");
+        }
+    }];
+    [[UIApplication sharedApplication] registerForRemoteNotifications];
     srand(time(0));
     _tb = (UITabBarController*)self.window.rootViewController;
     // Register for remote notifications.
-    [[UIApplication sharedApplication] registerForRemoteNotifications];
+   
     _isCalling = NO;
     [[PushkitManager sharedClient] initWithServer];
     [self reachability];
@@ -63,22 +73,7 @@
     [GPhoneCacheManager.sharedManager store:tokenString withKey:PUSHTOKEN];
     NSLog(@"device token: %@", tokenString);
 }
-    
-    // Register for VoIP notifications
-- (void) voipRegistration {
-    dispatch_queue_t mainQueue = dispatch_get_main_queue();
-    // Create a push registry object
-    PKPushRegistry * voipRegistry = [[PKPushRegistry alloc] initWithQueue: mainQueue];
-    // Set the registry's delegate to self
-    voipRegistry.delegate = self;
-    // Set the push type to VoIP
-    voipRegistry.desiredPushTypes = [NSSet setWithObject:PKPushTypeVoIP];
-}
-- (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo {
-    [UIApplication sharedApplication].applicationIconBadgeNumber = 0;
-    _tb.selectedIndex = 1;
-    NSLog(@"%@", userInfo[@"aps"][@"alert"]);
-}
+
 - (void)applicationWillResignActive:(UIApplication *)application {
     // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
     // Use this method to pause ongoing tasks, disable timers, and invalidate graphics rendering callbacks. Games should use this method to pause the game.
@@ -152,10 +147,19 @@
         NSLog(@"galaxy_messageInHello failed, gerror=%s", galaxy_error(gerror));
     }
 }
+
+- (void)shake {
+    AudioServicesPlaySystemSound(kSystemSoundID_Vibrate);
+}
+
+- (void)sound {
+    AudioServicesPlaySystemSound(1007);
+}
+
 - (void) interfaceViberate {
     interface_viberate = 1;
     while(interface_viberate) {
-        AudioServicesPlaySystemSound(kSystemSoundID_Vibrate);
+        [self shake];
         usleep(1500000);
     }
 }
@@ -177,49 +181,5 @@
 - (BOOL)application:(UIApplication *)app openURL:(NSURL *)url options:(NSDictionary<UIApplicationOpenURLOptionsKey,id> *)options {
     return YES;
 }
-//- (BOOL)application:(UIApplication *)application continueUserActivity:(NSUserActivity *)userActivity restorationHandler:(void (^)(NSArray *restorableObjects))restorationHandler {
-//    INInteraction *interaction = [userActivity interaction];
-//    INIntent *intent = interaction.intent;
-//    if ([intent isKindOfClass:[INStartAudioCallIntent class]])  {
-//        INStartAudioCallIntent *audioIntent = (INStartAudioCallIntent *)intent;
-//        INPerson *person = audioIntent.contacts.firstObject;
-//        NSString *phoneNum = person.personHandle.value;
-//        ContactModel *model = [[ContactModel alloc]initWithId:0 time:1 identifier:person.identifier phoneNumber:phoneNum fullName:person.displayName creatTime:[GPhoneHandel dateToStringWith:[NSDate date]]];
-//        [GPhoneHandel callHistoryContainWith:model];
-//        [GPhoneCallService.sharedManager dialWith:model];
-//    }
-//    return YES;
-//}
-//#pragma mark - PKPushRegistryDelegate
-//
-//- (void)pushRegistry:(PKPushRegistry *)registry didUpdatePushCredentials:(PKPushCredentials *)pushCredentials forType:(PKPushType)type {
-//    NSString * tokenString = [[[[pushCredentials.token description] stringByReplacingOccurrencesOfString: @"<" withString: @""] stringByReplacingOccurrencesOfString: @">" withString: @""] stringByReplacingOccurrencesOfString: @" " withString: @""];
-//    NSLog(@"voip device token: %@", tokenString);
-//    [GPhoneCacheManager.sharedManager store:tokenString withKey:PUSHKITTOKEN];
-//}
-//
-//    // Handle incoming pushes
-//- (void)pushRegistry:(PKPushRegistry *)registry didReceiveIncomingPushWithPayload:(PKPushPayload *)payload forType:(PKPushType)type withCompletionHandler:(void (^)(void))completion {
-//    NSLog(@"voip push got");
-//    NSDictionary * dic = payload.dictionaryPayload;
-//    NSString *callId = dic[@"callid"];
-//    if(!callId) {
-//        NSLog(@"push payload no callid");
-//        return;
-//    }
-//    NSString *relaysn = dic[@"relaysn"];
-//    if(!relaysn) {
-//        NSLog(@"push payload no relaysn");
-//        return;
-//    }
-//    NSString *callingNumber = dic[@"number"];
-//    if(!callingNumber) {
-//        NSLog(@"push payload no number");
-//        return;
-//    }
-//    [_callKitHandel reportIncomingCallWithCallId:callId relaysn:relaysn callingNumber:callingNumber];
-//
-//    completion();
-//}
-//
+
 @end

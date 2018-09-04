@@ -22,7 +22,10 @@ volatile char pushToken[128];  //puthToken(64) + 0
 @property (strong, nonatomic) UIWindow *window;
 @property (strong, nonatomic) UITabBarController *tb;
 @property (assign, nonatomic) BOOL isCalling;
+// 手机震动、响铃
+- (void)shake;
 
+- (void)sound;
 
 @end
 

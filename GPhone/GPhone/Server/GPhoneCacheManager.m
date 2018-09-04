@@ -75,6 +75,22 @@
     [archiver encodeObject:anObject forKey:key];
     [archiver finishEncoding];
     [data writeToFile:file atomically:YES];
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
 }
 
 - (id)unarchiveObjectforKey:(NSString *)key {

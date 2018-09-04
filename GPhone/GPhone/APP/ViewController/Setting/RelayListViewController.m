@@ -72,7 +72,16 @@
 #pragma mark - GPhoneServiceDelegate
 
 -(void)relayStatusWith:(RelayStatusModel *)statusModel {
-    [self.relayArray addObject:statusModel];
+    BOOL contain = NO;
+    for (int i = 0; i < [self.relayArray count] ; i++) {
+        RelayStatusModel *model = self.relayArray[i];
+        if (model.relaySN == statusModel.relaySN && [model.relayName isEqualToString:statusModel.relayName]) {
+            contain = YES;
+        }
+    }
+    if (!contain) {
+        [self.relayArray addObject:statusModel];
+    }
     dispatch_sync(dispatch_get_main_queue(), ^(){
         [_tableView reloadData];
         [self performSelector:@selector(delayMethod) withObject:nil afterDelay:0.1];
@@ -87,8 +96,13 @@
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
+
     __block RelayStatusModel * model = [_relayArray objectAtIndex:indexPath.row];
+    if (model.relaySN == GPhoneConfig.sharedManager.relaySN.integerValue && [model.relayName isEqualToString:GPhoneConfig.sharedManager.relayName]) {
+        return;
+    }
     [GPhoneCallService.sharedManager relayLoginWith:model.relaySN relayName:model.relayName];
+    
     __block RelayListViewController *weakSelf = self;
     GPhoneCallService.sharedManager.loginBlock = ^(BOOL succeed) {
         weakSelf.isUsed = indexPath.row;
@@ -116,6 +130,12 @@
           cell.phoneSignalView.signalStrength = 0;
     }else {
           cell.phoneSignalView.signalStrength = model.signalStrength;
+    }
+    
+    if (model.relaySN == GPhoneConfig.sharedManager.relaySN.integerValue && [model.relayName isEqualToString:GPhoneConfig.sharedManager.relayName]) {
+        cell.usedView.hidden = NO;
+    } else {
+        cell.usedView.hidden = YES;
     }
     return cell;
 }

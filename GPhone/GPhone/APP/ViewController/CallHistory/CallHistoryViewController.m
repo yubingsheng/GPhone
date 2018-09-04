@@ -200,4 +200,7 @@
     // Dispose of any resources that can be recreated.
 }
 
+-(void)touchesEnded:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event {
+    [self.view endEditing:YES];
+}
 @end

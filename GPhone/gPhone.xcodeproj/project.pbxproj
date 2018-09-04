@@ -1021,7 +1021,7 @@
 					};
 				};
 			};
-			buildConfigurationList = B8A466EC1FB186BD007EFB09 /* Build configuration list for PBXProject "GPhone" */;
+			buildConfigurationList = B8A466EC1FB186BD007EFB09 /* Build configuration list for PBXProject "gPhone" */;
 			compatibilityVersion = "Xcode 8.0";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
@@ -1489,7 +1489,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.launchhill.GPhoneTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/GPhone.app/GPhone";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/gPhone.temp_caseinsensitive_rename.app/gPhone.temp_caseinsensitive_rename";
 			};
 			name = Debug;
 		};
@@ -1503,7 +1503,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.launchhill.GPhoneTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/GPhone.app/GPhone";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/gPhone.temp_caseinsensitive_rename.app/gPhone.temp_caseinsensitive_rename";
 			};
 			name = Release;
 		};
@@ -1536,7 +1536,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		B8A466EC1FB186BD007EFB09 /* Build configuration list for PBXProject "GPhone" */ = {
+		B8A466EC1FB186BD007EFB09 /* Build configuration list for PBXProject "gPhone" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				B8A4671B1FB186BD007EFB09 /* Debug */,

@@ -96,7 +96,9 @@ static NotificationManager *instance = nil;
        	 //display.text = @"messageInHello failed";
        	 char gerror[32];
        	 NSLog(@"galaxy_messageInHello failed, gerror=%s", galaxy_error(gerror));
-    	}
+        }
+        [APPDELEGATE shake];
+//        [APPDELEGATE sound];
 	}
 
 	completionHandler(UNNotificationPresentationOptionNone); 
