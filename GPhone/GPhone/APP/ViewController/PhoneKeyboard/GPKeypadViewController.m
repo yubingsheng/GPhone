@@ -25,15 +25,17 @@
     pad.buttons = [JCDialPad defaultButtons];
     pad.delegate = self;
     [self.view addSubview:pad];
-    
-    
+
 }
 
 #pragma mark - JCDialPadDelegate
 -(void)dialingWith:(NSString *)phone {
-     NSLog(@"%@",phone);
-     ContactModel *model = [[ContactModel alloc]initWithId:0 time:1 identifier:@"" phoneNumber:phone fullName:@"" creatTime:[GPhoneHandel dateToStringWith:[NSDate date]]];
-     [GPhoneCallService.sharedManager dialWith:model];
+     NSLog(@"---%@",phone);
+    if(![phone isEqualToString:@""]){
+//        ContactModel *model = [[ContactModel alloc]initWithId:0 time:1 identifier:@"" phoneNumber:phone fullName:@"" creatTime:[GPhoneHandel dateToStringWith:[NSDate date]]];
+//        [GPhoneCallService.sharedManager dialWith:model];
+    }
+
 }
 
 -(void)hangUp {

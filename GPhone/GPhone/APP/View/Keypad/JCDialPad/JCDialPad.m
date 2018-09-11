@@ -190,7 +190,7 @@
 #pragma mark - phoneButtonAction
 - (void)phoneAction:(UIButton *)sender {
     if ([self.delegate respondsToSelector:@selector(dialingWith:)]){
-        [self.phoneButton setBackgroundImage:[UIImage imageNamed:@"icon_dianhua"] forState:UIControlStateNormal];
+//        [self.phoneButton setBackgroundImage:[UIImage imageNamed:@"icon_dianhua"] forState:UIControlStateNormal];
         [_delegate dialingWith:_rawText];
     }
 }
