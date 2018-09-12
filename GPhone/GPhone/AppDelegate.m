@@ -36,13 +36,29 @@
     [[UIApplication sharedApplication] registerForRemoteNotifications];
     srand(time(0));
     _tb = (UITabBarController*)self.window.rootViewController;
-    // Register for remote notifications.
-   
     _isCalling = NO;
     [[PushkitManager sharedClient] initWithServer];
     [self reachability];
     [[NotificationManager sharedClient] initWithServer];
+    [self checkAPPVersion];
+    [GPhoneContactManager.sharedManager updateAllContact];
     return YES;
+}
+- (void)checkAPPVersion {
+    NSString *lastVersion = [[NSUserDefaults standardUserDefaults] valueForKey:@"appversion"];
+    NSDictionary *infoDictionary = [[NSBundle mainBundle] infoDictionary];
+    CFShow((__bridge CFTypeRef)(infoDictionary));
+    // app版本
+    NSString *app_Version = [infoDictionary objectForKey:@"CFBundleShortVersionString"];
+    app_Version = [app_Version stringByReplacingOccurrencesOfString:@"." withString:@""];
+    if (lastVersion) {
+        if (app_Version.integerValue != lastVersion.integerValue) {
+            [GPhoneCacheManager.sharedManager clearAllUserDefaultsData];
+            [GPhoneCacheManager.sharedManager store:app_Version withKey:@"appversion"];
+        }
+    }else {
+        [GPhoneCacheManager.sharedManager store: app_Version withKey:@"appversion"];
+    }
 }
 - (GPhoneCallController *)callController {
     if (!_callController) {

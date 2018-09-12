@@ -15,7 +15,9 @@
 + (NSMutableArray *)callHistoryContainWith:(ContactModel *)contactModel {
     BOOL contain = NO;
     if (contactModel.fullName.length == 0) {
-        contactModel.fullName = contactModel.phoneNumber;
+        if ([GPhoneContactManager checkPhone:contactModel.phoneNumber]) {
+            contactModel.fullName = [GPhoneContactManager.sharedManager getContactInfoWith:contactModel.phoneNumber];
+        }
     }
     contactModel.relaySN = GPhoneConfig.sharedManager.relaySN;
     contactModel.relayName = GPhoneConfig.sharedManager.relayName;
@@ -41,7 +43,9 @@
 + (NSMutableArray *)messageHistoryContainWith:(ContactModel *)contactModel {
     BOOL contain = NO;
     if (contactModel.fullName.length == 0) {
-        contactModel.fullName = contactModel.phoneNumber;
+        if ([GPhoneContactManager checkPhone:contactModel.phoneNumber]) {
+            contactModel.fullName = [GPhoneContactManager.sharedManager getContactInfoWith:contactModel.phoneNumber];
+        }
     }
     contactModel.relaySN = GPhoneConfig.sharedManager.relaySN;
     contactModel.relayName = GPhoneConfig.sharedManager.relayName;
@@ -69,7 +73,9 @@
      BOOL contain = NO;
      NSMutableArray * history =  [NSMutableArray arrayWithArray:GPhoneConfig.sharedManager.messageArray];
     if (contactModel.fullName.length == 0) {
-        contactModel.fullName = contactModel.phoneNumber;
+        if ([GPhoneContactManager checkPhone:contactModel.phoneNumber]) {
+            contactModel.fullName = [GPhoneContactManager.sharedManager getContactInfoWith:contactModel.phoneNumber];
+        }
     }
     for (NSInteger i = 0; i < history.count; i++) {
         ContactModel * tmpContact = history[i];

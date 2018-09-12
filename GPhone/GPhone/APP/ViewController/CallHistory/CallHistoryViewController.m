@@ -23,7 +23,7 @@
 
 - (void)viewWillAppear:(BOOL)animated {
     [super  viewWillAppear:animated];
-    [self reload];
+    [self checkRelay];
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(reload) name:@"reload" object:nil];
 }
 -(void)viewDidDisappear:(BOOL)animated {
@@ -41,39 +41,36 @@
     _tableView.dataSource = self;
     _tableView.tableFooterView = [UIView new];
     [_segmentedControl addTarget:self action:@selector(indexDidChangeForSegmentedControl:) forControlEvents:UIControlEventValueChanged];
-    [self requestAuthorizationForAddressBook];
     GPhoneCallService.sharedManager.delegate = self;
     [GPhoneCallService.sharedManager versionCheck];
+}
+
+- (void)checkRelay {
     if (!GPhoneConfig.sharedManager.relaySN) {
         GMobileTextFieldViewController *alert = [[GMobileTextFieldViewController alloc]initWithNibName:@"GMobileTextFieldViewController" bundle:nil];
         alert.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
         alert.modalPresentationStyle= UIModalPresentationCustom;
+        __weak typeof(self) weakSelf = self;
         alert.comfireBlock = ^(NSString *sn, NSString *name){
             NSNumber *relaySN = [NSNumber numberWithInteger:sn.integerValue];
             [GPhoneCallService.sharedManager relayLoginWith:[relaySN unsignedIntValue] relayName:name];
+            GPhoneCallService.sharedManager.addRelayBlock = ^(BOOL success) {
+                dispatch_sync(dispatch_get_main_queue(), ^(){
+                    [weakSelf reload];
+                });
+            };
         };
         [self.navigationController presentViewController:alert animated:YES completion:nil];
         //0x11223344 287454020
     }else {
+        [self reload];
+        
         //        NSNumber *relaySN = [NSNumber numberWithInteger:[GPhoneConfig.sharedManager relaySN].integerValue];
         //        NSLog(@"relaySn：%@ name: %@",relaySN,[GPhoneConfig.sharedManager relayName]);
         //        [GPhoneCallService.sharedManager relayLoginWith:[relaySN unsignedIntValue] relayName:[GPhoneConfig.sharedManager relayName]];
     }
 }
 
-- (void)requestAuthorizationForAddressBook {
-    CNAuthorizationStatus authorizationStatus = [CNContactStore authorizationStatusForEntityType:CNEntityTypeContacts];
-    if (authorizationStatus == CNAuthorizationStatusNotDetermined) {
-        CNContactStore *contactStore = [[CNContactStore alloc] init];
-        [contactStore requestAccessForEntityType:CNEntityTypeContacts completionHandler:^(BOOL granted, NSError * _Nullable error) {
-            if (granted) {
-                NSLog(@"通讯录已授权");
-            } else {
-                NSLog(@"授权失败, error=%@", error);
-            }
-        }];
-    }
-}
 - (void)dialingWith:(ContactModel *)contact {
     UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"拨号" message:[NSString stringWithFormat:@"呼叫：%@ \n %@",contact.fullName,contact.phoneNumber] preferredStyle:UIAlertControllerStyleAlert];
     __weak CallHistoryViewController * weakSelf = self;
@@ -81,19 +78,19 @@
     [alert addAction:[UIAlertAction actionWithTitle:@"拨打" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
         [GPhoneCallService.sharedManager dialWith: contact];
         GPhoneCallService.sharedManager.relayStatusBlock = ^(BOOL succeed) {
-           
-                UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"提示" message:[NSString stringWithFormat:@"gMobil'%@'已下线，需要重新登录",GPhoneConfig.sharedManager.relayName] preferredStyle:UIAlertControllerStyleAlert];
-                [alert addAction:[UIAlertAction actionWithTitle:@"登录" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-                    NSNumber *relaySN = [NSNumber numberWithInteger:GPhoneConfig.sharedManager.relaySN.integerValue];
-                    [GPhoneCallService.sharedManager relayLoginWith:[relaySN unsignedIntValue] relayName:GPhoneConfig.sharedManager.relayName];
-                    [weakSelf dialingWith:tmpContact];
-                    [weakSelf viewWillAppear:NO];
-                    [weakSelf dismissViewControllerAnimated:YES completion:nil];
-                }]];
-                [alert addAction:[UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
-                    [weakSelf dismissViewControllerAnimated:YES completion:nil];
-                }]];
-                [weakSelf.navigationController presentViewController:alert animated:YES completion:nil];
+            
+            UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"提示" message:[NSString stringWithFormat:@"gMobil'%@'已下线，需要重新登录",GPhoneConfig.sharedManager.relayName] preferredStyle:UIAlertControllerStyleAlert];
+            [alert addAction:[UIAlertAction actionWithTitle:@"登录" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+                NSNumber *relaySN = [NSNumber numberWithInteger:GPhoneConfig.sharedManager.relaySN.integerValue];
+                [GPhoneCallService.sharedManager relayLoginWith:[relaySN unsignedIntValue] relayName:GPhoneConfig.sharedManager.relayName];
+                [weakSelf dialingWith:tmpContact];
+                [weakSelf viewWillAppear:NO];
+                [weakSelf dismissViewControllerAnimated:YES completion:nil];
+            }]];
+            [alert addAction:[UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+                [weakSelf dismissViewControllerAnimated:YES completion:nil];
+            }]];
+            [weakSelf.navigationController presentViewController:alert animated:YES completion:nil];
             
         };
         [self dismissViewControllerAnimated:YES completion:nil];
@@ -114,7 +111,7 @@
             _segmentedControl.selectedSegmentIndex = 0;
         }];
     }else {
-
+        
     }
 }
 #pragma mark - CNContactViewControllerDelegate

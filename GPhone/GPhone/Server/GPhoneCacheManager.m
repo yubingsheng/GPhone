@@ -33,6 +33,14 @@
     }
     return self;
 }
+- (void)clearAllUserDefaultsData {
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    NSDictionary *dic = [userDefaults dictionaryRepresentation];
+    for (id  key in dic) {
+        [userDefaults removeObjectForKey:key];
+    }
+    [userDefaults synchronize];
+}
 
 - (id)restoreWithkey:(NSString *)key{
     return [[NSUserDefaults standardUserDefaults] valueForKey:key];

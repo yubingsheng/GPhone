@@ -12,6 +12,7 @@
 #import "RelayStatusModel.h"
 
 typedef void (^RequestStatusBlock)(BOOL succeed); //普通block
+typedef void(^RequestErrorStatusBlook)(NSInteger errorCode);
 
 @protocol GPhoneCallServiceDelegate<NSObject>
 @optional
@@ -30,7 +31,7 @@ typedef void (^RequestStatusBlock)(BOOL succeed); //普通block
 @property (copy, nonatomic) RequestStatusBlock loginBlock;
 @property (copy, nonatomic) RequestStatusBlock relayStatusBlock;
 @property (copy, nonatomic) RequestStatusBlock addRelayBlock;
-
+@property (copy, nonatomic) RequestErrorStatusBlook addRelayFailedBlock;
 +(GPhoneCallService *)sharedManager;
 
 /*

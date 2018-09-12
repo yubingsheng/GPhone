@@ -22,6 +22,7 @@
 #define PUSHTOKEN @"pushToken"
 #define AUTHCODE @"authCode"
 #define MESSAGECOUNT @"messsagecount"
+#define CONTACTS @"contact"
 
 #pragma mark - APPCnfig
 @property (strong, nonatomic) NSString *relaySN;

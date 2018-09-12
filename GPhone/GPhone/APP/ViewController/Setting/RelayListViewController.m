@@ -10,6 +10,7 @@
 #import "RelayStatusModel.h"
 #import "GPhoneCallService.h"
 #import "RelayListTableViewCell.h"
+#import <MJRefresh.h>
 
 @interface RelayListViewController ()<GPhoneCallServiceDelegate,UITableViewDelegate,UITableViewDataSource>
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
@@ -30,7 +31,11 @@
     _gphoneCallService.delegate = self;
     UIBarButtonItem *bar = [[UIBarButtonItem alloc] initWithTitle:@"添加" style:UIBarButtonItemStylePlain target:self action:@selector(addRelay)];
     self.navigationItem.rightBarButtonItem = bar;
-    [self reloadRelaysStatus];
+    _tableView.mj_header = [MJRefreshNormalHeader headerWithRefreshingBlock:^{
+        [self.relayArray removeAllObjects];
+        [self reloadRelaysStatus];
+    }];
+    [_tableView.mj_header beginRefreshing];
     // Do any additional setup after loading the view from its nib.
 }
 
@@ -45,18 +50,29 @@
     GMobileTextFieldViewController *alert = [[GMobileTextFieldViewController alloc]initWithNibName:@"GMobileTextFieldViewController" bundle:nil];
     alert.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
     alert.modalPresentationStyle= UIModalPresentationCustom;
-    __block RelayListViewController *vc = self;
+    __weak RelayListViewController *vc = self;
     alert.comfireBlock = ^(NSString *sn, NSString *name){
+        
         NSNumber *relaySN = [NSNumber numberWithInteger:sn.integerValue];
+        if (relaySN.integerValue == GPhoneConfig.sharedManager.relaySN.integerValue) {
+            [vc showToastWith:@"该gPhone已存在，请勿重复添加"];
+            return ;
+        }
         [GPhoneCallService.sharedManager relayLoginWith:[relaySN unsignedIntValue] relayName:name];
         GPhoneCallService.sharedManager.addRelayBlock = ^(BOOL success){
             [vc reloadRelaysStatus];
+        };
+        GPhoneCallService.sharedManager.addRelayFailedBlock = ^(NSInteger errorCode) {
+          UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"提示" message:@"gMobile不在线"  preferredStyle:UIAlertControllerStyleAlert];
+            [alert addAction:[UIAlertAction actionWithTitle:@"确认" style:UIAlertActionStyleDefault handler:nil]];
+            [vc.navigationController presentViewController:alert animated:YES completion:nil];
         };
     };
     [self.navigationController presentViewController:alert animated:YES completion:nil];
 }
 
 - (void)delayMethod {
+    [_tableView.mj_header endRefreshing];
     [_tableView reloadData];
 }
 
@@ -99,7 +115,7 @@
 
     __block RelayStatusModel * model = [_relayArray objectAtIndex:indexPath.row];
     if (model.relaySN == GPhoneConfig.sharedManager.relaySN.integerValue && [model.relayName isEqualToString:GPhoneConfig.sharedManager.relayName]) {
-        return;
+        
     }
     [GPhoneCallService.sharedManager relayLoginWith:model.relaySN relayName:model.relayName];
     
@@ -154,6 +170,10 @@
     if (editingStyle == UITableViewCellEditingStyleDelete) {
         [_relayArray removeObjectAtIndex:indexPath.row];
         NSMutableArray *tmpArray = [NSMutableArray arrayWithArray: GPhoneConfig.sharedManager.relaysNArray];
+         RelayStatusModel * model = [_relayArray objectAtIndex:indexPath.row];
+        if (model.relaySN == GPhoneConfig.sharedManager.relaySN.integerValue && [model.relayName isEqualToString:GPhoneConfig.sharedManager.relayName])  {
+            GPhoneConfig.sharedManager.relaySN = nil;
+        }
         [tmpArray removeObjectAtIndex:indexPath.row];
         GPhoneConfig.sharedManager.relaysNArray = tmpArray;
         [_tableView reloadData];

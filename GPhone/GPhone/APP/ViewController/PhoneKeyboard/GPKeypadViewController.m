@@ -9,7 +9,7 @@
 #import "GPKeypadViewController.h"
 
 @interface GPKeypadViewController ()<JCDialPadDelegate>
-
+@property (strong,nonatomic) JCDialPad *pad;
 @end
 
 @implementation GPKeypadViewController
@@ -19,25 +19,31 @@
     // Do any additional setup after loading the view.
 //    [self.view setBackgroundColor:[UIColor yellowColor]];
     
-    JCDialPad *pad = [[JCDialPad alloc] initWithFrame:self.view.bounds];
+    _pad = [[JCDialPad alloc] initWithFrame:self.view.bounds];
 //    [pad setBackgroundColor:[UIColor lightGrayColor]];
-    pad.formatTextToPhoneNumber = YES;
-    pad.buttons = [JCDialPad defaultButtons];
-    pad.delegate = self;
-    [self.view addSubview:pad];
+    _pad.formatTextToPhoneNumber = YES;
+    _pad.buttons = [JCDialPad defaultButtons];
+    _pad.delegate = self;
+    [self.view addSubview:_pad];
 
 }
 
 #pragma mark - JCDialPadDelegate
 -(void)dialingWith:(NSString *)phone {
-     NSLog(@"---%@",phone);
     if(![phone isEqualToString:@""]){
-//        ContactModel *model = [[ContactModel alloc]initWithId:0 time:1 identifier:@"" phoneNumber:phone fullName:@"" creatTime:[GPhoneHandel dateToStringWith:[NSDate date]]];
-//        [GPhoneCallService.sharedManager dialWith:model];
+        ContactModel *model = [[ContactModel alloc]initWithId:0 time:1 identifier:@"" phoneNumber:phone fullName:_pad.nameLabel.text creatTime:[GPhoneHandel dateToStringWith:[NSDate date]]];
+        [GPhoneCallService.sharedManager dialWith:model];
     }
 
 }
-
+- (BOOL)dialPad:(JCDialPad *)dialPad shouldInsertText:(NSString *)text forButtonPress:(JCPadButton *)button {
+    if ([GPhoneContactManager checkPhone:dialPad.rawText]) {
+        _pad.nameLabel.text = [GPhoneContactManager.sharedManager getContactInfoWith:dialPad.rawText];
+    }else {
+        _pad.nameLabel.text = @"";
+    }
+    return YES;
+}
 -(void)hangUp {
     [GPhoneCallService.sharedManager hangup];
 }

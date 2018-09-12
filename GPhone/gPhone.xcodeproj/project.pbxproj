@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		9AA8BF372149504E00CC634F /* GPhoneContactManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 9AA8BF362149504E00CC634F /* GPhoneContactManager.m */; };
+		9AA8BF3A2149541B00CC634F /* GPhoneContactModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 9AA8BF392149541B00CC634F /* GPhoneContactModel.m */; };
 		B820A0BD2019C8940061445D /* RelayListTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B820A0BB2019C8940061445D /* RelayListTableViewCell.m */; };
 		B820A0BE2019C8940061445D /* RelayListTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = B820A0BC2019C8940061445D /* RelayListTableViewCell.xib */; };
 		B84260D620999664004A5D46 /* GMobileTextFieldViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B84260D420999664004A5D46 /* GMobileTextFieldViewController.m */; };
@@ -186,6 +188,10 @@
 
 /* Begin PBXFileReference section */
 		3A1E102A4EBCB0663EB476DD /* Pods-GPhone.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GPhone.debug.xcconfig"; path = "Pods/Target Support Files/Pods-GPhone/Pods-GPhone.debug.xcconfig"; sourceTree = "<group>"; };
+		9AA8BF352149504E00CC634F /* GPhoneContactManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GPhoneContactManager.h; sourceTree = "<group>"; };
+		9AA8BF362149504E00CC634F /* GPhoneContactManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GPhoneContactManager.m; sourceTree = "<group>"; };
+		9AA8BF382149541B00CC634F /* GPhoneContactModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GPhoneContactModel.h; sourceTree = "<group>"; };
+		9AA8BF392149541B00CC634F /* GPhoneContactModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GPhoneContactModel.m; sourceTree = "<group>"; };
 		B820A0BA2019C8940061445D /* RelayListTableViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RelayListTableViewCell.h; sourceTree = "<group>"; };
 		B820A0BB2019C8940061445D /* RelayListTableViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RelayListTableViewCell.m; sourceTree = "<group>"; };
 		B820A0BC2019C8940061445D /* RelayListTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = RelayListTableViewCell.xib; sourceTree = "<group>"; };
@@ -510,6 +516,8 @@
 				B8F17EFB1FC7ED780015B376 /* GPhoneCallService.m */,
 				B880E4771FEB8E09002625CF /* GPhoneCacheManager.h */,
 				B880E4781FEB8E09002625CF /* GPhoneCacheManager.m */,
+				9AA8BF352149504E00CC634F /* GPhoneContactManager.h */,
+				9AA8BF362149504E00CC634F /* GPhoneContactManager.m */,
 			);
 			path = Server;
 			sourceTree = "<group>";
@@ -596,6 +604,8 @@
 				B8B155C9201B12910018EE22 /* ContactModel.m */,
 				B8E3DFC7202D904500B6A1B1 /* RelayModel.h */,
 				B8E3DFC8202D904500B6A1B1 /* RelayModel.m */,
+				9AA8BF382149541B00CC634F /* GPhoneContactModel.h */,
+				9AA8BF392149541B00CC634F /* GPhoneContactModel.m */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -1217,6 +1227,7 @@
 				B8F17F831FC8015D0015B376 /* UIView+AnimationOptionsForCurve.m in Sources */,
 				D6C3FAD01FFFBA6F00E2EDEB /* RTCButton.m in Sources */,
 				B880E4761FEB887C002625CF /* GPhoneBaseModel.m in Sources */,
+				9AA8BF372149504E00CC634F /* GPhoneContactManager.m in Sources */,
 				D6EC68261FEF5C6A006A07F0 /* CallHistoryCell.m in Sources */,
 				B8C39F3720186C9600040A75 /* RelayListViewController.m in Sources */,
 				B8F17F4A1FC8015D0015B376 /* JSBubbleMessageCell.m in Sources */,
@@ -1245,6 +1256,7 @@
 				B8F17F821FC8015D0015B376 /* UIImage+JSMessagesView.m in Sources */,
 				FCBB17311FDA89A100639D3E /* JCPadButton.m in Sources */,
 				B8A466F61FB186BD007EFB09 /* AppDelegate.m in Sources */,
+				9AA8BF3A2149541B00CC634F /* GPhoneContactModel.m in Sources */,
 				B8E3DFC9202D904500B6A1B1 /* RelayModel.m in Sources */,
 				B8B155C7201B0F4A0018EE22 /* GPhoneHandel.m in Sources */,
 			);

@@ -36,6 +36,7 @@
 @property (weak, nonatomic) id<JCDialPadDelegate> delegate;
 @property (assign, nonatomic) BOOL isDialing;
 @property (assign, nonatomic) BOOL isTint;
+@property (nonatomic, strong) UILabel *nameLabel;
 /**
  Standard cell phone buttons: 0-9, # and * buttons
  */

@@ -25,6 +25,7 @@ DEPENDENCIES:
   - LJContactManager (~> 1.0.5)
   - MBProgressHUD (~> 1.0.0)
   - MJRefresh (~> 3.1.15.3)
+  - MJRefresh (~> 3.1.15.6)
 
 SPEC REPOS:
   https://github.com/cocoapods/specs.git:
@@ -41,6 +42,6 @@ SPEC CHECKSUMS:
   MBProgressHUD: 4890f671c94e8a0f3cf959aa731e9de2f036d71a
   MJRefresh: 0efa19656679d70a0f47cbe76e56c2271fe53a97
 
-PODFILE CHECKSUM: f71b9fa6d3221a37a0efd4678a92d5747267c10a
+PODFILE CHECKSUM: 710d2e36e01524e139c7a6c05f4c69a6fff9c511
 
 COCOAPODS: 1.5.3

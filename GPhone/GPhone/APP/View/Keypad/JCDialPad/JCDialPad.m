@@ -18,6 +18,7 @@
 
 @property (nonatomic, strong) UIView* contentView;
 @property (nonatomic, strong) UIView* backgroundBlurringView;
+
 //@property (nonatomic, strong) NBAsYouTypeFormatter *numFormatter;
 
 @end
@@ -89,9 +90,13 @@
     //    self.digitsTextField.textColor = [self.mainColor colorWithAlphaComponent:0.9];
     self.digitsTextField.textColor = [UIColor blackColor];
     
+    _nameLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, _digitsTextField.height + _digitsTextField.y +10, self.width, 20)];
+    _nameLabel.textAlignment = NSTextAlignmentCenter;
+    _nameLabel.font = [UIFont boldSystemFontOfSize:17.0];
+    
     self.formatTextToPhoneNumber = YES;
     self.rawText = @"";
-    _isDialing = YES;
+    _isDialing = NO;
 }
 
 #pragma mark -
@@ -179,9 +184,9 @@
         JCPadButton *button = (JCPadButton *)sender;
         
         if (button.tag <= 11) {
-            if (![self.delegate respondsToSelector:@selector(dialPad:shouldInsertText:forButtonPress:)] ||
-                [self.delegate dialPad:self shouldInsertText:button.input forButtonPress:button]) {
-                [self appendText:button.input];
+            if ([self.delegate respondsToSelector:@selector(dialPad:shouldInsertText:forButtonPress:)] ) {
+                 [self appendText:button.input];
+                [self.delegate dialPad:self shouldInsertText:button.input forButtonPress:button];
             }
         }
     }
@@ -189,10 +194,14 @@
 
 #pragma mark - phoneButtonAction
 - (void)phoneAction:(UIButton *)sender {
-    if ([self.delegate respondsToSelector:@selector(dialingWith:)]){
-//        [self.phoneButton setBackgroundImage:[UIImage imageNamed:@"icon_dianhua"] forState:UIControlStateNormal];
-        [_delegate dialingWith:_rawText];
+    if (_isDialing) {
+        [GPhoneCallService.sharedManager hangUp];
+    }else {
+        if ([self.delegate respondsToSelector:@selector(dialingWith:)]){
+            [_delegate dialingWith:_rawText];
+        }
     }
+    _isDialing = !_isDialing;
 }
 
 
@@ -235,9 +244,8 @@
 
 - (void)didTapDeleteButton:(UIButton *)sender
 {
-    if (!self.rawText.length)
-        return;
-    
+    if (!self.rawText.length) return;
+    NSString *outputStr = [_rawText substringFromIndex:_rawText.length -1];
     _rawText = [self.rawText substringToIndex:self.rawText.length - 1];
     NSString *formatted = self.rawText;
     //    if (self.formatTextToPhoneNumber) {
@@ -248,6 +256,7 @@
     if (!self.rawText.length) {
         [self toggleDeleteButtonVisible:NO animated:YES];
     }
+    [self.delegate dialPad:self shouldInsertText:outputStr forButtonPress:sender];
 }
 
 - (void)didHoldDeleteButton:(UIGestureRecognizer *)holdRec
@@ -276,9 +285,11 @@
     }
     
     CGFloat textFieldWidth = 250;
-    self.digitsTextField.frame = CGRectMake((self.correctWidth / 2.0) - (textFieldWidth / 2.0), top, textFieldWidth, 40);
+    self.digitsTextField.frame = CGRectMake((self.correctWidth / 2.0) - (textFieldWidth / 2.0)+5, top, textFieldWidth, 40);
+    _nameLabel.frame = CGRectMake(0, top +40 +10 , self.contentView.width, 20);
     if (!_isTint) {
         [self.contentView addSubview:self.digitsTextField];
+        [self.contentView addSubview:_nameLabel];
     }
     [self.phoneButton addSubview:self.deleteButton];
     [self.contentView addSubview:self.deleteButton];

@@ -13,6 +13,7 @@
 - (id)restoreWithkey:(NSString *)key;
 - (void)store:(id)object withKey:(NSString *)key;
 - (void)cleanWithKey:(NSString *)key;
+- (void)clearAllUserDefaultsData;
 #pragma mark - 归档解挡
 - (id)unarchiveObjectforKey:(NSString *)key;
 - (void)archiveObject:(id)anObject forKey:(NSString *)key;

@@ -5,4 +5,5 @@ target 'GPhone' do
     pod 'MJRefresh', '~> 3.1.15.3'
     pod 'iToast’, '~> 0.0.1'
     pod 'LJContactManager', '~> 1.0.5'
+    pod 'MJRefresh', '~> 3.1.15.6'
 end

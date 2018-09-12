@@ -284,7 +284,7 @@ static void CallInReleased_Callback(void *inUserData, int errorCode) {
                 _relayStatusBlock(NO);
                 
             }});
-        }
+    }
     //实际应用中，要停止callInAlerting和callInAnswer重发定时器
     //[appDelegate.providerDelegate.provider reportCallWithUUID:appDelegate.providerDelegate.inCallUUID endedAtDate:nil reason:CXCallEndedReasonRemoteEnded];
     NSString *result;
@@ -359,7 +359,11 @@ static void RelayLoginRsp_Callback(void *inUserData, int seqId, unsigned int rel
         result = [NSString stringWithFormat:@"%@添加成功!",relayName];
     }
     else if(errorCode == 3) result = @"gMobile登录失败，请先弹出SIM卡再重新尝试登陆";
-    else if(errorCode == 4) result = @"gMobile登录失败，gMobile不在线";
+    else if(errorCode == 4) {
+        if (_addRelayFailedBlock) {
+            _addRelayFailedBlock(errorCode);
+        } 
+    }
     else result = [NSString stringWithFormat: @"relay login failed with error code %d", errorCode];
     [self hiddenWith: result];
 }
@@ -418,16 +422,16 @@ static void CallAlerting_Callback(void *inUserData) {
 }
 
 static void CallAnswer_Callback(void *inUserData) {
-    [STRONGSELF handleCallAnswerCallBack];
+    dispatch_sync(dispatch_get_main_queue(), ^(){
+        [STRONGSELF handleCallAnswerCallBack];
+    });
 }
 
 - (void) handleCallAnswerCallBack {
     [timerCallInAlerting invalidate];
-    dispatch_sync(dispatch_get_main_queue(), ^(){
-      [APPDELEGATE shake];
-        });
-    
+    [APPDELEGATE shake];
     [_callingView connected];
+
 }
 
 static void CallReleased_Callback(void *inUserData, int errorCode) {
