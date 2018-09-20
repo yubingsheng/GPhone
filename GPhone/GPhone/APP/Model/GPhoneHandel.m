@@ -10,6 +10,24 @@
 
 @implementation GPhoneHandel
 
+#pragma mark - 匹配通讯录
++ (void) updateHistory {
+    NSMutableArray * callHistoryArray =  [NSMutableArray arrayWithArray:GPhoneConfig.sharedManager.callHistoryArray];
+    for (NSInteger i = 0; i < callHistoryArray.count; i++) {
+        ContactModel * tmpContact = callHistoryArray[i];
+        NSString *name =  [GPhoneContactManager.sharedManager getContactInfoWith:tmpContact.phoneNumber];
+        tmpContact.fullName =  name.length == 0 ? tmpContact.phoneNumber : name;
+    }
+    NSMutableArray * messageHistory =  [NSMutableArray arrayWithArray:GPhoneConfig.sharedManager.messageArray];
+    for (NSInteger i = 0; i < messageHistory.count; i++) {
+        ContactModel * tmpContact = messageHistory[i];
+        NSString *name =  [GPhoneContactManager.sharedManager getContactInfoWith:tmpContact.phoneNumber];
+        tmpContact.fullName =  name.length == 0 ? tmpContact.phoneNumber : name;
+    }
+    GPhoneConfig.sharedManager.callHistoryArray =  callHistoryArray;
+    GPhoneConfig.sharedManager.messageArray = messageHistory;
+   [[NSNotificationCenter defaultCenter] postNotificationName:@"reload" object:nil];
+}
 #pragma mark - Handel
 
 + (NSMutableArray *)callHistoryContainWith:(ContactModel *)contactModel {

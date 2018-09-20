@@ -33,6 +33,7 @@
                 }
                 [personArray addObject:contactModel];
             }
+            [GPhoneHandel updateHistory];
             [GPhoneCacheManager.sharedManager archiveObject:personArray forKey:CONTACTS];
         }];
     });
@@ -40,7 +41,7 @@
 
 - (NSString *) getContactInfoWith:(NSString*)phoneNumber {
     NSArray *personArray = [GPhoneCacheManager.sharedManager unarchiveObjectforKey:CONTACTS];
-    NSString *name = phoneNumber;
+    NSString *name = @"";
     for (NSInteger i = 0; i< personArray.count; i++) {
         GPhoneContactModel *contactModel = personArray[i];
         BOOL isContain = NO;

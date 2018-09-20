@@ -100,6 +100,7 @@
     galaxy_io_pause();
     [GPhoneCacheManager.sharedManager archiveObject:GPhoneConfig.sharedManager.callHistoryArray forKey:CALLHISTORY];
     [GPhoneCacheManager.sharedManager archiveObject:GPhoneConfig.sharedManager.messageArray forKey:MESSAGES];
+    [self setProximityMonitoringWiht:NO];
 }
     
 - (void)applicationWillEnterForeground:(UIApplication *)application {
@@ -157,13 +158,14 @@
     
     //实际应用中，galaxy_messageInHello必须按照API文档的说明，使用定时器重发
     int seqId = rand();
-    if(!galaxy_messageInHello(seqId, relaySN)) {
+    if(!galaxy_messageInHello(seqId, _relaySN)) {
         //display.text = @"messageInHello failed";
         char gerror[32];
         NSLog(@"galaxy_messageInHello failed, gerror=%s", galaxy_error(gerror));
     }
+    [GPhoneContactManager.sharedManager updateAllContact];
 }
-
+#pragma mark - 响铃相关
 - (void)shake {
     AudioServicesPlaySystemSound(kSystemSoundID_Vibrate);
 }
@@ -179,7 +181,29 @@
         usleep(1500000);
     }
 }
+#pragma mark - 进入前台相关配置
+- (void)updateHistoryInfoWithContact {
     
+}
+
+#pragma mark - 距离传感器设置
+- (void) setProximityMonitoringWiht:(BOOL)open  {
+    UIDevice *_curDevice = [UIDevice currentDevice];
+    [_curDevice setProximityMonitoringEnabled:open];
+    NSNotificationCenter *_defaultCenter = [NSNotificationCenter defaultCenter];
+    [_defaultCenter addObserverForName:UIDeviceProximityStateDidChangeNotification
+                                object:nil
+                                 queue:[NSOperationQueue mainQueue]
+                            usingBlock:^(NSNotification *note) {
+                                if (_curDevice.proximityState == YES) {
+                                    NSLog(@"怕是黑屏了吧");
+                                }
+                                else {
+                                    NSLog(@"屏幕应该亮了");
+                                }
+                            }];
+}
+
 - (void)applicationDidBecomeActive:(UIApplication *)application {
     // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
     int seqId = rand();

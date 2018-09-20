@@ -44,7 +44,7 @@
     return gPhoneCallService;
 }
 - (void)initProperty {
-    relaySN = [[NSNumber numberWithInteger:[GPhoneConfig.sharedManager relaySN].integerValue] unsignedIntValue];
+    _relaySN = [[NSNumber numberWithInteger:[GPhoneConfig.sharedManager relaySN].integerValue] unsignedIntValue];
     relayName = GPhoneConfig.sharedManager.relayName;
     memcpy(authCode_nonce, [GPhoneConfig.sharedManager.authCode cStringUsingEncoding:NSASCIIStringEncoding], GPhoneConfig.sharedManager.authCode.length * 2);
 }
@@ -82,7 +82,7 @@
 #pragma mark - API
 - (void) relayLoginWith:(unsigned int)relay relayName:(NSString*)name {
     [self showWith:@""];
-    relaySN = relay;
+    _relaySN = relay;
     relayName = name;
     int seqId = rand();
     int a = rand();
@@ -94,11 +94,11 @@
     memcpy(pushTokenVoIP, [GPhoneConfig.sharedManager.pushKitToken cStringUsingEncoding:NSASCIIStringEncoding], 2*[GPhoneConfig.sharedManager.pushKitToken length]);
     memcpy(pushToken, [GPhoneConfig.sharedManager.pushToken cStringUsingEncoding:NSASCIIStringEncoding], 2*[GPhoneConfig.sharedManager.pushToken length]);
     //    strcpy(pushTokenVoIP, pushToken); //实际应用中，由Apple分配，并保存在flash中。
-    galaxy_relayLoginReq(seqId, relaySN, [relayName UTF8String], 1, pushToken, pushTokenVoIP, authCode_nonce);
+    galaxy_relayLoginReq(seqId, _relaySN, [relayName UTF8String], 1, pushToken, pushTokenVoIP, authCode_nonce);
 }
 
 - (void)sessionInviteWith:(NSString*)phoneNumber {
-    if(!galaxy_sessionInvite(phoneNumber.UTF8String, 0, 0, 0, relaySN)) {
+    if(!galaxy_sessionInvite(phoneNumber.UTF8String, 0, 0, 0, _relaySN)) {
         char gerror[32];
         NSLog(@"galaxy_sessionInvite failed, gerror=%s", galaxy_error(gerror));
         [self showToastWith:[NSString stringWithFormat:@"galaxy_sessionInvite failed, gerror=%s", galaxy_error(gerror)]];
@@ -114,9 +114,11 @@
 }
 
 - (void)dialWith:(ContactModel *)contactModel {
+  
     _currentContactModel = contactModel;
     _currentContactModel.phoneNumber = [contactModel.phoneNumber stringByReplacingOccurrencesOfString:@"-" withString:@""];
     [self callingViewWithCallType:NO];
+    [APPDELEGATE setProximityMonitoringWiht:YES];
 }
 
 - (void)dialWith_dtmf:(NSString *)number {
@@ -137,6 +139,7 @@
     }else {
         [timerCallSetup invalidate];
         [timerSessionInvite invalidate];
+        [APPDELEGATE setProximityMonitoringWiht:NO];
         interface_viberate = 0;
         //        [APPDELEGATE.callController endCall];
         //        [UIDevice currentDevice].proximityMonitoringEnabled = NO;
@@ -150,7 +153,7 @@
         messageModel = text;
     }
     msgRepetition ++;
-    if(!galaxy_messageNonceReq(messageId,  relaySN)) {
+    if(!galaxy_messageNonceReq(messageId,  _relaySN)) {
         char gerror[32];
         NSLog(@"galaxy_messageNonceReq failed, gerror=%s", galaxy_error(gerror));
     }
@@ -182,7 +185,7 @@
     }else {
         messageInHelloRepetition ++;
     }
-    if(!galaxy_messageInHello(seqId.intValue, relaySN)) {
+    if(!galaxy_messageInHello(seqId.intValue, _relaySN)) {
         //display.text = @"messageInHello failed";
         char gerror[32];
         NSLog(@"galaxy_messageInHello failed, gerror=%s", galaxy_error(gerror));
@@ -271,6 +274,7 @@ static void CallInReleased_Callback(void *inUserData, int errorCode) {
     NSLog(@"SHAY callInReleaseCallback called");
     interface_viberate = 0;
     [timerCallAnswer invalidate];
+    [APPDELEGATE setProximityMonitoringWiht:NO];
     if (_callingView) {
         dispatch_sync(dispatch_get_main_queue(), ^(){
             if(_callingView.frame.size.width <= 100) [_callingView microClick];
@@ -303,7 +307,7 @@ static void CallInAnswerAck_Callback(void *inUserData) {
     //实际应用中，要停止callInAnswer重发定时器
     NSLog(@"SHAY callInAnswerAck got");
     NSString *result = @"Call Answered";
-    
+    [APPDELEGATE setProximityMonitoringWiht:YES];
     [timerCallAnswer invalidate];
 }
 static void CallInAlertingAck_Callback(void *inUserData) {
@@ -336,11 +340,13 @@ static void RelayLoginRsp_Callback(void *inUserData, int seqId, unsigned int rel
     [STRONGSELF handleRelayLoginRspWithRelaySN:relaySN SeqId:seqId ErrorCode:errorCode];
 }
 
-- (void) handleRelayLoginRspWithRelaySN: (unsigned int)relaySN SeqId: (int)seqId ErrorCode: (int)errorCode
-{
+- (void) handleRelayLoginRspWithRelaySN: (unsigned int)relaySN SeqId: (int)seqId ErrorCode: (int)errorCode {
     NSString *result;
     if (_loginBlock) {
         _loginBlock(errorCode==0);
+    }
+    if (errorCode != 0) {
+        _relaySN = 0;
     }
     if(errorCode == 0) {
         //实际应用中，登录成功后，需要将relay、pushToken和authCode写入flash保存，APP启动时，首先读取已经保存的这些数据

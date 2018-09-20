@@ -110,6 +110,7 @@
         [self.navigationController presentViewController:contactPicker animated:YES completion:^{
             _segmentedControl.selectedSegmentIndex = 0;
         }];
+        [GPhoneContactManager.sharedManager updateAllContact];
     }else {
         
     }

@@ -47,4 +47,8 @@
  authCode
  */
 + (const char)authCode;
+/*
+   本地记录匹配最新通讯录
+ */
++ (void) updateHistory;
 @end

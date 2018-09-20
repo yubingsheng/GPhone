@@ -19,6 +19,8 @@
 @property (strong, nonatomic) NSString *relaySN;
 @property (strong, nonatomic) NSString *relayName;
 @property (assign, nonatomic) NSInteger isUsed;
+@property (assign, nonatomic) BOOL isSuccessed;
+@property (strong, nonatomic) NSIndexPath *selectedDndexPath;
 @end
 
 @implementation RelayListViewController
@@ -26,6 +28,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.title = @"gMobile列表";
+    _isSuccessed = NO;
     _tableView.tableFooterView = [UIView new];
     _gphoneCallService = GPhoneCallService.sharedManager;
     _gphoneCallService.delegate = self;
@@ -34,8 +37,16 @@
     _tableView.mj_header = [MJRefreshNormalHeader headerWithRefreshingBlock:^{
         [self.relayArray removeAllObjects];
         [self reloadRelaysStatus];
+        dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(3 * NSEC_PER_SEC));
+        dispatch_after(popTime, dispatch_get_main_queue(), ^{
+            if (!_isSuccessed) {
+                 [_tableView.mj_header endRefreshing];
+                [self showToastWith:@"刷新失败，请重新下拉刷新"];
+            }
+        });
     }];
     [_tableView.mj_header beginRefreshing];
+    
     // Do any additional setup after loading the view from its nib.
 }
 
@@ -52,7 +63,6 @@
     alert.modalPresentationStyle= UIModalPresentationCustom;
     __weak RelayListViewController *vc = self;
     alert.comfireBlock = ^(NSString *sn, NSString *name){
-        
         NSNumber *relaySN = [NSNumber numberWithInteger:sn.integerValue];
         if (relaySN.integerValue == GPhoneConfig.sharedManager.relaySN.integerValue) {
             [vc showToastWith:@"该gPhone已存在，请勿重复添加"];
@@ -63,7 +73,7 @@
             [vc reloadRelaysStatus];
         };
         GPhoneCallService.sharedManager.addRelayFailedBlock = ^(NSInteger errorCode) {
-          UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"提示" message:@"gMobile不在线"  preferredStyle:UIAlertControllerStyleAlert];
+            UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"提示" message:@"gMobile不在线"  preferredStyle:UIAlertControllerStyleAlert];
             [alert addAction:[UIAlertAction actionWithTitle:@"确认" style:UIAlertActionStyleDefault handler:nil]];
             [vc.navigationController presentViewController:alert animated:YES completion:nil];
         };
@@ -98,34 +108,49 @@
     if (!contain) {
         [self.relayArray addObject:statusModel];
     }
+    __weak typeof(self) weakSelf = self;
     dispatch_sync(dispatch_get_main_queue(), ^(){
-        [_tableView reloadData];
-        [self performSelector:@selector(delayMethod) withObject:nil afterDelay:0.1];
+        if (_selectedDndexPath) {
+            [weakSelf.relayArray replaceObjectAtIndex:weakSelf.selectedDndexPath.row withObject:statusModel];
+            [weakSelf.tableView reloadRowsAtIndexPaths:@[weakSelf.selectedDndexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
+            if (statusModel.netWorkStatus == 0) {
+                UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"提示" message:@"gMobile不在线"  preferredStyle:UIAlertControllerStyleAlert];
+                [alert addAction:[UIAlertAction actionWithTitle:@"确认" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+                    weakSelf.selectedDndexPath = nil;
+                }]];
+                [self.navigationController presentViewController:alert animated:YES completion:nil];
+            }
+        }else {
+            _isSuccessed = YES;
+            [_tableView reloadData];
+            [self performSelector:@selector(delayMethod) withObject:nil afterDelay:0.1];
+        }
     });
     if (_relayArray.count == [GPhoneConfig.sharedManager.relaysNArray count]) {
         
     }
-    
 }
 
 #pragma mark - TableViewDelegate
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
-
+    
     __block RelayStatusModel * model = [_relayArray objectAtIndex:indexPath.row];
     if (model.relaySN == GPhoneConfig.sharedManager.relaySN.integerValue && [model.relayName isEqualToString:GPhoneConfig.sharedManager.relayName]) {
-        
     }
-    [GPhoneCallService.sharedManager relayLoginWith:model.relaySN relayName:model.relayName];
-    
-    __block RelayListViewController *weakSelf = self;
-    GPhoneCallService.sharedManager.loginBlock = ^(BOOL succeed) {
-        weakSelf.isUsed = indexPath.row;
-        dispatch_sync(dispatch_get_main_queue(), ^(){
-            [weakSelf.tableView reloadData];
-        });
-    };
+   
+    [_gphoneCallService relayStatus:model.relaySN relayName:model.relayName];
+    _selectedDndexPath = indexPath;
+//    [GPhoneCallService.sharedManager relayLoginWith:model.relaySN relayName:model.relayName];
+//
+//    __block RelayListViewController *weakSelf = self;
+//    GPhoneCallService.sharedManager.loginBlock = ^(BOOL succeed) {
+//        weakSelf.isUsed = indexPath.row;
+//        dispatch_sync(dispatch_get_main_queue(), ^(){
+//            [weakSelf.tableView reloadData];
+//        });
+//    };
 }
 
 #pragma mark - TableViewDataSource
@@ -143,11 +168,11 @@
     RelayStatusModel * model = [_relayArray objectAtIndex:indexPath.row];
     cell.relayNameLabel.text = model.relayName;
     if (model.netWorkStatus == 0) {
-          cell.phoneSignalView.signalStrength = 0;
+        cell.phoneSignalView.signalStrength = 0;
     }else {
-          cell.phoneSignalView.signalStrength = model.signalStrength;
+        cell.phoneSignalView.signalStrength = model.signalStrength;
     }
-    
+    cell.relayLabel.text = [NSString stringWithFormat:@"%d",model.relaySN];
     if (model.relaySN == GPhoneConfig.sharedManager.relaySN.integerValue && [model.relayName isEqualToString:GPhoneConfig.sharedManager.relayName]) {
         cell.usedView.hidden = NO;
     } else {
@@ -170,7 +195,7 @@
     if (editingStyle == UITableViewCellEditingStyleDelete) {
         [_relayArray removeObjectAtIndex:indexPath.row];
         NSMutableArray *tmpArray = [NSMutableArray arrayWithArray: GPhoneConfig.sharedManager.relaysNArray];
-         RelayStatusModel * model = [_relayArray objectAtIndex:indexPath.row];
+        RelayStatusModel * model = [_relayArray objectAtIndex:indexPath.row];
         if (model.relaySN == GPhoneConfig.sharedManager.relaySN.integerValue && [model.relayName isEqualToString:GPhoneConfig.sharedManager.relayName])  {
             GPhoneConfig.sharedManager.relaySN = nil;
         }

@@ -14,7 +14,7 @@
 volatile int notification_viberate;
 volatile int interface_viberate;
 volatile char pushTokenVoIP[128];
-volatile unsigned int relaySN;
+volatile unsigned int _relaySN;
 volatile char pushToken[128];  //puthToken(64) + 0
 @interface AppDelegate : UIResponder <UIApplicationDelegate>
 @property (strong, nonatomic) CallKitHandel *callKitHandel;
@@ -26,6 +26,9 @@ volatile char pushToken[128];  //puthToken(64) + 0
 - (void)shake;
 
 - (void)sound;
-
+/*
+   距离传感器
+ */
+- (void) setProximityMonitoringWiht:(BOOL)open;
 @end
 

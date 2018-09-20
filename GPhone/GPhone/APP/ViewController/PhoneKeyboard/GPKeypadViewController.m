@@ -27,9 +27,45 @@
     [self.view addSubview:_pad];
 
 }
-
+- (void)addRelay {
+    GMobileTextFieldViewController *alert = [[GMobileTextFieldViewController alloc]initWithNibName:@"GMobileTextFieldViewController" bundle:nil];
+    alert.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+    alert.modalPresentationStyle= UIModalPresentationCustom;
+    __weak typeof(self) weakSelf = self;
+    alert.comfireBlock = ^(NSString *sn, NSString *name){
+        NSNumber *relaySN = [NSNumber numberWithInteger:sn.integerValue];
+        if (relaySN.integerValue == GPhoneConfig.sharedManager.relaySN.integerValue) {
+            [weakSelf showToastWith:@"该gPhone已存在，请勿重复添加"];
+            return ;
+        }
+        [GPhoneCallService.sharedManager relayLoginWith:[relaySN unsignedIntValue] relayName:name];
+        GPhoneCallService.sharedManager.addRelayBlock = ^(BOOL success){
+            [weakSelf showToastWith:@"添加成功，可正常拨打电话了"];
+        };
+        GPhoneCallService.sharedManager.addRelayFailedBlock = ^(NSInteger errorCode) {
+            UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"提示" message:@"gMobile不在线"  preferredStyle:UIAlertControllerStyleAlert];
+            [alert addAction:[UIAlertAction actionWithTitle:@"确认" style:UIAlertActionStyleDefault handler:nil]];
+            [weakSelf.navigationController presentViewController:alert animated:YES completion:nil];
+        };
+    };
+    [self.navigationController presentViewController:alert animated:YES completion:nil];
+}
 #pragma mark - JCDialPadDelegate
 -(void)dialingWith:(NSString *)phone {
+    if (_relaySN == 0) {
+        _pad.isDialing = !_pad.isDialing;
+        UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"提示" message:@"gMobile不在线"  preferredStyle:UIAlertControllerStyleAlert];
+        __weak typeof(self) weakSelf = self;
+        [alert addAction:[UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleDefault handler: nil]];
+        [alert addAction:[UIAlertAction actionWithTitle:@"去添加" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+            [weakSelf addRelay];
+        }]];
+        [self.navigationController presentViewController:alert animated:YES completion:nil];
+        return;
+    }
+    if (![GPhoneContactManager checkPhone:phone]) {
+        [self showToastWith:@"请输入正确的手机号"];
+    }
     if(![phone isEqualToString:@""]){
         ContactModel *model = [[ContactModel alloc]initWithId:0 time:1 identifier:@"" phoneNumber:phone fullName:_pad.nameLabel.text creatTime:[GPhoneHandel dateToStringWith:[NSDate date]]];
         [GPhoneCallService.sharedManager dialWith:model];
@@ -37,15 +73,11 @@
 
 }
 - (BOOL)dialPad:(JCDialPad *)dialPad shouldInsertText:(NSString *)text forButtonPress:(JCPadButton *)button {
-    if ([GPhoneContactManager checkPhone:dialPad.rawText]) {
-        _pad.nameLabel.text = [GPhoneContactManager.sharedManager getContactInfoWith:dialPad.rawText];
-    }else {
-        _pad.nameLabel.text = @"";
-    }
+    _pad.nameLabel.text = [GPhoneContactManager.sharedManager getContactInfoWith:dialPad.rawText];
     return YES;
 }
--(void)hangUp {
-    [GPhoneCallService.sharedManager hangup];
+-(void)hangUp{
+         [GPhoneCallService.sharedManager hangup];
 }
 
 - (void)didReceiveMemoryWarning {

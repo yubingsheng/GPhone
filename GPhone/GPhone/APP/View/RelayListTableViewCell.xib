@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14109" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14113" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
@@ -46,12 +46,20 @@
                         <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <nil key="highlightedColor"/>
                     </label>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="13q-z0-RwG">
+                        <rect key="frame" x="117" y="13.5" width="35.5" height="17"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                        <color key="textColor" white="0.25909598214285712" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <nil key="highlightedColor"/>
+                    </label>
                 </subviews>
                 <constraints>
                     <constraint firstItem="qG9-Di-GqU" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="6Fw-B0-hYm"/>
                     <constraint firstAttribute="trailing" secondItem="yop-ti-ttt" secondAttribute="trailing" constant="15" id="K0U-km-DnQ"/>
+                    <constraint firstItem="13q-z0-RwG" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="LUQ-QI-QJa"/>
                     <constraint firstItem="yop-ti-ttt" firstAttribute="leading" secondItem="qG9-Di-GqU" secondAttribute="trailing" constant="10" id="SHb-cQ-BaA"/>
                     <constraint firstItem="r9r-Rk-Irx" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="Yew-gQ-u5w"/>
+                    <constraint firstItem="13q-z0-RwG" firstAttribute="leading" secondItem="H14-R1-eCe" secondAttribute="trailing" constant="8" id="eT9-N6-Svq"/>
                     <constraint firstItem="H14-R1-eCe" firstAttribute="leading" secondItem="r9r-Rk-Irx" secondAttribute="trailing" constant="8" id="i8B-a2-XAZ"/>
                     <constraint firstItem="H14-R1-eCe" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="jUn-g6-Oyu"/>
                     <constraint firstItem="yop-ti-ttt" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="nJN-OC-VBz"/>
@@ -61,6 +69,7 @@
             <viewLayoutGuide key="safeArea" id="aW0-zy-SZf"/>
             <connections>
                 <outlet property="netWorkLabel" destination="qG9-Di-GqU" id="Onz-YF-5ZJ"/>
+                <outlet property="relayLabel" destination="13q-z0-RwG" id="bYo-XE-Qrl"/>
                 <outlet property="relayNameLabel" destination="r9r-Rk-Irx" id="goh-vc-a3K"/>
                 <outlet property="signalStrengthBGView" destination="yop-ti-ttt" id="BoP-E6-yVB"/>
                 <outlet property="usedView" destination="H14-R1-eCe" id="wAP-8U-edW"/>
