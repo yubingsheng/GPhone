@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		9AA8BF372149504E00CC634F /* GPhoneContactManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 9AA8BF362149504E00CC634F /* GPhoneContactManager.m */; };
 		9AA8BF3A2149541B00CC634F /* GPhoneContactModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 9AA8BF392149541B00CC634F /* GPhoneContactModel.m */; };
+		9AD94353215A84C3000CBA31 /* UIView+UIView_.m in Sources */ = {isa = PBXBuildFile; fileRef = 9AD94351215A84C3000CBA31 /* UIView+UIView_.m */; };
 		B820A0BD2019C8940061445D /* RelayListTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B820A0BB2019C8940061445D /* RelayListTableViewCell.m */; };
 		B820A0BE2019C8940061445D /* RelayListTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = B820A0BC2019C8940061445D /* RelayListTableViewCell.xib */; };
 		B84260D620999664004A5D46 /* GMobileTextFieldViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B84260D420999664004A5D46 /* GMobileTextFieldViewController.m */; };
@@ -192,6 +193,8 @@
 		9AA8BF362149504E00CC634F /* GPhoneContactManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GPhoneContactManager.m; sourceTree = "<group>"; };
 		9AA8BF382149541B00CC634F /* GPhoneContactModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GPhoneContactModel.h; sourceTree = "<group>"; };
 		9AA8BF392149541B00CC634F /* GPhoneContactModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GPhoneContactModel.m; sourceTree = "<group>"; };
+		9AD94351215A84C3000CBA31 /* UIView+UIView_.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+UIView_.m"; sourceTree = "<group>"; };
+		9AD94352215A84C3000CBA31 /* UIView+UIView_.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+UIView_.h"; sourceTree = "<group>"; };
 		B820A0BA2019C8940061445D /* RelayListTableViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RelayListTableViewCell.h; sourceTree = "<group>"; };
 		B820A0BB2019C8940061445D /* RelayListTableViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RelayListTableViewCell.m; sourceTree = "<group>"; };
 		B820A0BC2019C8940061445D /* RelayListTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = RelayListTableViewCell.xib; sourceTree = "<group>"; };
@@ -472,6 +475,15 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		9AD94350215A84C3000CBA31 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				9AD94352215A84C3000CBA31 /* UIView+UIView_.h */,
+				9AD94351215A84C3000CBA31 /* UIView+UIView_.m */,
+			);
+			path = Extensions;
+			sourceTree = "<group>";
+		};
 		B84260D220999619004A5D46 /* GMobileTextField */ = {
 			isa = PBXGroup;
 			children = (
@@ -665,6 +677,7 @@
 		B8A466F31FB186BD007EFB09 /* GPhone */ = {
 			isa = PBXGroup;
 			children = (
+				9AD94350215A84C3000CBA31 /* Extensions */,
 				FCBB17331FDA89AC00639D3E /* images */,
 				B89A77E51FD52692000A079A /* lib */,
 				B89A77E21FD52650000A079A /* include */,
@@ -1242,6 +1255,7 @@
 				B8F17F4B1FC8015D0015B376 /* JSBubbleView.m in Sources */,
 				B8B230C220E0C72A008E2A54 /* NotificationManager.m in Sources */,
 				FCBB17301FDA89A100639D3E /* JCDialPad.m in Sources */,
+				9AD94353215A84C3000CBA31 /* UIView+UIView_.m in Sources */,
 				B8F17F811FC8015D0015B376 /* UIColor+JSMessagesView.m in Sources */,
 				B8F17EFC1FC7ED780015B376 /* GPhoneCallService.m in Sources */,
 				B8F17F4D1FC8015D0015B376 /* JSMessageInputView.m in Sources */,

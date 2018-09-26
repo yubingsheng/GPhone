@@ -64,11 +64,23 @@
         return;
     }
     if (![GPhoneContactManager checkPhone:phone]) {
-        [self showToastWith:@"请输入正确的手机号"];
+//        [self showToastWith:@"请输入正确的手机号"];
+//        return;
     }
     if(![phone isEqualToString:@""]){
         ContactModel *model = [[ContactModel alloc]initWithId:0 time:1 identifier:@"" phoneNumber:phone fullName:_pad.nameLabel.text creatTime:[GPhoneHandel dateToStringWith:[NSDate date]]];
         [GPhoneCallService.sharedManager dialWith:model];
+        __weak typeof(self) weakSelf = self;
+        GPhoneCallService.sharedManager.relayStatusBlock = ^(BOOL succeed) {
+            if (!succeed) {
+                dispatch_sync(dispatch_get_main_queue(), ^(){
+                    UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"提示" message:[NSString stringWithFormat: @"gMobile‘%@’鉴权失败，请在gMobile管理里删除此gMobile并重新添加。",[GPhoneConfig.sharedManager relayName]]  preferredStyle:UIAlertControllerStyleAlert];
+                    [alert addAction:[UIAlertAction actionWithTitle:@"知道了" style:UIAlertActionStyleDefault handler: nil]];
+                    [weakSelf.navigationController presentViewController:alert animated:YES completion:nil];
+                });
+               
+            }
+        };
     }
 
 }

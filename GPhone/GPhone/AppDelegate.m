@@ -98,6 +98,7 @@
     
 - (void)applicationDidEnterBackground:(UIApplication *)application {
     galaxy_io_pause();
+    
     [GPhoneCacheManager.sharedManager archiveObject:GPhoneConfig.sharedManager.callHistoryArray forKey:CALLHISTORY];
     [GPhoneCacheManager.sharedManager archiveObject:GPhoneConfig.sharedManager.messageArray forKey:MESSAGES];
     [self setProximityMonitoringWiht:NO];

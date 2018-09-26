@@ -141,6 +141,19 @@
     GPhoneConfig.sharedManager.relaysNArray = relayArray;
 }
 #pragma mark - NSDate helpHandel
++  (NSDate *)formatTimestamp:(NSString *)timestamp {
+    NSDate *Date;
+    //新建一个Date格式类，
+    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    dateFormatter.timeZone = [NSTimeZone systemTimeZone];
+    //设置为timeStr的日期格式
+    [dateFormatter setDateFormat:@"yyyyMMddHHmmssZ"];
+    //以timeStr的格式来得到Date
+    //设置日期格式为要转化的类型
+    //将要转化的日期变为字符串
+    Date = [dateFormatter dateFromString:timestamp];
+    return Date;
+}
 
 + (NSString *)dateToStringWith:(NSDate *)date {
     //用于格式化NSDate对象

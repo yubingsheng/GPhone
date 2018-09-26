@@ -19,6 +19,25 @@
 
 @implementation MessageViewController
 
+- (void)viewWillAppear:(BOOL)animated {
+    [super  viewWillAppear:animated];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(relaodData:) name:@"relaodData" object:nil];
+}
+-(void)viewDidDisappear:(BOOL)animated {
+    [super viewDidDisappear:animated];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:@"relaodData" object:nil];
+    _contactModel.messageList = _messageArray;
+    if (_messageBlock) {
+        _messageBlock(_contactModel);
+    }
+}
+- (void)relaodData:(NSNotification *)notification {
+    MessageModel *model =   [[MessageModel alloc] initWithMsgId:[notification.userInfo[@"id"] intValue] text:notification.userInfo[@"title"] date:[NSDate date] msgType:[notification.userInfo[@"messageType"] intValue] phone:notification.userInfo[@"phone"]];
+    [_messageArray addObject:model];
+    [self.tableView reloadData];
+    [self scrollToBottomAnimated:YES];
+//    [GPhoneHandel messageTabbarItemBadgeValue:_contactModel.unread];
+}
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor redColor];
@@ -35,20 +54,11 @@
     self.phoneTextField.userInteractionEnabled = _isNew;
     self.phoneTextField.text = _contactModel.phoneNumber;
 }
--(void)viewWillDisappear:(BOOL)animated {
-    [super viewWillDisappear:animated];
-    _contactModel.messageList = _messageArray;
-    
-    if (_messageBlock) {
-        _messageBlock(_contactModel);
-    }
-}
+
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
-
-
 
 #pragma mark - Table view data source
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{

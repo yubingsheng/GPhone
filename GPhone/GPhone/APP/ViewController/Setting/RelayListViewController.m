@@ -28,20 +28,34 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.title = @"gMobile列表";
-    _isSuccessed = NO;
+   
     _tableView.tableFooterView = [UIView new];
     _gphoneCallService = GPhoneCallService.sharedManager;
     _gphoneCallService.delegate = self;
     UIBarButtonItem *bar = [[UIBarButtonItem alloc] initWithTitle:@"添加" style:UIBarButtonItemStylePlain target:self action:@selector(addRelay)];
     self.navigationItem.rightBarButtonItem = bar;
     _tableView.mj_header = [MJRefreshNormalHeader headerWithRefreshingBlock:^{
+         _isSuccessed = NO;
+        if ( [GPhoneConfig.sharedManager.relaysNArray count] == 0) {
+            UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"提示" message:@"gMobile暂未添加，需要立即去j添加新的gMobile吗？" preferredStyle:UIAlertControllerStyleAlert];
+            __weak typeof(self) weakSelf = self;
+            [alert addAction:[UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleDefault handler: nil]];
+            [alert addAction:[UIAlertAction actionWithTitle:@"去添加" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+                [weakSelf addRelay];
+            }]];
+            [_tableView.mj_header endRefreshing];
+            [self.navigationController presentViewController:alert animated:YES completion:nil];
+            return ;
+        }
         [self.relayArray removeAllObjects];
         [self reloadRelaysStatus];
-        dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(3 * NSEC_PER_SEC));
+        dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(4 * NSEC_PER_SEC));
         dispatch_after(popTime, dispatch_get_main_queue(), ^{
             if (!_isSuccessed) {
                  [_tableView.mj_header endRefreshing];
-                [self showToastWith:@"刷新失败，请重新下拉刷新"];
+                UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"提示" message:@"gMobile状态刷新失败，下拉重新刷新"  preferredStyle:UIAlertControllerStyleAlert];
+                [alert addAction:[UIAlertAction actionWithTitle:@"确认" style:UIAlertActionStyleDefault handler:nil]];
+                [self.navigationController presentViewController:alert animated:YES completion:nil];
             }
         });
     }];
@@ -66,7 +80,7 @@
         NSNumber *relaySN = [NSNumber numberWithInteger:sn.integerValue];
         if (relaySN.integerValue == GPhoneConfig.sharedManager.relaySN.integerValue) {
             [vc showToastWith:@"该gPhone已存在，请勿重复添加"];
-            return ;
+//            return ;
         }
         [GPhoneCallService.sharedManager relayLoginWith:[relaySN unsignedIntValue] relayName:name];
         GPhoneCallService.sharedManager.addRelayBlock = ^(BOOL success){
@@ -193,14 +207,15 @@
 
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
     if (editingStyle == UITableViewCellEditingStyleDelete) {
-        [_relayArray removeObjectAtIndex:indexPath.row];
         NSMutableArray *tmpArray = [NSMutableArray arrayWithArray: GPhoneConfig.sharedManager.relaysNArray];
         RelayStatusModel * model = [_relayArray objectAtIndex:indexPath.row];
         if (model.relaySN == GPhoneConfig.sharedManager.relaySN.integerValue && [model.relayName isEqualToString:GPhoneConfig.sharedManager.relayName])  {
-            GPhoneConfig.sharedManager.relaySN = nil;
+            [GPhoneCacheManager.sharedManager cleanWithKey:RELAYSN];
+            [GPhoneCacheManager.sharedManager cleanWithKey:RELAYNAME];
         }
         [tmpArray removeObjectAtIndex:indexPath.row];
         GPhoneConfig.sharedManager.relaysNArray = tmpArray;
+        [_relayArray removeObjectAtIndex:indexPath.row];
         [_tableView reloadData];
     }
 }

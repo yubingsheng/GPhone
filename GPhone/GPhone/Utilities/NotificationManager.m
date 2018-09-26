@@ -60,10 +60,8 @@ static NotificationManager *instance = nil;
 	];
 }
 
-- (void) interfaceViberate
-{
+- (void) interfaceViberate {
 	interface_viberate = 1;
-
 	while(interface_viberate) {
 		AudioServicesPlaySystemSound(kSystemSoundID_Vibrate);
 		usleep(1500000);
@@ -97,6 +95,13 @@ static NotificationManager *instance = nil;
        	 char gerror[32];
        	 NSLog(@"galaxy_messageInHello failed, gerror=%s", galaxy_error(gerror));
         }
+        NSString *phoneNumber = [notification.request.content.title stringByReplacingOccurrencesOfString:@"86" withString:@""];
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"relaodData" object:nil userInfo:@{
+                                                                                                       @"id": [NSString stringWithFormat:@"%d",seqId],
+                                                                                                       @"title":notification.request.content.body,
+                                                                                                       @"phone":phoneNumber,
+                                                                                                       @"messageType":@"0"
+                                                                                                       }];
         [APPDELEGATE sound];
 	}
 
@@ -164,7 +169,16 @@ static NotificationManager *instance = nil;
     		NSLog(@"SHAY User launched the app");
 			//我们无需在此做任何事情, applicationWillEnterForeground:会处理呼叫相关的事情
 		}
-	}
+    } else {
+        int seqId = rand();
+        NSString *phoneNumber = [response.notification.request.content.title stringByReplacingOccurrencesOfString:@"86" withString:@""];
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"relaodData" object:nil userInfo:@{
+                                                                                                       @"id": [NSString stringWithFormat:@"%d",seqId],
+                                                                                                       @"title":response.notification.request.content.body,
+                                                                                                       @"phone":phoneNumber,
+                                                                                                       @"messageType":@"0"
+                                                                                                       }];
+    }
 
 	completionHandler();
 }

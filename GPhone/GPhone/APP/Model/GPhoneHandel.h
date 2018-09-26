@@ -36,8 +36,9 @@
 /*
  时间格式
  */
-+(NSString *)friendlyTime:(NSString *)datetime;
++ (NSString *)friendlyTime:(NSString *)datetime;
 
++  (NSDate *)formatTimestamp:(NSString *)timestamp;
 /*
  date to string
  */

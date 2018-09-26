@@ -23,7 +23,7 @@
 
 - (void)viewWillAppear:(BOOL)animated {
     [super  viewWillAppear:animated];
-    [self checkRelay];
+    [self reload];
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(reload) name:@"reload" object:nil];
 }
 -(void)viewDidDisappear:(BOOL)animated {
@@ -37,6 +37,7 @@
 }
 - (void)viewDidLoad {
     [super viewDidLoad];
+    [self checkRelay];
     _tableView.delegate = self;
     _tableView.dataSource = self;
     _tableView.tableFooterView = [UIView new];
@@ -59,6 +60,11 @@
                     [weakSelf reload];
                 });
             };
+            GPhoneCallService.sharedManager.addRelayFailedBlock = ^(NSInteger errorCode) {
+                UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"提示" message:@"gMobile不在线"  preferredStyle:UIAlertControllerStyleAlert];
+                [alert addAction:[UIAlertAction actionWithTitle:@"确认" style:UIAlertActionStyleDefault handler:nil]];
+                [weakSelf.navigationController presentViewController:alert animated:YES completion:nil];
+            };
         };
         [self.navigationController presentViewController:alert animated:YES completion:nil];
         //0x11223344 287454020
@@ -72,13 +78,16 @@
 }
 
 - (void)dialingWith:(ContactModel *)contact {
+    if (!GPhoneConfig.sharedManager.relaySN) {
+        [self checkRelay];
+        return;
+    }
     UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"拨号" message:[NSString stringWithFormat:@"呼叫：%@ \n %@",contact.fullName,contact.phoneNumber] preferredStyle:UIAlertControllerStyleAlert];
     __weak CallHistoryViewController * weakSelf = self;
     __block ContactModel *tmpContact = contact;
     [alert addAction:[UIAlertAction actionWithTitle:@"拨打" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
         [GPhoneCallService.sharedManager dialWith: contact];
         GPhoneCallService.sharedManager.relayStatusBlock = ^(BOOL succeed) {
-            
             UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"提示" message:[NSString stringWithFormat:@"gMobil'%@'已下线，需要重新登录",GPhoneConfig.sharedManager.relayName] preferredStyle:UIAlertControllerStyleAlert];
             [alert addAction:[UIAlertAction actionWithTitle:@"登录" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
                 NSNumber *relaySN = [NSNumber numberWithInteger:GPhoneConfig.sharedManager.relaySN.integerValue];

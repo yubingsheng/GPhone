@@ -102,7 +102,7 @@ NSLog(@"SHAY udp socket closed in viberateWithCompletionHandler");
 
 		//[self.providerDelegate reportIncomingCallWithCallId:callId relaysn:relaysn callingNumber:callingNumber];
 		UNMutableNotificationContent* content = [[UNMutableNotificationContent alloc] init];
-		content.title = callingNumber;
+        content.title = [GPhoneContactManager.sharedManager getContactInfoWith:callingNumber];
 		content.body = @"来电";
 		content.sound = [UNNotificationSound soundNamed:@"gphone_ring.caf"];
 		//content.userInfo = dic;
@@ -171,7 +171,7 @@ NSLog(@"SHAY udp socket closed in viberateWithCompletionHandler");
 		[center removeDeliveredNotificationsWithIdentifiers:@[callId]];
 
 		UNMutableNotificationContent* content = [[UNMutableNotificationContent alloc] init];
-		content.title = callingNumber;
+		content.title = [GPhoneContactManager.sharedManager getContactInfoWith:callingNumber];
 		content.body = @"未接来电";
 
 		UNNotificationRequest* request = [UNNotificationRequest requestWithIdentifier:callId content:content trigger:nil];

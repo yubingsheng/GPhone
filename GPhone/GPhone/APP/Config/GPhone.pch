@@ -35,4 +35,5 @@
 #import "GPhoneContactManager.h"
 #import "GPhoneContactModel.h"
 #import "PushkitManager.h"
+#import "UIView+UIView_.h"
 #endif /* GPhone_pch */

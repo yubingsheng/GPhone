@@ -82,7 +82,6 @@
 #pragma mark - API
 - (void) relayLoginWith:(unsigned int)relay relayName:(NSString*)name {
     [self showWith:@""];
-    _relaySN = relay;
     relayName = name;
     int seqId = rand();
     int a = rand();
@@ -94,7 +93,7 @@
     memcpy(pushTokenVoIP, [GPhoneConfig.sharedManager.pushKitToken cStringUsingEncoding:NSASCIIStringEncoding], 2*[GPhoneConfig.sharedManager.pushKitToken length]);
     memcpy(pushToken, [GPhoneConfig.sharedManager.pushToken cStringUsingEncoding:NSASCIIStringEncoding], 2*[GPhoneConfig.sharedManager.pushToken length]);
     //    strcpy(pushTokenVoIP, pushToken); //实际应用中，由Apple分配，并保存在flash中。
-    galaxy_relayLoginReq(seqId, _relaySN, [relayName UTF8String], 1, pushToken, pushTokenVoIP, authCode_nonce);
+    galaxy_relayLoginReq(seqId, relay, [name UTF8String], 1, pushToken, pushTokenVoIP, authCode_nonce);
 }
 
 - (void)sessionInviteWith:(NSString*)phoneNumber {
@@ -114,9 +113,10 @@
 }
 
 - (void)dialWith:(ContactModel *)contactModel {
-  
     _currentContactModel = contactModel;
     _currentContactModel.phoneNumber = [contactModel.phoneNumber stringByReplacingOccurrencesOfString:@"-" withString:@""];
+    _relaySN = [GPhoneConfig.sharedManager.relaySN intValue];
+    relayName = GPhoneConfig.sharedManager.relayName;
     [self callingViewWithCallType:NO];
     [APPDELEGATE setProximityMonitoringWiht:YES];
 }
@@ -250,6 +250,7 @@
         [self showToastWith:[NSString stringWithFormat:@"galaxy_callInAnswer failed, gerror=%s", galaxy_error(gerror)]];
     }
     else {
+        [APPDELEGATE setProximityMonitoringWiht:YES];
         if(!timerCallAnswer){
             timerCallAnswer = [NSTimer scheduledTimerWithTimeInterval:3.0 target:self selector:@selector(callInAnswer) userInfo:nil repeats:YES];
         }
@@ -274,7 +275,9 @@ static void CallInReleased_Callback(void *inUserData, int errorCode) {
     NSLog(@"SHAY callInReleaseCallback called");
     interface_viberate = 0;
     [timerCallAnswer invalidate];
-    [APPDELEGATE setProximityMonitoringWiht:NO];
+    dispatch_sync(dispatch_get_main_queue(), ^(){
+        [APPDELEGATE setProximityMonitoringWiht:NO];
+    });
     if (_callingView) {
         dispatch_sync(dispatch_get_main_queue(), ^(){
             if(_callingView.frame.size.width <= 100) [_callingView microClick];
@@ -306,8 +309,6 @@ static void CallInAnswerAck_Callback(void *inUserData) {
     //galaxy_relayStatusReq(relaySN);
     //实际应用中，要停止callInAnswer重发定时器
     NSLog(@"SHAY callInAnswerAck got");
-    NSString *result = @"Call Answered";
-    [APPDELEGATE setProximityMonitoringWiht:YES];
     [timerCallAnswer invalidate];
 }
 static void CallInAlertingAck_Callback(void *inUserData) {
@@ -346,7 +347,10 @@ static void RelayLoginRsp_Callback(void *inUserData, int seqId, unsigned int rel
         _loginBlock(errorCode==0);
     }
     if (errorCode != 0) {
-        _relaySN = 0;
+        relayName = nil;
+//        _relaySN = 0;
+//        [GPhoneCacheManager.sharedManager cleanWithKey:RELAYSN];
+//        [GPhoneCacheManager.sharedManager cleanWithKey:RELAYNAME];
     }
     if(errorCode == 0) {
         //实际应用中，登录成功后，需要将relay、pushToken和authCode写入flash保存，APP启动时，首先读取已经保存的这些数据
@@ -354,6 +358,7 @@ static void RelayLoginRsp_Callback(void *inUserData, int seqId, unsigned int rel
         [GPhoneCacheManager.sharedManager store:relayName withKey:RELAYNAME];
         GPhoneConfig.sharedManager.authCode =  [NSString stringWithFormat:@"%s",authCode_nonce];
         [self initProperty];
+        _relaySN = relaySN;
         RelayModel *model = [RelayModel alloc];
         model.relayName = relayName;
         model.relaySN = relaySN;
@@ -368,7 +373,9 @@ static void RelayLoginRsp_Callback(void *inUserData, int seqId, unsigned int rel
     else if(errorCode == 4) {
         if (_addRelayFailedBlock) {
             _addRelayFailedBlock(errorCode);
-        } 
+        }
+        [self hidden];
+        return;
     }
     else result = [NSString stringWithFormat: @"relay login failed with error code %d", errorCode];
     [self hiddenWith: result];
@@ -429,13 +436,13 @@ static void CallAlerting_Callback(void *inUserData) {
 
 static void CallAnswer_Callback(void *inUserData) {
     dispatch_sync(dispatch_get_main_queue(), ^(){
+         [APPDELEGATE shake];
         [STRONGSELF handleCallAnswerCallBack];
     });
 }
 
 - (void) handleCallAnswerCallBack {
     [timerCallInAlerting invalidate];
-    [APPDELEGATE shake];
     [_callingView connected];
 
 }
@@ -445,6 +452,9 @@ static void CallReleased_Callback(void *inUserData, int errorCode) {
 }
 - (void) handleCallReleasedCallBackWithErrorCode: (int)errorCode {
     [timerCallSetup invalidate];
+    dispatch_sync(dispatch_get_main_queue(), ^(){
+         [APPDELEGATE setProximityMonitoringWiht:NO];
+    });
     interface_viberate = 0;
     NSString *result;
     if (_callingView) {
@@ -461,11 +471,10 @@ static void CallReleased_Callback(void *inUserData, int errorCode) {
     
     if(errorCode == 0) return;
     else if(errorCode == 8) {
-        result = @"呼叫鉴权失败，请删除gMobile重新添加";
         if (_relayStatusBlock) {
             _relayStatusBlock(NO);
-            
         }
+        return;
     }
     else if(errorCode == 10) result = @"呼叫失败，请确认运营商服务是否正常，比如SIM卡是否欠费停机";
     else result = [NSString stringWithFormat: @"Call released with error code %d", errorCode];
@@ -570,7 +579,7 @@ static void MessageDeliverReq_Callback(void *inUserData, int messageId, unsigned
 - (void) handleMessageDeliverReqCallBackWithMessageId: (int) messageId relaySN: (unsigned int)relaySN callingNumber: (const char*)callingNumber content: (const char*) content timestamp: (const char*)timestamp{
     //实际应用中，要根据messageId检查是否是重复发送的短消息。
     //timestamp转换为本地时区的时间
-    NSDate *dateTime = [self formatTimestamp:[NSString stringWithFormat: @"%s", timestamp]];
+    NSDate *dateTime = [GPhoneHandel formatTimestamp:[NSString stringWithFormat: @"%s", timestamp]];
     NSString *sms = [NSString stringWithCString:content encoding:NSUTF8StringEncoding];
     NSString *result = [NSString stringWithFormat: @"短信内容:[%@],来自号码:[%s],发送时间:[%@]",
                         sms, callingNumber, dateTime];
@@ -616,19 +625,6 @@ static void MessageDeliverReq_Callback(void *inUserData, int messageId, unsigned
     return;
 }
 
--(NSDate *)formatTimestamp:(NSString *)timestamp{
-    NSDate *Date;
-    //新建一个Date格式类，
-    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-    dateFormatter.timeZone = [NSTimeZone systemTimeZone];
-    //设置为timeStr的日期格式
-    [dateFormatter setDateFormat:@"yyyyMMddHHmmssZ"];
-    //以timeStr的格式来得到Date
-    //设置日期格式为要转化的类型
-    //将要转化的日期变为字符串
-    Date = [dateFormatter dateFromString:timestamp];
-    return Date;
-}
 
 #pragma mark - RTCDelegate
 -(void)hangUp {
