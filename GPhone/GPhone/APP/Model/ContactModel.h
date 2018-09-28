@@ -20,6 +20,7 @@
 @property (strong, nonatomic) NSString *relaySN;
 @property (strong, nonatomic) NSMutableArray *messageList;
 @property (assign, nonatomic) int unread;
+@property (assign, nonatomic) BOOL missedCall;
 
 - (instancetype)initWithId:(int)id time:(int)time identifier:(NSString*)identifier phoneNumber:(NSString *)phoneNumber fullName:(NSString*)fullName creatTime:(NSString *)creatTime;
 

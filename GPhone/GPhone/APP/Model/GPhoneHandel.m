@@ -45,7 +45,9 @@
         if ([contactModel.phoneNumber isEqualToString:tmpContact.phoneNumber]) {
             contain = YES;
             tmpContact.time ++;
+            BOOL missCall = contactModel.missedCall;
             contactModel = tmpContact;
+            contactModel.missedCall = missCall;
             [history removeObjectAtIndex:i];
             i = history.count - 1;
         }
@@ -217,8 +219,8 @@
 //        _timestamp = [NSString stringWithFormat:@"%d%@", distance, (distance == 1) ? @"天前" : @"天前"];
 //    }
     else{
-        NSCalendar *calendar = [[NSCalendar alloc]initWithCalendarIdentifier:NSGregorianCalendar];
-        unsigned units  = NSMonthCalendarUnit|NSDayCalendarUnit|NSYearCalendarUnit;
+        NSCalendar *calendar = [[NSCalendar alloc]initWithCalendarIdentifier:NSCalendarIdentifierGregorian];
+        unsigned units  = NSCalendarUnitMonth|NSCalendarUnitDay|NSCalendarUnitYear;
         NSDateComponents *_comps = [calendar components:units fromDate:[NSDate date]];
         //        NSInteger nowmonth = [_comps month];
         NSInteger nowyear = [_comps year];
@@ -297,4 +299,13 @@
     unsigned int order = (unsigned int)[hex intValue];
     return order;
 }
+
++ (BOOL)isNum:(NSString *)checkedNumString {
+    checkedNumString = [checkedNumString stringByTrimmingCharactersInSet:[NSCharacterSet decimalDigitCharacterSet]];
+    if(checkedNumString.length > 0) {
+        return NO;
+    }
+    return YES;
+}
+
 @end

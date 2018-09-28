@@ -96,6 +96,12 @@ static NotificationManager *instance = nil;
        	 NSLog(@"galaxy_messageInHello failed, gerror=%s", galaxy_error(gerror));
         }
         NSString *phoneNumber = [notification.request.content.title stringByReplacingOccurrencesOfString:@"86" withString:@""];
+        if (![GPhoneHandel isNum:phoneNumber]) {
+            UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"提示" message:phoneNumber preferredStyle:UIAlertControllerStyleAlert];
+            [alert addAction:[UIAlertAction actionWithTitle:@"知道了" style:UIAlertActionStyleDefault handler: nil]];
+            [APPDELEGATE.tb  presentViewController:alert animated:YES completion:nil];
+            return;
+        }
         [[NSNotificationCenter defaultCenter] postNotificationName:@"relaodData" object:nil userInfo:@{
                                                                                                        @"id": [NSString stringWithFormat:@"%d",seqId],
                                                                                                        @"title":notification.request.content.body,

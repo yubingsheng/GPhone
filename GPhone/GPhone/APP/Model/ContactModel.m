@@ -19,6 +19,7 @@
         _phoneNumber = phoneNumber;
         _fullName = fullName;
         _creatTime = creatTime;
+        _missedCall = YES;
     }
     return self;
 }

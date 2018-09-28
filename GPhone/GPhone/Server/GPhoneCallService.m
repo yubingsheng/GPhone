@@ -73,7 +73,7 @@
     _callingView = [[RTCView alloc] initWithNumber:_currentContactModel.phoneNumber nickName:_currentContactModel.fullName byRelay:GPhoneConfig.sharedManager.relayName in_outCall:isIn];
     _callingView.delegate = self;
     [_callingView show];
-    [GPhoneHandel callHistoryContainWith:_currentContactModel];
+    _currentContactModel.missedCall = YES;
     if (!isIn) {
         [self sessionInviteWith:_currentContactModel.phoneNumber];
     }
@@ -276,6 +276,7 @@ static void CallInReleased_Callback(void *inUserData, int errorCode) {
     interface_viberate = 0;
     [timerCallAnswer invalidate];
     dispatch_sync(dispatch_get_main_queue(), ^(){
+         [[NSNotificationCenter defaultCenter] postNotificationName:@"reload" object:nil];
         [APPDELEGATE setProximityMonitoringWiht:NO];
     });
     if (_callingView) {
@@ -292,6 +293,7 @@ static void CallInReleased_Callback(void *inUserData, int errorCode) {
                 
             }});
     }
+     [GPhoneHandel callHistoryContainWith:_currentContactModel];
     //实际应用中，要停止callInAlerting和callInAnswer重发定时器
     //[appDelegate.providerDelegate.provider reportCallWithUUID:appDelegate.providerDelegate.inCallUUID endedAtDate:nil reason:CXCallEndedReasonRemoteEnded];
     NSString *result;
@@ -310,6 +312,7 @@ static void CallInAnswerAck_Callback(void *inUserData) {
     //实际应用中，要停止callInAnswer重发定时器
     NSLog(@"SHAY callInAnswerAck got");
     [timerCallAnswer invalidate];
+    _currentContactModel.missedCall = NO;
 }
 static void CallInAlertingAck_Callback(void *inUserData) {
     [STRONGSELF handleCallInAlertingAck];
@@ -444,6 +447,8 @@ static void CallAnswer_Callback(void *inUserData) {
 - (void) handleCallAnswerCallBack {
     [timerCallInAlerting invalidate];
     [_callingView connected];
+    _currentContactModel.missedCall = NO;
+    
 
 }
 
@@ -453,6 +458,8 @@ static void CallReleased_Callback(void *inUserData, int errorCode) {
 - (void) handleCallReleasedCallBackWithErrorCode: (int)errorCode {
     [timerCallSetup invalidate];
     dispatch_sync(dispatch_get_main_queue(), ^(){
+         [GPhoneHandel callHistoryContainWith:_currentContactModel];
+         [[NSNotificationCenter defaultCenter] postNotificationName:@"reload" object:nil];
          [APPDELEGATE setProximityMonitoringWiht:NO];
     });
     interface_viberate = 0;
@@ -629,7 +636,7 @@ static void MessageDeliverReq_Callback(void *inUserData, int messageId, unsigned
 #pragma mark - RTCDelegate
 -(void)hangUp {
     [self hangup];
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"reload" object:nil];
+   
 }
 #pragma mark - HUD
 

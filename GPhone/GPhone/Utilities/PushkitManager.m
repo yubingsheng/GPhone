@@ -122,7 +122,7 @@ NSLog(@"SHAY udp socket closed in viberateWithCompletionHandler");
 			return;
 		}
         
-        ContactModel *contactModel = [[ContactModel alloc]initWithId:[dic[@"callid"] intValue] time:1 identifier:@"" phoneNumber:dic[@"number"] fullName:@"" creatTime:[GPhoneHandel dateToStringWith:[NSDate date]]];
+        ContactModel *contactModel = [[ContactModel alloc]initWithId:[dic[@"callid"] intValue] time:1 identifier:@"" phoneNumber:dic[@"number"] fullName:[GPhoneContactManager.sharedManager getContactInfoWith:callingNumber] creatTime:[GPhoneHandel dateToStringWith:[NSDate date]]];
         GPhoneCallService.sharedManager.currentContactModel = contactModel;
 		/*
 		//实际应用中，要启动定时器重发galaxy_callInAlerting
@@ -175,13 +175,15 @@ NSLog(@"SHAY udp socket closed in viberateWithCompletionHandler");
 		content.body = @"未接来电";
 
 		UNNotificationRequest* request = [UNNotificationRequest requestWithIdentifier:callId content:content trigger:nil];
-		
+        ContactModel *contactModel = [[ContactModel alloc]initWithId:[dic[@"callid"] intValue] time:1 identifier:@"" phoneNumber:dic[@"number"] fullName:[GPhoneContactManager.sharedManager getContactInfoWith:callingNumber]  creatTime:[GPhoneHandel dateToStringWith:[NSDate date]]];
+        contactModel.missedCall = YES;
+        [GPhoneHandel callHistoryContainWith:contactModel];
 		[center addNotificationRequest:request withCompletionHandler:^(NSError * _Nullable error) {
 			if (error != nil) {
 				NSLog(@"%@", error.localizedDescription);
 			}
 		}];
-
+         [GPhoneCallService.sharedManager callingViewWithCallType:YES];
 		notification_viberate = 0;
 		interface_viberate = 0;
 		completion();

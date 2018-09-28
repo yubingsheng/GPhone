@@ -181,6 +181,7 @@
     }else  cell.numberLabel.text = @"";
     cell.relayLabel.text = model.relayName;
     cell.dateLabel.text = [GPhoneHandel friendlyTime:model.creatTime];
+    cell.fullNameLabel.textColor = model.missedCall ? [UIColor redColor] : [UIColor blackColor];
     return cell;
 }
 

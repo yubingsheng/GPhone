@@ -52,4 +52,8 @@
    本地记录匹配最新通讯录
  */
 + (void) updateHistory;
+/*
+   判断字符串是否为纯数字
+ */
++ (BOOL)isNum:(NSString *)checkedNumString;
 @end

@@ -37,10 +37,10 @@
     _tableView.mj_header = [MJRefreshNormalHeader headerWithRefreshingBlock:^{
          _isSuccessed = NO;
         if ( [GPhoneConfig.sharedManager.relaysNArray count] == 0) {
-            UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"提示" message:@"gMobile暂未添加，需要立即去j添加新的gMobile吗？" preferredStyle:UIAlertControllerStyleAlert];
+            UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"提示" message:@"您尚未添加任何gMobile，请先添加gMobile" preferredStyle:UIAlertControllerStyleAlert];
             __weak typeof(self) weakSelf = self;
             [alert addAction:[UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleDefault handler: nil]];
-            [alert addAction:[UIAlertAction actionWithTitle:@"去添加" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+            [alert addAction:[UIAlertAction actionWithTitle:@"添加" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
                 [weakSelf addRelay];
             }]];
             [_tableView.mj_header endRefreshing];
@@ -209,7 +209,7 @@
     if (editingStyle == UITableViewCellEditingStyleDelete) {
         NSMutableArray *tmpArray = [NSMutableArray arrayWithArray: GPhoneConfig.sharedManager.relaysNArray];
         RelayStatusModel * model = [_relayArray objectAtIndex:indexPath.row];
-        if (model.relaySN == GPhoneConfig.sharedManager.relaySN.integerValue && [model.relayName isEqualToString:GPhoneConfig.sharedManager.relayName])  {
+        if (model.relaySN == GPhoneConfig.sharedManager.relaySN.integerValue)  {
             [GPhoneCacheManager.sharedManager cleanWithKey:RELAYSN];
             [GPhoneCacheManager.sharedManager cleanWithKey:RELAYNAME];
         }

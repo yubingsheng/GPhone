@@ -54,10 +54,10 @@
 -(void)dialingWith:(NSString *)phone {
     if (_relaySN == 0) {
         _pad.isDialing = !_pad.isDialing;
-        UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"提示" message:@"gMobile不在线"  preferredStyle:UIAlertControllerStyleAlert];
+        UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"提示" message:@"您尚未添加任何gMobile，请先添加gMobile" preferredStyle:UIAlertControllerStyleAlert];
         __weak typeof(self) weakSelf = self;
         [alert addAction:[UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleDefault handler: nil]];
-        [alert addAction:[UIAlertAction actionWithTitle:@"去添加" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        [alert addAction:[UIAlertAction actionWithTitle:@"添加" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
             [weakSelf addRelay];
         }]];
         [self.navigationController presentViewController:alert animated:YES completion:nil];
@@ -73,6 +73,7 @@
         __weak typeof(self) weakSelf = self;
         GPhoneCallService.sharedManager.relayStatusBlock = ^(BOOL succeed) {
             if (!succeed) {
+                 weakSelf.pad.isDialing = !weakSelf.pad.isDialing;
                 dispatch_sync(dispatch_get_main_queue(), ^(){
                     UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"提示" message:[NSString stringWithFormat: @"gMobile‘%@’鉴权失败，请在gMobile管理里删除此gMobile并重新添加。",[GPhoneConfig.sharedManager relayName]]  preferredStyle:UIAlertControllerStyleAlert];
                     [alert addAction:[UIAlertAction actionWithTitle:@"知道了" style:UIAlertActionStyleDefault handler: nil]];
