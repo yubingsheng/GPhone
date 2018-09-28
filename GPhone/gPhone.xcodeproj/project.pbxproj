@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		9A0DF935215DDC6B00E79174 /* HXAlbumListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9A0DF934215DDC6A00E79174 /* HXAlbumListViewController.m */; };
 		9AA8BF372149504E00CC634F /* GPhoneContactManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 9AA8BF362149504E00CC634F /* GPhoneContactManager.m */; };
 		9AA8BF3A2149541B00CC634F /* GPhoneContactModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 9AA8BF392149541B00CC634F /* GPhoneContactModel.m */; };
 		9AD94353215A84C3000CBA31 /* UIView+UIView_.m in Sources */ = {isa = PBXBuildFile; fileRef = 9AD94351215A84C3000CBA31 /* UIView+UIView_.m */; };
@@ -189,6 +190,7 @@
 
 /* Begin PBXFileReference section */
 		3A1E102A4EBCB0663EB476DD /* Pods-GPhone.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GPhone.debug.xcconfig"; path = "Pods/Target Support Files/Pods-GPhone/Pods-GPhone.debug.xcconfig"; sourceTree = "<group>"; };
+		9A0DF934215DDC6A00E79174 /* HXAlbumListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HXAlbumListViewController.m; sourceTree = "<group>"; };
 		9AA8BF352149504E00CC634F /* GPhoneContactManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GPhoneContactManager.h; sourceTree = "<group>"; };
 		9AA8BF362149504E00CC634F /* GPhoneContactManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GPhoneContactManager.m; sourceTree = "<group>"; };
 		9AA8BF382149541B00CC634F /* GPhoneContactModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GPhoneContactModel.h; sourceTree = "<group>"; };
@@ -655,6 +657,7 @@
 		B8A466E81FB186BD007EFB09 = {
 			isa = PBXGroup;
 			children = (
+				9A0DF934215DDC6A00E79174 /* HXAlbumListViewController.m */,
 				B8A466F31FB186BD007EFB09 /* GPhone */,
 				B8A4670C1FB186BD007EFB09 /* GPhoneTests */,
 				B8A467171FB186BD007EFB09 /* GPhoneUITests */,
@@ -1234,6 +1237,7 @@
 				B8F17F8C1FC802630015B376 /* MessageModel.m in Sources */,
 				B8A466F91FB186BD007EFB09 /* BaseViewController.m in Sources */,
 				FCBB17321FDA89A100639D3E /* UIView+FrameAccessor.m in Sources */,
+				9A0DF935215DDC6B00E79174 /* HXAlbumListViewController.m in Sources */,
 				B8A467041FB186BD007EFB09 /* main.m in Sources */,
 				B8F17F511FC8015D0015B376 /* NSString+JSMessagesView.m in Sources */,
 				B84260D620999664004A5D46 /* GMobileTextFieldViewController.m in Sources */,
